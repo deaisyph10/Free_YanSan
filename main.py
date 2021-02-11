@@ -16,9 +16,9 @@ screen = pygame.display.set_mode((cell_pxl_size * cell_count, cell_pxl_size * ce
 pygame.display.set_caption("FREE_YanSan")
 clock = pygame.time.Clock()
 back_round = pygame.image.load("images/Stars.png")
-music = pygame.mixer.Sound("monkeys wedding_low.wav")
-laser = pygame.mixer.Sound("laser_SE_hit.wav")
-shoot_laser = pygame.mixer.Sound("laser_SE_shoot.wav")
+music = pygame.mixer.Sound("images/sounds/monkeys wedding_low.wav")
+laser = pygame.mixer.Sound("images/sounds/laser_SE_hit.wav")
+shoot_laser = pygame.mixer.Sound("images/sounds/laser_SE_shoot.wav")
 
 game_font = pygame.font.Font("freesansbold.ttf", 42)
 game_font_2 = pygame.font.Font("freesansbold.ttf", 10)
@@ -61,7 +61,7 @@ class Bullets(pygame.sprite.Sprite):
         self.image = pygame.Surface((12, 3))
         self.im1 = pygame.Surface((12, 3))
         # self.image.fill(white)
-        self.im1.fill(white)
+        self.im1.fill(WHITE)
         self.rect = self.image.get_rect(center=(int(x), int(y)))
         self.rect_2 = self.image.get_rect(center=(int(x), int(y)))
 
@@ -109,7 +109,7 @@ class Purple_fighter(pygame.sprite.Sprite):
         self.y = y
         self.layer = 2
         pygame.sprite.Sprite.__init__(self, groups)
-        self.image = pygame.transform.scale(pygame.image.load("11B_blueglow.png").convert(), (200, 120))
+        self.image = pygame.transform.scale(pygame.image.load("images/11B_blueglow.png").convert(), (200, 120))
         self.rect = self.image.get_rect()
         self.speed = random.randint(2, 14)
 
@@ -127,7 +127,7 @@ class Title_text(pygame.sprite.Sprite):
         self.layer = 2
         self.title_text = str("----FREE-------(Y//:AinSan)----")
         pygame.sprite.Sprite.__init__(self)
-        self.title_surface = game_font.render(self.title_text, True, white)
+        self.title_surface = game_font.render(self.title_text, True, WHITE)
         self.image = self.title_surface
         self.rect = self.image.get_rect()
 
@@ -166,8 +166,8 @@ class Header(pygame.sprite.Sprite):
             self.render()
 
     def render(self):
-        pygame.draw.rect(screen, white, self.white_border)
-        pygame.draw.rect(screen, grey, self.rect)
+        pygame.draw.rect(screen, WHITE, self.white_border)
+        pygame.draw.rect(screen, GRAY, self.rect)
 
 
 class YainSan_Window(pygame.sprite.Sprite):
@@ -181,13 +181,13 @@ class YainSan_Window(pygame.sprite.Sprite):
         self.white_border = pygame.Rect((self.x - 1, self.y - 1, (cell_pxl_size * 3) + 2, int(cell_pxl_size) + 2))
         # self.icon_rect = pygame.Rect(self.x + (cell_pxl_size * 2), self.y, cell_pxl_size, cell_pxl_size)
         self.icon_box_sur = pygame.Surface((80, 80))
-        self.icon_box_sur.fill(black)
+        self.icon_box_sur.fill(BLACK)
         self.blue_bor_icon = pygame.Surface((84, 84))
         self.blue_bor_icon.fill(CADETBLUE)
-        self.icon_image = pygame.image.load("Yan_San_icon_blueglow.png")
+        self.icon_image = pygame.image.load("images/Yan_San_icon_blueglow.png")
         self.icon_rect = self.icon_image.get_rect()
         self.text = str("_____'Y'..DRIVE.. _____ Artificial Intelligence _____")
-        self.text_sur = game_font_2.render(self.text, True, white)
+        self.text_sur = game_font_2.render(self.text, True, WHITE)
         self.text_im = self.text_sur
         self.text_rect = self.text_im.get_rect()
 
@@ -201,7 +201,7 @@ class YainSan_Window(pygame.sprite.Sprite):
             self.rect.y = 500
 
     def render(self):
-        pygame.draw.rect(screen, white, self.white_border)
+        pygame.draw.rect(screen, WHITE, self.white_border)
         self.sur.blit(self.icon_box_sur, ((self.x + 140), (self.y + 5)))
         self.sur.blit(self.text_sur, (40, 5))
         self.sur.blit(self.blue_bor_icon, (198, 18))
@@ -223,8 +223,8 @@ class Bottom_mid_textbox(pygame.sprite.Sprite):
         self.render()
 
     def render(self):
-        pygame.draw.rect(screen, white, self.white_border)
-        pygame.draw.rect(screen, grey, self.rect)
+        pygame.draw.rect(screen, WHITE, self.white_border)
+        pygame.draw.rect(screen, GRAY, self.rect)
 
 
 class Photon_Charger_Window(pygame.sprite.Sprite):
@@ -244,8 +244,8 @@ class Photon_Charger_Window(pygame.sprite.Sprite):
         self.render()
 
     def render(self):
-        pygame.draw.rect(screen, white, self.white_border)
-        pygame.draw.rect(screen, grey, self.rect)
+        pygame.draw.rect(screen, WHITE, self.white_border)
+        pygame.draw.rect(screen, GRAY, self.rect)
         screen.blit(self.charger_box, (self.x, self.y))
         self.charger_box.fill(BLACK)
         self.charger_box.blit(self.charger_label, (5, 10))
@@ -264,8 +264,8 @@ class Message_textbox(pygame.sprite.Sprite):
         self.render()
 
     def render(self):
-        pygame.draw.rect(screen, white, self.white_border)
-        pygame.draw.rect(screen, grey, self.rect)
+        pygame.draw.rect(screen, WHITE, self.white_border)
+        pygame.draw.rect(screen, GRAY, self.rect)
 
 
 class Main_radar_textbox(pygame.sprite.Sprite):
@@ -281,8 +281,8 @@ class Main_radar_textbox(pygame.sprite.Sprite):
         self.render()
 
     def render(self):
-        pygame.draw.rect(screen, white, self.white_border)
-        pygame.draw.rect(screen, grey, self.rect)
+        pygame.draw.rect(screen, WHITE, self.white_border)
+        pygame.draw.rect(screen, GRAY, self.rect)
 
 
 class Alien_full_body(pygame.sprite.Sprite):
@@ -308,7 +308,7 @@ class Alien_close_up(pygame.sprite.Sprite):
         self.y = 330
         self.layer = 0
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load("profile_allien.png")
+        self.image = pygame.image.load("images/profile_allien.png")
         self.surface = self.image
         self.rect = self.image.get_rect()
 
@@ -361,18 +361,18 @@ class Asteroid(pygame.sprite.Sprite):
         self.rect = pygame.Rect(self.x, self.y, 40, 40)
         pygame.sprite.Sprite.__init__(self)
         self.images = []
-        self.images.append(pygame.image.load("asteroid_1.png"))
-        self.images.append(pygame.image.load("asteroid_2.png"))
-        self.images.append(pygame.image.load("asteroid_3.png"))
-        self.images.append(pygame.image.load("asteroid_4.png"))
-        self.images.append(pygame.image.load("asteroid_5.png"))
-        self.images.append(pygame.image.load("asteroid_6.png"))
-        self.images.append(pygame.image.load("asteroid_7.png"))
-        self.images.append(pygame.image.load("asteroid_8.png"))
-        self.images.append(pygame.image.load("asteroid_9.png"))
-        self.images.append(pygame.image.load("asteroid_10.png"))
-        self.images.append(pygame.image.load("asteroid_11.png"))
-        self.images.append(pygame.image.load("asteroid_12.png"))
+        self.images.append(pygame.image.load("images/asteroid_1.png"))
+        self.images.append(pygame.image.load("images/asteroid_2.png"))
+        self.images.append(pygame.image.load("images/asteroid_3.png"))
+        self.images.append(pygame.image.load("images/asteroid_4.png"))
+        self.images.append(pygame.image.load("images/asteroid_5.png"))
+        self.images.append(pygame.image.load("images/asteroid_6.png"))
+        self.images.append(pygame.image.load("images/asteroid_7.png"))
+        self.images.append(pygame.image.load("images/asteroid_8.png"))
+        self.images.append(pygame.image.load("images/asteroid_9.png"))
+        self.images.append(pygame.image.load("images/asteroid_10.png"))
+        self.images.append(pygame.image.load("images/asteroid_11.png"))
+        self.images.append(pygame.image.load("images/asteroid_12.png"))
         self.index = 0
         self.image = self.images[self.index]
 
@@ -400,7 +400,7 @@ x = 200
 y = 600
 asteroid = Asteroid()
 bullet = Bullets(x, y)
-player = Pilot("crosshairs_blue.png", x, y)
+player = Pilot("images/crosshairs_blue.png", x, y)
 header = Header()
 yainsan_window = YainSan_Window()
 bottom_mid_textbox = Bottom_mid_textbox()
@@ -415,17 +415,17 @@ net_menu = pygame.sprite.Group()
 net_menu.add(net_menu_sprite)
 game_title = Title_text()
 
-blue_bolt = pygame.image.load("blue_bolt.png")
+blue_bolt = pygame.image.load("images/blue_bolt.png")
 blue_bolt_rect = pygame.Rect(10, 10, 400, 301)
 
 
-cockpit = pygame.image.load("Cockpit_Spaceship.png")
+cockpit = pygame.image.load("images/Cockpit_Spaceship.png")
 cockpit_rect = pygame.Rect(-20, 70, 1051, 515)
 new_icon = pygame.image.load("images/Dream_Logic_new_icon.png")
 new_icon_rect = pygame.Rect(230, 450, 60, 60)
-new_play = pygame.image.load("profile_allien_2.png")
+new_play = pygame.image.load("images/profile_allien_2.png")
 new_play_rect = pygame.Rect(810, 350, 160, 160)
-radar_screen = pygame.image.load("opohgknlov.jpeg")
+radar_screen = pygame.image.load("images/opohgknlov.jpeg")
 radar_screen_rect = pygame.Rect(750, 130, 1051, 515)
 menu_group = pygame.sprite.LayeredUpdates()
 menu_group.add(header, game_title, message_textbox, main_radar_textbox)
@@ -457,7 +457,7 @@ for i in range(7600):
 music.play()
 game_time = pygame.time.get_ticks()
 
-interior_layout = pygame.image.load("interior_edit_600x450.jpg").convert()
+interior_layout = pygame.image.load("images/interior_edit_600x450.jpg").convert()
 interior_layout_sur = pygame.Surface((600, 450))
 
 int_window_rect = pygame.Rect(250, 120, 610, 460)
@@ -541,10 +541,10 @@ while True:
         player.y = 50
     player.x += moveX
     player.y += moveY
-    screen.fill(black)
+    screen.fill(BLACK)
     screen.blit(back_round, (0, 0))
     for i in range(len(star_list)):
-        pygame.draw.circle(screen, dark_grey, star_list[i], 1)
+        pygame.draw.circle(screen, GRAY3, star_list[i], 1)
         star_list[i][1] -= 0
         star_list[i][0] += 0
         if star_list[i][0] > 10:
@@ -571,7 +571,7 @@ while True:
     all_sprites.update()
     menu_group.update()
     screen.blit(sample_rect_sur, sample_rect)
-    sample_rect_sur.fill(white)
+    sample_rect_sur.fill(WHITE)
     asteroid.move()
     asteroid_group.update()
     all_sprites.update()
