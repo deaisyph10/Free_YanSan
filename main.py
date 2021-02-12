@@ -10,12 +10,14 @@ cell_pxl_size = 96
 cell_count = 12
 screen_width = int(cell_count * cell_pxl_size)
 screen_height = int(cell_count * cell_pxl_size)
-FPS = 160
+FPS = 24
 moveX, moveY = 0, 0
 screen = pygame.display.set_mode((cell_pxl_size * cell_count, cell_pxl_size * cell_count))
 pygame.display.set_caption("FREE_YanSan")
 clock = pygame.time.Clock()
-back_round = pygame.image.load("images/templets/Stars.png")
+back_round_im = pygame.image.load("images/templets/Stars.png")
+back_round = pygame.Surface((800, 400))
+back_round.blit(back_round_im, (0, 0))
 music = pygame.mixer.Sound("images/sounds/monkeys wedding_low.wav")
 laser = pygame.mixer.Sound("images/sounds/laser_SE_hit.wav")
 shoot_laser = pygame.mixer.Sound("images/sounds/laser_SE_shoot.wav")
@@ -35,13 +37,28 @@ hit_sample_rect = pygame.draw.rect(screen, AQUA, sample_rect)
 hit_sur = pygame.Surface((50, 50))
 
 
-class Pilot(pygame.sprite.Sprite):
-    def __init__(self, image_file, x, y):
+class Cockpit(pygame.sprite.Sprite):
+    def __init__(self):
         super().__init__()
+        self.image = pygame.image.load("images/templets/Cockpit_Spaceship.png")
+        self.rect = self.image.get_rect()
+        self.rect.x = 0
+        self.rect.y = 90
+
+    def update(self):
+        self.render()
+
+    def render(self):
+        screen.blit(self.image, (0, 100))
+
+
+class Pilot(pygame.sprite.Sprite):
+    def __init__(self):
+        super(Pilot, self).__init__()
         self.x = x
         self.y = y
-        self.image = pygame.image.load(image_file)
-        self.rect = self.image.get_rect(center=(int(screen_width/2), int(screen_height/2)))
+        self.image = pygame.image.load("images/templets/crosshairs_blue.png")
+        self.rect = self.image.get_rect()
 
     def update(self):
         self.rect = pygame.mouse.get_pos()
@@ -90,37 +107,33 @@ class Bullets(pygame.sprite.Sprite):
 
 
 class Drone(pygame.sprite.Sprite):
-    def __init__(self, image_file, pos):
-        self.x = x
-        self.y = y
-        self._layer = 1
-        pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load(image_file)
-        self.rect = self.image.get_rect(topleft=pos)
-        self.speed = 1
+    def __init__(self, image_path):
+        super(Drone, self).__init__()
+        self.image = pygame.image.load(image_path)
+        self.rect = self.image.get_rect()
+        self.rect.x = 0
+        self.rect.y = 0
 
     def update(self):
         self.render()
 
     def render(self):
-        screen.blit(self.image, (self.x, self.y))
+        screen.blit(self.image, (self.rect.x, self.rect.y))
 
 
 class Purple_fighter(pygame.sprite.Sprite):
-    def __init__(self, x, y, *groups):
-        self.x = x
-        self.y = y
-        self.layer = 2
-        pygame.sprite.Sprite.__init__(self, groups)
-        self.image = pygame.transform.scale(pygame.image.load("images/ships/11B_blueglow.png").convert(), (200, 120))
+    def __init__(self):
+        super(Purple_fighter, self).__init__()
+        self.image = pygame.image.load("images/ships/13B.png")
         self.rect = self.image.get_rect()
-        self.speed = random.randint(2, 14)
+        self.rect.x = x
+        self.rect.y = y
 
     def update(self):
         self.render()
 
     def render(self):
-        screen.blit(self.image, (self.x, self.y))
+        screen.blit(self.image, (self.rect.x, self.rect.y))
 
 
 class Title_text(pygame.sprite.Sprite):
@@ -179,6 +192,7 @@ class Header(pygame.sprite.Sprite):
         pygame.draw.rect(screen, GRAY, self.rect)
         screen.blit(self.dream_logo_2, (10, 10))
         screen.blit(self.LLC_icon, (60, 10))
+
 
 class YainSan_Window(pygame.sprite.Sprite):
     def __init__(self):
@@ -300,11 +314,10 @@ class Main_radar_textbox(pygame.sprite.Sprite):
 
 class Alien_full_body(pygame.sprite.Sprite):
     def __init__(self):
-        self.x = 730
-        self.y = 230
-        self.layer = 0
+        self.x = 850
+        self.y = 300
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load("images/player/alien_full_body_model.png")
+        self.image = pygame.image.load("images/player/profile_allien_2.png")
         self.surface = self.image
         self_rect = self.image.get_rect()
 
@@ -317,8 +330,8 @@ class Alien_full_body(pygame.sprite.Sprite):
 
 class Alien_close_up(pygame.sprite.Sprite):
     def __init__(self):
-        self.x = 60
-        self.y = 330
+        self.x = 40
+        self.y = 300
         self.layer = 0
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load("images/player/profile_allien.png")
@@ -375,16 +388,52 @@ class Asteroid(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.images = []
         self.images.append(pygame.image.load("images/planets/asteroid_1.png"))
+        self.images.append(pygame.image.load("images/planets/asteroid_1.png"))
+        self.images.append(pygame.image.load("images/planets/asteroid_1.png"))
+        self.images.append(pygame.image.load("images/planets/asteroid_1.png"))
+        self.images.append(pygame.image.load("images/planets/asteroid_2.png"))
+        self.images.append(pygame.image.load("images/planets/asteroid_2.png"))
+        self.images.append(pygame.image.load("images/planets/asteroid_2.png"))
         self.images.append(pygame.image.load("images/planets/asteroid_2.png"))
         self.images.append(pygame.image.load("images/planets/asteroid_3.png"))
+        self.images.append(pygame.image.load("images/planets/asteroid_3.png"))
+        self.images.append(pygame.image.load("images/planets/asteroid_3.png"))
+        self.images.append(pygame.image.load("images/planets/asteroid_3.png"))
+        self.images.append(pygame.image.load("images/planets/asteroid_4.png"))
+        self.images.append(pygame.image.load("images/planets/asteroid_4.png"))
+        self.images.append(pygame.image.load("images/planets/asteroid_4.png"))
         self.images.append(pygame.image.load("images/planets/asteroid_4.png"))
         self.images.append(pygame.image.load("images/planets/asteroid_5.png"))
+        self.images.append(pygame.image.load("images/planets/asteroid_5.png"))
+        self.images.append(pygame.image.load("images/planets/asteroid_5.png"))
+        self.images.append(pygame.image.load("images/planets/asteroid_5.png"))
+        self.images.append(pygame.image.load("images/planets/asteroid_6.png"))
+        self.images.append(pygame.image.load("images/planets/asteroid_6.png"))
+        self.images.append(pygame.image.load("images/planets/asteroid_6.png"))
         self.images.append(pygame.image.load("images/planets/asteroid_6.png"))
         self.images.append(pygame.image.load("images/planets/asteroid_7.png"))
+        self.images.append(pygame.image.load("images/planets/asteroid_7.png"))
+        self.images.append(pygame.image.load("images/planets/asteroid_7.png"))
+        self.images.append(pygame.image.load("images/planets/asteroid_7.png"))
+        self.images.append(pygame.image.load("images/planets/asteroid_8.png"))
+        self.images.append(pygame.image.load("images/planets/asteroid_8.png"))
+        self.images.append(pygame.image.load("images/planets/asteroid_8.png"))
         self.images.append(pygame.image.load("images/planets/asteroid_8.png"))
         self.images.append(pygame.image.load("images/planets/asteroid_9.png"))
+        self.images.append(pygame.image.load("images/planets/asteroid_9.png"))
+        self.images.append(pygame.image.load("images/planets/asteroid_9.png"))
+        self.images.append(pygame.image.load("images/planets/asteroid_9.png"))
+        self.images.append(pygame.image.load("images/planets/asteroid_10.png"))
+        self.images.append(pygame.image.load("images/planets/asteroid_10.png"))
         self.images.append(pygame.image.load("images/planets/asteroid_10.png"))
         self.images.append(pygame.image.load("images/planets/asteroid_11.png"))
+        self.images.append(pygame.image.load("images/planets/asteroid_11.png"))
+        self.images.append(pygame.image.load("images/planets/asteroid_11.png"))
+        self.images.append(pygame.image.load("images/planets/asteroid_11.png"))
+        self.images.append(pygame.image.load("images/planets/asteroid_12.png"))
+        self.images.append(pygame.image.load("images/planets/asteroid_12.png"))
+        self.images.append(pygame.image.load("images/planets/asteroid_12.png"))
+        self.images.append(pygame.image.load("images/planets/asteroid_12.png"))
         self.images.append(pygame.image.load("images/planets/asteroid_12.png"))
         self.index = 0
         self.image = self.images[self.index]
@@ -397,11 +446,10 @@ class Asteroid(pygame.sprite.Sprite):
     def update(self):
         self.spin()
 
-
     def spin(self):
         self.index += 1
-        if self.index >= 10:
-            self.index = 4
+        if self.index >= 40:
+            self.index = 0
         self.image = self.images[self.index]
         if self.rect.x >= 1000:
             self.rect.x = 50
@@ -409,88 +457,66 @@ class Asteroid(pygame.sprite.Sprite):
 
 
 # SPRITE GROUPS\ LISTS\ VARIABLES:
-x = 200
+x = 350
 y = 600
 asteroid = Asteroid()
 bullet = Bullets(x, y)
-player = Pilot("images/templets/crosshairs_blue.png", x, y)
+player = Pilot()
 header = Header()
+cockpit = Cockpit()
 yainsan_window = YainSan_Window()
 bottom_mid_textbox = Bottom_mid_textbox()
 photon_charger_window = Photon_Charger_Window()
 message_textbox = Message_textbox()
 main_radar_textbox = Main_radar_textbox()
 alien_close_up = Alien_close_up()
+alien_full_body = Alien_full_body()
 planet_larger = Planet_larger()
 planet_yellow = Planet_yellow()
-net_menu_sprite = Network_Map_Window()
-net_menu = pygame.sprite.Group()
-net_menu.add(net_menu_sprite)
 game_title = Title_text()
-
+purple_fighter = Purple_fighter()
 blue_bolt = pygame.image.load("images/planets/blue_bolt.png")
 blue_bolt_rect = pygame.Rect(10, 10, 400, 301)
-
-
-cockpit = pygame.image.load("images/templets/Cockpit_Spaceship.png")
-cockpit_rect = pygame.Rect(-20, 70, 1051, 515)
 new_icon = pygame.image.load("images/player/Dream_Logic_new_icon.png")
 new_icon_rect = pygame.Rect(230, 450, 60, 60)
-new_play = pygame.image.load("images/player/profile_allien_2.png")
-new_play_rect = pygame.Rect(810, 350, 160, 160)
 radar_screen = pygame.image.load("images/templets/opohgknlov.jpeg")
 radar_screen_rect = pygame.Rect(750, 130, 1051, 515)
-menu_group = pygame.sprite.LayeredUpdates()
-menu_group.add(header, game_title, message_textbox, main_radar_textbox)
-menu_group.add(bottom_mid_textbox, photon_charger_window, yainsan_window)
+menu_group = pygame.sprite.Group()
 bullet_group = pygame.sprite.Group()
 planet_group = pygame.sprite.Group()
-planet_group.add(planet_larger, planet_yellow)
 character_group = pygame.sprite.Group()
-character_group.add(alien_close_up)
 asteroid_group = pygame.sprite.Group()
+net_menu = pygame.sprite.Group()
+net_menu_sprite = Network_Map_Window()
+net_menu.add(net_menu_sprite)
+menu_group.add(header, game_title, message_textbox, main_radar_textbox)
+menu_group.add(bottom_mid_textbox, photon_charger_window, yainsan_window)
+planet_group.add(planet_larger, planet_yellow)
+character_group.add(alien_close_up, alien_full_body)
 asteroid_group.add(asteroid)
-
-# Player SPECS
-drone_list = []
 star_list = []
-pos = (0, 0)
 all_sprites = pygame.sprite.LayeredUpdates()
-enemy_sprite_group = pygame.sprite.Group()
-enemy_sprite_group.add(Drone("images/ships/red_ship.png", pos))
-all_sprites.add(player, asteroid)
-for enemy_count in range(20):
-    x, y = pos
-    drone_list.append([x, y])
-
+cockpit_group = pygame.sprite.Group()
+cockpit_group.add(cockpit)
+all_sprites.add(player, asteroid, purple_fighter)
 for i in range(7600):
     x = random.randrange(140, 1000)
     y = random.randrange(140, 360)
     star_list.append([x, y])
-music.play()
+# music.play()
 game_time = pygame.time.get_ticks()
-
 interior_layout = pygame.image.load("images/templets/interior_edit_600x450.jpg").convert()
 interior_layout_sur = pygame.Surface((600, 450))
-
 int_window_rect = pygame.Rect(250, 120, 610, 460)
 int_window = pygame.Surface((610, 460))
 net_menu_window = False
 interior_window = False
 radar_screen_value = False
-
-
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-        if game_time < 819:
-            print("less")
-        if game_time > 819:
-            print("more")
-        if game_time == 819:
-            print("equal")
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_1:
                 menu_group.update()
@@ -565,22 +591,12 @@ while True:
             star_list[i][1] = y
             x = random.randrange(68, 1030)
             star_list[i][0] = x
-
-    for enemy_count in range(len(drone_list)):
-        drone_list[enemy_count][1] += 1
-        if drone_list[enemy_count][0] > 400:
-            y = random.randrange(-550, -360)
-            drone_list[enemy_count][1] = y
-            x = random.randrange(0, 700)
-            drone_list[enemy_count][0] = x
     planet_group.update()
-    enemy_sprite_group.update()
     all_sprites.draw(screen)
     bullet_group.draw(screen)
-    screen.blit(cockpit, cockpit_rect)
-    screen.blit(new_play, new_play_rect)
-    character_group.update()
     all_sprites.update()
+    cockpit_group.update()
+    character_group.update()
     menu_group.update()
     screen.blit(sample_rect_sur, sample_rect)
     sample_rect_sur.fill(OLIVEDRAB3)
@@ -593,6 +609,7 @@ while True:
         screen.blit(net_menu_sprite.sur, (100, 100))
         screen.blit(net_menu_sprite.dream_logo, (700, 100))
         screen.blit(net_menu_sprite.dream_title, (150, 150))
+
     if interior_window is True:
         screen.blit(int_window, int_window_rect)
         screen.blit(net_menu_sprite.dream_logo, (700, 100))
