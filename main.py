@@ -33,7 +33,7 @@ y = 0
 
 sample_rect = pygame.Rect(800, 650, 50, 50)
 sample_rect_sur = pygame.Surface((50, 50))
-hit_sample_rect = pygame.draw.rect(screen, AQUA, sample_rect)
+hit_sample_rect = pygame.draw.rect(screen, GRAY76, sample_rect)
 hit_sur = pygame.Surface((50, 50))
 
 
@@ -89,8 +89,9 @@ class Bullets(pygame.sprite.Sprite):
         if self.rect.colliderect(asteroid):
             laser.play()
             self.kill()
-            asteroid.kill()
             screen.blit(hit_sur, hit_sample_rect)
+            asteroid.rect.y = random.randint(80, 250)
+            asteroid.rect.x = 0
 
     def update(self):
         self.rect.y -= 25
@@ -138,11 +139,10 @@ class Purple_fighter(pygame.sprite.Sprite):
 
 class Title_text(pygame.sprite.Sprite):
     def __init__(self):
+        super().__init__()
         self.x = 280
         self.y = 4
-        self.layer = 2
         self.title_text = str("----FREE-------(Y//:AinSan)----")
-        pygame.sprite.Sprite.__init__(self)
         self.title_surface = game_font.render(self.title_text, True, WHITE)
         self.image = self.title_surface
         self.rect = self.image.get_rect()
@@ -156,9 +156,9 @@ class Title_text(pygame.sprite.Sprite):
 
 class Network_Map_Window(pygame.sprite.Sprite):
     def __init__(self):
+        super().__init__()
         self.x = 50
         self.y = 100
-        pygame.sprite.Sprite.__init__(self)
         self.sur = pygame.Surface((900, 500))
         self.dream_title_rect = pygame.Rect(250, 300, 200, 200)
         self.dream_logo_rect = pygame.Rect(600, 100, 200, 200)
@@ -175,10 +175,9 @@ class Network_Map_Window(pygame.sprite.Sprite):
 
 class Header(pygame.sprite.Sprite):
     def __init__(self):
+        super().__init__()
         self.x = 1
         self.y = 1
-        self.layer = 0
-        pygame.sprite.Sprite.__init__(self)
         self.rect = pygame.Rect(self.x, self.y, screen_width - 2, cell_pxl_size - 32)
         self.white_border = pygame.Rect(self.x - 1, self.y - 1, screen_width, cell_pxl_size - 30)
         self.dream_logo_2 = dream_logo_2
@@ -188,17 +187,17 @@ class Header(pygame.sprite.Sprite):
         self.render()
 
     def render(self):
-        pygame.draw.rect(screen, WHITE, self.white_border)
-        pygame.draw.rect(screen, GRAY, self.rect)
+        pygame.draw.rect(screen, GRAY76, self.white_border)
+        pygame.draw.rect(screen, GRAY7, self.rect)
         screen.blit(self.dream_logo_2, (10, 10))
         screen.blit(self.LLC_icon, (60, 10))
 
 
 class YainSan_Window(pygame.sprite.Sprite):
     def __init__(self):
+        super().__init__()
         self.x = 5
         self.y = 600
-        pygame.sprite.Sprite.__init__(self)
         self.sur = pygame.Surface(((cell_pxl_size * 3), int(cell_pxl_size)))
         self.rect = self.sur.get_rect()
         self.sur.fill(GRAY7)
@@ -239,10 +238,9 @@ class YainSan_Window(pygame.sprite.Sprite):
 
 class Bottom_mid_textbox(pygame.sprite.Sprite):
     def __init__(self):
+        super().__init__()
         self.x = 330
         self.y = 620
-        self.layer = 0
-        pygame.sprite.Sprite.__init__(self)
         self.rect = pygame.Rect(self.x, self.y, (cell_pxl_size * 3) - 2, int(cell_pxl_size))
         self.white_border = pygame.Rect(self.x - 1, self.y - 1, (cell_pxl_size * 3), int(cell_pxl_size) + 2)
 
@@ -250,20 +248,20 @@ class Bottom_mid_textbox(pygame.sprite.Sprite):
         self.render()
 
     def render(self):
-        pygame.draw.rect(screen, WHITE, self.white_border)
-        pygame.draw.rect(screen, GRAY, self.rect)
+        pygame.draw.rect(screen, GRAY7, self.white_border)
+        pygame.draw.rect(screen, BLACK, self.rect)
 
 
 class Photon_Charger_Window(pygame.sprite.Sprite):
     def __init__(self):
+        super().__init__()
         self.x = 550
         self.y = 620
         self.title_text = str("PHOTON CHARGER")
-        pygame.sprite.Sprite.__init__(self)
         self.rect = pygame.Rect(self.x, self.y, (cell_pxl_size * 2), int(cell_pxl_size))
         self.white_border = pygame.Rect(self.x - 1, self.y - 1, (cell_pxl_size * 2) + 2, int(cell_pxl_size) + 2)
         self.charger_label = game_font_2.render(self.title_text, True, GRAY76)
-        self.charger_box = pygame.Surface((cell_pxl_size, (cell_pxl_size * 2) - 6))
+        self.charger_box = pygame.Surface((cell_pxl_size * 2, (cell_pxl_size * 2) - 6))
         self.text = self.charger_box
         self.text_rect_2 = self.text.get_rect()
 
@@ -271,19 +269,18 @@ class Photon_Charger_Window(pygame.sprite.Sprite):
         self.render()
 
     def render(self):
-        pygame.draw.rect(screen, WHITE, self.white_border)
-        pygame.draw.rect(screen, GRAY, self.rect)
+        pygame.draw.rect(screen, GRAY7, self.white_border)
+        pygame.draw.rect(screen, BLACK, self.rect)
         screen.blit(self.charger_box, (self.x, self.y))
-        self.charger_box.fill(BLACK)
+        self.charger_box.fill(GRAY7)
         self.charger_box.blit(self.charger_label, (5, 10))
 
 
 class Message_textbox(pygame.sprite.Sprite):
     def __init__(self):
+        super().__init__()
         self.x = 780
         self.y = 620
-        self.layer = 1
-        pygame.sprite.Sprite.__init__(self)
         self.rect = pygame.Rect(self.x, self.y, 200, 300 - 1)
         self.white_border = pygame.Rect(self.x - 1, self.y - 1, 200 + 2, 300 + 1)
 
@@ -291,16 +288,15 @@ class Message_textbox(pygame.sprite.Sprite):
         self.render()
 
     def render(self):
-        pygame.draw.rect(screen, WHITE, self.white_border)
-        pygame.draw.rect(screen, GRAY, self.rect)
+        pygame.draw.rect(screen, GRAY7, self.white_border)
+        pygame.draw.rect(screen, BLACK, self.rect)
 
 
 class Main_radar_textbox(pygame.sprite.Sprite):
     def __init__(self):
+        super().__init__()
         self.x = 880
         self.y = 620
-        self.layer = 0
-        pygame.sprite.Sprite.__init__(self)
         self.rect = pygame.Rect(self.x, self.y, 200, 200 - 1)
         self.white_border = pygame.Rect(self.x - 1, self.y - 1, 200 + 2, 200 + 1)
 
@@ -308,8 +304,8 @@ class Main_radar_textbox(pygame.sprite.Sprite):
         self.render()
 
     def render(self):
-        pygame.draw.rect(screen, WHITE, self.white_border)
-        pygame.draw.rect(screen, GRAY, self.rect)
+        pygame.draw.rect(screen, GRAY7, self.white_border)
+        pygame.draw.rect(screen, BLACK, self.rect)
 
 
 class Alien_full_body(pygame.sprite.Sprite):
@@ -366,7 +362,6 @@ class Planet_yellow(pygame.sprite.Sprite):
     def __init__(self):
         self.x = 900
         self.y = 230
-        self.layer = 0
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load("micro_images/planet1.png")
         self.surface = self.image
@@ -503,7 +498,7 @@ for i in range(7600):
     x = random.randrange(140, 1000)
     y = random.randrange(140, 360)
     star_list.append([x, y])
-# music.play()
+music.play()
 game_time = pygame.time.get_ticks()
 interior_layout = pygame.image.load("images/templets/interior_edit_600x450.jpg").convert()
 interior_layout_sur = pygame.Surface((600, 450))
@@ -599,7 +594,7 @@ while True:
     character_group.update()
     menu_group.update()
     screen.blit(sample_rect_sur, sample_rect)
-    sample_rect_sur.fill(OLIVEDRAB3)
+    sample_rect_sur.fill(MIDNIGHTBLUE)
     asteroid.move()
     asteroid_group.update()
     all_sprites.update()
