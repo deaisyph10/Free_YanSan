@@ -10,7 +10,7 @@ cell_pxl_size = 96
 cell_count = 12
 screen_width = int(cell_count * cell_pxl_size)
 screen_height = int(cell_count * cell_pxl_size)
-FPS = 24
+FPS = 160
 moveX, moveY = 0, 0
 screen = pygame.display.set_mode((cell_pxl_size * cell_count, cell_pxl_size * cell_count))
 pygame.display.set_caption("FREE_YanSan")
@@ -30,7 +30,7 @@ game_font_2 = pygame.font.Font("freesansbold.ttf", 10)
 pygame.mouse.set_visible(False)
 x = 0
 y = 0
-
+music.play(10)
 sample_rect = pygame.Rect(800, 650, 50, 50)
 sample_rect_sur = pygame.Surface((50, 50))
 hit_sample_rect = pygame.draw.rect(screen, GRAY76, sample_rect)
@@ -498,7 +498,6 @@ for i in range(7600):
     x = random.randrange(140, 1000)
     y = random.randrange(140, 360)
     star_list.append([x, y])
-music.play()
 game_time = pygame.time.get_ticks()
 interior_layout = pygame.image.load("images/templets/interior_edit_600x450.jpg").convert()
 interior_layout_sur = pygame.Surface((600, 450))
