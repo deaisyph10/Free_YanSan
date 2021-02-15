@@ -28,11 +28,16 @@ game_font_2 = pygame.font.Font("freesansbold.ttf", 10)
 pygame.mouse.set_visible(False)
 x = 0
 y = 0
-music.play(10)
+# music.play(10)
 sample_rect = pygame.Rect(800, 650, 50, 50)
 sample_rect_sur = pygame.Surface((50, 50))
 hit_sample_rect = pygame.draw.rect(screen, GRAY76, sample_rect)
 hit_sur = pygame.Surface((50, 50))
+drone_pos = []
+drone_rect = []
+x = 0
+y = 0
+steps = 6
 
 
 class Cockpit(pygame.sprite.Sprite):
@@ -434,8 +439,8 @@ class Asteroid(pygame.sprite.Sprite):
 
     def move(self):
         dist = 1
-        self.rect.y += int(dist) * 2
-        self.rect.x += int(dist) * 7
+        self.rect.y += int(dist) * 1
+        self.rect.x += int(dist) * 5
 
     def update(self):
         self.spin()
@@ -447,13 +452,246 @@ class Asteroid(pygame.sprite.Sprite):
             self.index = 0
         self.image = self.images[self.index]
         if self.rect.x >= 1000 or self.rect.y >= 450:
-            self.rect.x = random.randint(50, 200)
-            self.rect.y = random.randint(80, 400)
+            self.rect.x = random.randint(40, 60)
+            self.rect.y = random.randint(120, 360)
+
+
+class Red_ship(pygame.sprite.Sprite):
+        def __init__(self):
+            super(Red_ship, self).__init__()
+            self.image = pygame.image.load("images/ships/SpaceHero/red_ship_micro.png")
+            self.im2 = pygame.image.load("images/ships/SpaceHero/red_ship_micro_hit.png")
+            self.rect = self.image.get_rect()
+            self.rect.x = 250
+            self.rect.y = 325
+            self.movex = 0  # move along X
+            self.movey = 0  # move along Y
+
+        def update(self):
+            self.rect.x = self.rect.x + self.movex
+            self.rect.y = self.rect.y + self.movey
+            self.render()
+
+        def attack(self):
+            self.create_bullet()
+            self.sec_bullet()
+
+        def control(self, x, y):
+            self.movex += x
+            self.movey += y
+
+        def create_bullet(self):
+            return Bullet(self.rect.x, self.rect.y)
+
+        def sec_bullet(self):
+            return Bullet(self.rect.x + 20, self.rect.y)
+
+        def render(self):
+            battle_screen.blit(self.image, (self.rect.x, self.rect.y))
+
+
+class Bullet(pygame.sprite.Sprite):
+        def __init__(self, x, y):
+            super(Bullet, self).__init__()
+            self.x = x
+            self.y = y
+            self.image = pygame.Surface((1, 1))
+            self.image.fill((255, 255, 255))
+            self.rect = self.image.get_rect(center=(int(x), int(y)))
+
+        def update(self):
+            self.rect.y += -1
+            self.image = self.image
+            if self.rect.y <= 0:
+                self.kill()
+            self.check_collision()
+
+        def check_collision(self):
+            if self.rect.colliderect(grey_ship):
+                self.kill()
+
+
+class Purple_ship(pygame.sprite.Sprite):
+        def __init__(self):
+            super(Purple_ship, self).__init__()
+            self.image = pygame.image.load("images/ships/SpaceHero/purple_ship_micro.png")
+            self.rect = self.image.get_rect()
+            self.rect.x = 130
+            self.rect.y = 50
+            self.movex = 0  # move along X
+            self.movey = 0  # move along Y
+
+        def move(self):
+            self.rect.x += random.randint(-1, 1)
+            self.rect.y += random.randint(-1, 1)
+            if self.rect.x >= 470:
+                self.rect.x = 470
+            if self.rect.x <= 0:
+                self.rect.x = 0
+            if self.rect.y >= 500:
+                self.rect.y = 500
+            if self.rect.y <= 0:
+                self.rect.y = 0
+
+        def create_bullet(self):
+            return Enemy_Bullets(self.rect.x, self.rect.y)
+
+        def sec_bullet(self):
+            return Enemy_Bullets(self.rect.x + 20, self.rect.y)
+
+        def attack(self):
+            self.create_bullet()
+            self.sec_bullet()
+            bullets_group.add(purple_ship.create_bullet())
+            bullets_group.add(purple_ship.sec_bullet())
+
+        def update(self):
+            self.rect.x = self.rect.x + self.movex
+            self.rect.y = self.rect.y + self.movey
+            self.render()
+
+        def render(self):
+            battle_screen.blit(self.image, (self.rect.x, self.rect.y))
+
+
+class Enemy_Bullets(pygame.sprite.Sprite):
+        def __init__(self, x, y):
+            super(Enemy_Bullets, self).__init__()
+            self.image = pygame.Surface((1, 3))
+            self.image.fill((255, 255, 255))
+            self.x = x
+            self.y = y
+            self.rect = self.image.get_rect(topleft=(x, y))
+
+        def update(self):
+            self.rect.y += 1
+            self.image = self.image
+            if self.rect.y >= 500:
+                self.kill()
+            self.check_collision()
+
+        def check_collision(self):
+            if self.rect.colliderect(red_ship):
+                self.kill()
+
+
+class Yellow_ship(pygame.sprite.Sprite):
+        def __init__(self):
+            super(Yellow_ship, self).__init__()
+            self.image = pygame.image.load("images/ships/SpaceHero/yellow_ship_micro.png")
+            self.rect = self.image.get_rect()
+            self.rect.x = 100
+            self.rect.y = 200
+            self.movex = 0  # move along X
+            self.movey = 0  # move along Y
+
+        def move(self):
+            self.rect.x += 0
+            self.rect.y += 0
+            if self.rect.x >= 500:
+                self.rect.x = 500
+            if self.rect.x <= 0:
+                self.rect.x = 0
+            if self.rect.y >= 500:
+                self.rect.y = 500
+            if self.rect.y <= 0:
+                self.rect.y = 0
+
+        def update(self):
+            self.rect.x = self.rect.x + self.movex
+            self.rect.y = self.rect.y + self.movey
+            self.render()
+            self.move()
+
+        def attack(self):
+            self.create_bullet()
+            self.sec_bullet()
+            bullets_group.add(yellow_ship.create_bullet())
+            bullets_group.add(yellow_ship.sec_bullet())
+
+        def control(self, x, y):
+            self.movex += x
+            self.movey += y
+
+        def create_bullet(self):
+            return Enemy_Bullets(self.rect.x, self.rect.y)
+
+        def sec_bullet(self):
+            return Enemy_Bullets(self.rect.x + 20, self.rect.y)
+
+        def render(self):
+            battle_screen.blit(self.image, (self.rect.x, self.rect.y))
+
+
+class Grey_ship(pygame.sprite.Sprite):
+        def __init__(self):
+            super(Grey_ship, self).__init__()
+            self.image = pygame.image.load("images/ships/SpaceHero/grey_ship_micro.png")
+            self.rect = self.image.get_rect()
+            self.rect.x = 20
+            self.rect.y = 20
+            self.movex = 0  # move along X
+            self.movey = 0  # move along Y
+
+        def move(self):
+            self.rect.x += random.randint(-3, 3)
+            self.rect.y += random.randint(-3, 3)
+            if self.rect.x >= 500:
+                self.rect.x = 500
+            if self.rect.x <= 0:
+                self.rect.x = 0
+            if self.rect.y >= 500:
+                self.rect.y = 500
+            if self.rect.y <= 0:
+                self.rect.y = 0
+
+        def update(self):
+            self.rect.x = self.rect.x + self.movex
+            self.rect.y = self.rect.y + self.movey
+            self.check_collision()
+            self.render()
+            self.move()
+
+        def attack(self):
+            self.create_bullet()
+            self.sec_bullet()
+            bullets_group.add(grey_ship.create_bullet())
+            bullets_group.add(grey_ship.sec_bullet())
+
+        def control(self, x, y):
+            self.movex += x
+            self.movey += y
+
+        def create_bullet(self):
+            return Enemy_Bullets(self.rect.x, self.rect.y)
+
+        def sec_bullet(self):
+            return Enemy_Bullets(self.rect.x + 20, self.rect.y)
+
+        def create_clone(self):
+            return Grey_ship()
+
+        def render(self):
+            battle_screen.blit(self.image, (self.rect.x, self.rect.y))
+
+        def check_collision(self):
+            if self.rect.colliderect(bullets):
+                return self.kill()
 
 
 x = 350
 y = 600
-
+purple_ship = Purple_ship()
+yellow_ship = Yellow_ship()
+grey_ship = Grey_ship()
+red_ship = Red_ship()
+bullets = Bullet(x, y)
+enemy_bullets = Enemy_Bullets(x, y)
+battle_sprites = pygame.sprite.Group()
+battle_sprites.add(red_ship, yellow_ship, purple_ship)
+draw_group = pygame.sprite.Group()
+bullets_group = pygame.sprite.Group()
+bullets_group.add(bullets, enemy_bullets)
 asteroid = Asteroid()
 bullet = Bullets(x, y)
 player = Pilot()
@@ -517,7 +755,6 @@ battle = False
 net_menu_window = False
 interior_window = False
 radar_screen_value = False
-
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -526,56 +763,42 @@ while True:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_1:
                 battle = True
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_1:
-                battle = True
-        if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_0:
                 net_menu_window = True
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_0:
-                net_menu_window = False
-        if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LSHIFT:
                 interior_window = True
                 int_window.blit(interior_layout, (10, 10))
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_LSHIFT:
-                interior_window = False
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT:
-                moveX = -3
-        if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
                 radar_screen_value = True
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_RETURN:
-                radar_screen_value = False
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_RIGHT:
-                moveX = 3
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_LEFT:
-                moveX = 0
-            if event.key == pygame.K_RIGHT:
-                moveX = 0
-        if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 shoot_laser.play()
                 bullet_group.add(player.create_bullet())
                 bullet_group.add(player.sec_bul())
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_UP:
-                moveY = -1
+            if event.key == pygame.K_RETURN:
+                draw_group.add(grey_ship.create_clone())
+            if event.key == pygame.K_LEFT:
+                red_ship.control(-steps, 0)
+            if event.key == pygame.K_RIGHT:
+                red_ship.control(steps, 0)
         if event.type == pygame.KEYUP:
+            if event.key == pygame.K_1:
+                battle = False
+            if event.key == pygame.K_0:
+                net_menu_window = False
+            if event.key == pygame.K_LSHIFT:
+                interior_window = False
+            if event.key == pygame.K_RETURN:
+                radar_screen_value = False
+            if event.key == pygame.K_LEFT:
+                red_ship.control(steps, 0)
+            if event.key == pygame.K_RIGHT:
+                red_ship.control(-steps, 0)
             if event.key == pygame.K_UP:
-                moveY = 0
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_DOWN:
-                moveY = 1
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_DOWN:
-                moveY = 0
+                bullets_group.add(red_ship.create_bullet())
+                bullets_group.add(red_ship.sec_bullet())
+            if event.key == pygame.K_SPACE:
+                purple_ship.attack()
+
     if player.x >= 400:
         player.x = 400
     if player.x <= 0:
@@ -592,11 +815,11 @@ while True:
     for a in range(len(asteroid_list)):
         pygame.draw.circle(screen, GRAY78, asteroid_list[a], 1)
         asteroid_list[a][1] += 1
-        asteroid_list[a][0] += 5
+        asteroid_list[a][0] += 8
         if asteroid_list[a][0] >= 950:
             Ay = random.randrange(228, 340)
             asteroid_list[a][1] = Ay
-            Ax = random.randrange(70, 80)
+            Ax = random.randrange(40, 50)
             asteroid_list[a][0] = Ax
 
     for i in range(len(star_list)):
@@ -634,298 +857,11 @@ while True:
         screen.blit(radar_screen, radar_screen_rect)
     pygame.display.update()
     clock.tick(FPS)
-
     if battle is True:
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RETURN:
-                    cl1 = draw_group.add(grey_ship.create_clone())
-                    drone_pos.append(cl1)
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
-                    red_ship.control(-steps, 0)
-                if event.key == pygame.K_RIGHT:
-                    red_ship.control(steps, 0)
-                if event.key == pygame.K_UP:
-                    bullets_group.add(red_ship.create_bullet())
-                    bullets_group.add(red_ship.sec_bullet())
-                if event.key == pygame.K_SPACE:
-                    purple_ship.attack()
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_LEFT:
-                    red_ship.control(steps, 0)
-                if event.key == pygame.K_RIGHT:
-                    red_ship.control(-steps, 0)
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-        while battle is True:
-            class Red_ship(pygame.sprite.Sprite):
-                def __init__(self):
-                    super(Red_ship, self).__init__()
-                    self.image = pygame.image.load("images/ships/SpaceHero/red_ship_micro.png")
-                    self.im2 = pygame.image.load("images/ships/SpaceHero/red_ship_micro_hit.png")
-                    self.rect = self.image.get_rect()
-                    self.rect.x = 250
-                    self.rect.y = 325
-                    self.movex = 0  # move along X
-                    self.movey = 0  # move along Y
-
-                def update(self):
-                    self.rect.x = self.rect.x + self.movex
-                    self.rect.y = self.rect.y + self.movey
-                    self.render()
-
-                def attack(self):
-                    self.create_bullet()
-                    self.sec_bullet()
-
-                def control(self, x, y):
-                    self.movex += x
-                    self.movey += y
-
-                def create_bullet(self):
-                    return Bullet(self.rect.x, self.rect.y)
-
-                def sec_bullet(self):
-                    return Bullet(self.rect.x + 20, self.rect.y)
-
-                def render(self):
-                    battle_screen.blit(self.image, (self.rect.x, self.rect.y))
-
-
-            class Bullet(pygame.sprite.Sprite):
-                def __init__(self, x, y):
-                    super(Bullet, self).__init__()
-                    self.x = x
-                    self.y = y
-                    self.image = pygame.Surface((1, 1))
-                    self.image.fill((255, 255, 255))
-                    self.rect = self.image.get_rect(center=(int(x), int(y)))
-
-                def update(self):
-                    self.rect.y += -1
-                    self.image = self.image
-                    if self.rect.y <= 0:
-                        self.kill()
-                    self.check_collision()
-
-                def check_collision(self):
-                    if self.rect.colliderect(grey_ship):
-                        self.kill()
-
-
-            class Purple_ship(pygame.sprite.Sprite):
-                def __init__(self):
-                    super(Purple_ship, self).__init__()
-                    self.image = pygame.image.load("images/ships/SpaceHero/purple_ship_micro.png")
-                    self.rect = self.image.get_rect()
-                    self.rect.x = 130
-                    self.rect.y = 50
-                    self.movex = 0  # move along X
-                    self.movey = 0  # move along Y
-
-                def move(self):
-                    self.rect.x += random.randint(-1, 1)
-                    self.rect.y += random.randint(-1, 1)
-                    if self.rect.x >= 470:
-                        self.rect.x = 470
-                    if self.rect.x <= 0:
-                        self.rect.x = 0
-                    if self.rect.y >= 500:
-                        self.rect.y = 500
-                    if self.rect.y <= 0:
-                        self.rect.y = 0
-
-                def create_bullet(self):
-                    return Enemy_Bullets(self.rect.x, self.rect.y)
-
-                def sec_bullet(self):
-                    return Enemy_Bullets(self.rect.x + 20, self.rect.y)
-
-                def attack(self):
-                    self.create_bullet()
-                    self.sec_bullet()
-                    bullets_group.add(purple_ship.create_bullet())
-                    bullets_group.add(purple_ship.sec_bullet())
-
-                def update(self):
-                    self.rect.x = self.rect.x + self.movex
-                    self.rect.y = self.rect.y + self.movey
-                    self.render()
-
-                def render(self):
-                    battle_screen.blit(self.image, (self.rect.x, self.rect.y))
-
-
-            class Enemy_Bullets(pygame.sprite.Sprite):
-                def __init__(self, x, y):
-                    super(Enemy_Bullets, self).__init__()
-                    self.image = pygame.Surface((1, 3))
-                    self.image.fill((255, 255, 255))
-                    self.x = x
-                    self.y = y
-                    self.rect = self.image.get_rect(topleft=(x, y))
-
-                def update(self):
-                    self.rect.y += 1
-                    self.image = self.image
-                    if self.rect.y >= 500:
-                        self.kill()
-                    self.check_collision()
-
-                def check_collision(self):
-                    if self.rect.colliderect(red_ship):
-                        self.kill()
-
-
-            class Yellow_ship(pygame.sprite.Sprite):
-                def __init__(self):
-                    super(Yellow_ship, self).__init__()
-                    self.image = pygame.image.load("images/ships/SpaceHero/yellow_ship_micro.png")
-                    self.rect = self.image.get_rect()
-                    self.rect.x = 100
-                    self.rect.y = 200
-                    self.movex = 0  # move along X
-                    self.movey = 0  # move along Y
-
-                def move(self):
-                    self.rect.x += 0
-                    self.rect.y += 0
-                    if self.rect.x >= 500:
-                        self.rect.x = 500
-                    if self.rect.x <= 0:
-                        self.rect.x = 0
-                    if self.rect.y >= 500:
-                        self.rect.y = 500
-                    if self.rect.y <= 0:
-                        self.rect.y = 0
-
-                def update(self):
-                    self.rect.x = self.rect.x + self.movex
-                    self.rect.y = self.rect.y + self.movey
-                    self.render()
-                    self.move()
-
-                def attack(self):
-                    self.create_bullet()
-                    self.sec_bullet()
-                    bullets_group.add(yellow_ship.create_bullet())
-                    bullets_group.add(yellow_ship.sec_bullet())
-
-                def control(self, x, y):
-                    self.movex += x
-                    self.movey += y
-
-                def create_bullet(self):
-                    return Enemy_Bullets(self.rect.x, self.rect.y)
-
-                def sec_bullet(self):
-                    return Enemy_Bullets(self.rect.x + 20, self.rect.y)
-
-                def render(self):
-                    battle_screen.blit(self.image, (self.rect.x, self.rect.y))
-
-
-            class Grey_ship(pygame.sprite.Sprite):
-                def __init__(self):
-                    super(Grey_ship, self).__init__()
-                    self.image = pygame.image.load("images/ships/SpaceHero/grey_ship_micro.png")
-                    self.rect = self.image.get_rect()
-                    self.rect.x = 20
-                    self.rect.y = 20
-                    self.movex = 0  # move along X
-                    self.movey = 0  # move along Y
-
-                def move(self):
-                    self.rect.x += random.randint(-3, 3)
-                    self.rect.y += random.randint(-3, 3)
-                    if self.rect.x >= 500:
-                        self.rect.x = 500
-                    if self.rect.x <= 0:
-                        self.rect.x = 0
-                    if self.rect.y >= 500:
-                        self.rect.y = 500
-                    if self.rect.y <= 0:
-                        self.rect.y = 0
-
-                def update(self):
-                    self.rect.x = self.rect.x + self.movex
-                    self.rect.y = self.rect.y + self.movey
-                    self.check_collision()
-                    self.render()
-                    self.move()
-
-                def attack(self):
-                    self.create_bullet()
-                    self.sec_bullet()
-                    bullets_group.add(grey_ship.create_bullet())
-                    bullets_group.add(grey_ship.sec_bullet())
-
-                def control(self, x, y):
-                    self.movex += x
-                    self.movey += y
-
-                def create_bullet(self):
-                    return Enemy_Bullets(self.rect.x, self.rect.y)
-
-                def sec_bullet(self):
-                    return Enemy_Bullets(self.rect.x + 20, self.rect.y)
-
-                def create_clone(self):
-                    return Grey_ship()
-
-                def render(self):
-                    battle_screen.blit(self.image, (self.rect.x, self.rect.y))
-
-                def check_collision(self):
-                    if self.rect.colliderect(bullets):
-                        return self.kill()
-
-
-            drone_pos = []
-            drone_rect = []
-            x = 0
-            y = 0
-            steps = 2
-            purple_ship = Purple_ship()
-            yellow_ship = Yellow_ship()
-            grey_ship = Grey_ship()
-            red_ship = Red_ship()
-            bullets = Bullet(x, y)
-            enemy_bullets = Enemy_Bullets(x, y)
-            battle_sprites = pygame.sprite.Group()
-            battle_sprites.add(red_ship, yellow_ship, purple_ship)
-            draw_group = pygame.sprite.Group()
-            bullets_group = pygame.sprite.Group()
-            bullets_group.add(bullets, enemy_bullets)
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_RETURN:
-                        cl1 = draw_group.add(grey_ship.create_clone())
-                        drone_pos.append(cl1)
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_LEFT:
-                        red_ship.control(-steps, 0)
-                    if event.key == pygame.K_RIGHT:
-                        red_ship.control(steps, 0)
-                    if event.key == pygame.K_UP:
-                        bullets_group.add(red_ship.create_bullet())
-                        bullets_group.add(red_ship.sec_bullet())
-                    if event.key == pygame.K_SPACE:
-                        purple_ship.attack()
-                if event.type == pygame.KEYUP:
-                    if event.key == pygame.K_LEFT:
-                        red_ship.control(steps, 0)
-                    if event.key == pygame.K_RIGHT:
-                        red_ship.control(-steps, 0)
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-            screen.blit(battle_screen, (350, 100))
-            battle_screen.fill(BLACK)
-            bullets_group.draw(battle_screen)
-            battle_sprites.update()
-            draw_group.update()
-            bullets_group.update()
-            pygame.display.update()
+        screen.blit(battle_screen, (350, 100))
+        battle_screen.fill(BLACK)
+        bullets_group.draw(battle_screen)
+        battle_sprites.update()
+        draw_group.update()
+        bullets_group.update()
+        pygame.display.update()
