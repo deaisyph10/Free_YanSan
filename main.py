@@ -102,6 +102,7 @@ class Bullets(pygame.sprite.Sprite):
             self.kill()
         if self.rect_2.x >= screen_width - 100:
             self.kill()
+
         self.checkCollision()
 
 
@@ -369,7 +370,7 @@ class Planet_yellow(pygame.sprite.Sprite):
         self.render()
 
     def render(self):
-       screen.blit(self.image, (self.x, self.y))
+        screen.blit(self.image, (self.x, self.y))
 
 
 class Asteroid(pygame.sprite.Sprite):
@@ -432,12 +433,13 @@ class Asteroid(pygame.sprite.Sprite):
         self.image = self.images[self.index]
 
     def move(self):
-        dist = 3
+        dist = 1
         self.rect.y += int(dist) * 2
-        self.rect.x += int(dist) * 6
+        self.rect.x += int(dist) * 7
 
     def update(self):
         self.spin()
+        self.move()
 
     def spin(self):
         self.index += 1
@@ -449,8 +451,9 @@ class Asteroid(pygame.sprite.Sprite):
             self.rect.y = random.randint(80, 400)
 
 
-x = 3501
+x = 350
 y = 600
+
 asteroid = Asteroid()
 bullet = Bullets(x, y)
 player = Pilot()
@@ -487,14 +490,20 @@ planet_group.add(planet_larger, planet_yellow)
 character_group.add(alien_close_up, alien_full_body)
 asteroid_group.add(asteroid)
 star_list = []
+asteroid_list = []
 all_sprites = pygame.sprite.LayeredUpdates()
 cockpit_group = pygame.sprite.Group()
 cockpit_group.add(cockpit)
 all_sprites.add(player, asteroid, purple_fighter)
 for i in range(7600):
     x = random.randrange(140, 1000)
-    y = random.randrange(140, 360)
+    y = random.randrange(14, 36)
     star_list.append([x, y])
+for a in range(140):
+    Ax = random.randrange(100, 950)
+    Ay = random.randrange(228, 340)
+    asteroid_list.append([Ax, Ay])
+
 game_time = pygame.time.get_ticks()
 interior_layout = pygame.image.load("images/templets/interior_edit_600x450.jpg").convert()
 interior_layout_sur = pygame.Surface((600, 450))
@@ -579,6 +588,17 @@ while True:
     player.y += moveY
     screen.fill(BLACK)
     screen.blit(back_round, (0, 0))
+
+    for a in range(len(asteroid_list)):
+        pygame.draw.circle(screen, GRAY78, asteroid_list[a], 1)
+        asteroid_list[a][1] += 1
+        asteroid_list[a][0] += 5
+        if asteroid_list[a][0] >= 950:
+            Ay = random.randrange(228, 340)
+            asteroid_list[a][1] = Ay
+            Ax = random.randrange(70, 80)
+            asteroid_list[a][0] = Ax
+
     for i in range(len(star_list)):
         pygame.draw.circle(screen, GRAY3, star_list[i], 1)
         star_list[i][1] -= 0
@@ -588,6 +608,7 @@ while True:
             star_list[i][1] = y
             x = random.randrange(68, 1030)
             star_list[i][0] = x
+
     planet_group.update()
     all_sprites.draw(screen)
     bullet_group.draw(screen)
@@ -597,7 +618,6 @@ while True:
     menu_group.update()
     screen.blit(sample_rect_sur, sample_rect)
     sample_rect_sur.fill(MIDNIGHTBLUE)
-    asteroid.move()
     asteroid_group.update()
     all_sprites.update()
     bullet_group.update()
