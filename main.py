@@ -29,7 +29,7 @@ mono_font = pygame.font.SysFont("monospace", 26)
 pygame.mouse.set_visible(True)
 x = 0
 y = 0
-# music.play(10)
+music.play(10)
 sample_rect = pygame.Rect(800, 650, 50, 50)
 sample_rect_sur = pygame.Surface((50, 50))
 hit_sample_rect = pygame.draw.rect(screen, GRAY76, sample_rect)
@@ -682,11 +682,11 @@ class Grey_ship(pygame.sprite.Sprite):
 
 class Start_Up(pygame.sprite.Sprite):
     def __init__(self):
-        super(Start_Up).__init__()
-        self.sur = pygame.Surface((1000, 700))
+        super(Start_Up, self).__init__()
+        self.sur = pygame.Surface((1200, 800))
         self.rect = self.sur.get_rect()
-        self.rect.x = 1000
-        self.rect.y = 700
+        self.rect.x = 1200
+        self.rect.y = 800
 
     def update(self):
         screen.blit(self.sur, (0, 0))
@@ -695,15 +695,15 @@ class Start_Up(pygame.sprite.Sprite):
 
     def text(self):
         font = mono_font
-        surfacefont = font.render("FREE YanSan", True, WHITE)
+        surfacefont = font.render("FREE YanSan", True, MIDNIGHTBLUE)
         surfaceR = surfacefont.get_rect()
         surfaceR.center = (280, 50)
         self.sur.blit(surfacefont, surfaceR)
-        text = font.render("Start game", True, BLACK)
+        text = font.render("Start game", True, MIDNIGHTBLUE)
         textpos = surfacefont.get_rect()
         textpos.center = (280, 200)
         self.sur.blit(text, textpos)
-        font.render("Exit Game", True, BLACK)
+        text = font.render("Exit Game", True, MIDNIGHTBLUE)
         surfacefont.get_rect()
         textpos.center = (280, 260)
         self.sur.blit(surfacefont, surfaceR)
@@ -715,22 +715,26 @@ class Start_Up(pygame.sprite.Sprite):
         pos = pygame.mouse.get_pos()
 
         if 390 > pos[0] > 175 and 230 > pos[1] > 180:
-            pygame.draw.rect(screen, SLATEGRAY3, (180, 175, 180, 50))
+            pygame.draw.rect(self.sur, SLATEGRAY3, (180, 175, 180, 50))
             if click[0] == 1:
-                self.RunGame()
+                self.kill()
             else:
-                pygame.draw.rect(screen, WHITE, (180, 175, 180, 50))
-
+                pygame.draw.rect(self.sur, BLACK, (180, 175, 180, 50))
         if 390 > pos[0] > 220 and 275 > pos[1] > 230:
-            pygame.draw.rect(screen, SLATEGRAY3, (180, 230, 180, 50))
+            pygame.draw.rect(self.sur, SLATEGRAY3, (180, 230, 180, 50))
             if click[0] == 1:
                 pygame.quit()
                 sys.exit()
             else:
-                pygame.draw.rect(screen, WHITE, (180, 230, 180, 50))
+                pygame.draw.rect(self.sur, BLACK, (180, 230, 180, 50))
 
     def RunGame(self):
-        screen.fill(BLACK)
+        self.sur.fill(BLACK)
+
+
+start_group = pygame.sprite.Group()
+start_up = Start_Up()
+start_group.add(start_up)
 
 x = 350
 y = 600
@@ -907,14 +911,66 @@ while True:
         screen.blit(net_menu_sprite.dream_logo, (700, 100))
     if radar_screen_value is True:
         screen.blit(radar_screen, radar_screen_rect)
+    start_group.update()
     pygame.display.update()
     clock.tick(FPS)
 
     if battle is True:
         screen.blit(battle_screen, (280, 280))
         battle_screen.fill(BLACK)
+        battle_screen.blit(back_round, (0, 0))
+        back_round.fill(BLACK)
         bullets_group.draw(battle_screen)
         battle_sprites.update()
+        cockpit_group.update()
+        character_group.update()
+        menu_group.update()
         draw_group.update()
         bullets_group.update()
+        for a in range(len(asteroid_list)):
+            pygame.draw.circle(screen, GRAY78, asteroid_list[a], 1)
+            asteroid_list[a][1] += 1
+            asteroid_list[a][0] += 8
+            if asteroid_list[a][0] >= 950:
+                Ay = random.randrange(228, 340)
+                asteroid_list[a][1] = Ay
+                Ax = random.randrange(40, 50)
+                asteroid_list[a][0] = Ax
+
+        for i in range(len(star_list)):
+            pygame.draw.circle(screen, GRAY3, star_list[i], 1)
+            star_list[i][1] -= 0
+            star_list[i][0] += 0
+            if star_list[i][0] > 10:
+                y = random.randrange(68, 510)
+                star_list[i][1] = y
+                x = random.randrange(68, 1030)
+                star_list[i][0] = x
+
+        planet_group.update()
+        all_sprites.draw(screen)
+        bullet_group.draw(screen)
+        all_sprites.update()
+        cockpit_group.update()
+        character_group.update()
+        menu_group.update()
+        screen.blit(sample_rect_sur, sample_rect)
+        sample_rect_sur.fill(MIDNIGHTBLUE)
+        asteroid_group.update()
+        all_sprites.update()
+        bullet_group.update()
+
+        if net_menu_window is True:
+            screen.blit(net_menu_sprite.sur, (100, 100))
+            screen.blit(net_menu_sprite.dream_logo, (700, 100))
+            screen.blit(net_menu_sprite.dream_title, (150, 150))
+
+        if interior_window is True:
+            screen.blit(int_window, int_window_rect)
+            screen.blit(net_menu_sprite.dream_logo, (700, 100))
+        if radar_screen_value is True:
+            screen.blit(radar_screen, radar_screen_rect)
+        pygame.display.update()
+        clock.tick(FPS)
+
         pygame.display.update()
