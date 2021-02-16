@@ -25,7 +25,8 @@ LLC_icon = pygame.image.load("images/templets/Dream_green_title.png")
 LLC_icon_micro = pygame.transform.scale(LLC_icon, (200, 40))
 game_font = pygame.font.Font("freesansbold.ttf", 42)
 game_font_2 = pygame.font.Font("freesansbold.ttf", 10)
-pygame.mouse.set_visible(False)
+mono_font = pygame.font.SysFont("monospace", 26)
+pygame.mouse.set_visible(True)
 x = 0
 y = 0
 # music.play(10)
@@ -564,7 +565,7 @@ class Enemy_Bullets(pygame.sprite.Sprite):
             self.rect = self.image.get_rect(topleft=(x, y))
 
         def update(self):
-            self.rect.y += 1
+            self.rect.y += 5
             self.image = self.image
             if self.rect.y >= 500:
                 self.kill()
@@ -640,8 +641,8 @@ class Grey_ship(pygame.sprite.Sprite):
                 self.rect.x = 500
             if self.rect.x <= 0:
                 self.rect.x = 0
-            if self.rect.y >= 500:
-                self.rect.y = 500
+            if self.rect.y >= 200:
+                self.rect.y = 200
             if self.rect.y <= 0:
                 self.rect.y = 0
 
@@ -678,6 +679,58 @@ class Grey_ship(pygame.sprite.Sprite):
             if self.rect.colliderect(bullets):
                 return self.kill()
 
+
+class Start_Up(pygame.sprite.Sprite):
+    def __init__(self):
+        super(Start_Up).__init__()
+        self.sur = pygame.Surface((1000, 700))
+        self.rect = self.sur.get_rect()
+        self.rect.x = 1000
+        self.rect.y = 700
+
+    def update(self):
+        screen.blit(self.sur, (0, 0))
+        self.button()
+        self.text()
+
+    def text(self):
+        font = mono_font
+        surfacefont = font.render("FREE YanSan", True, WHITE)
+        surfaceR = surfacefont.get_rect()
+        surfaceR.center = (280, 50)
+        self.sur.blit(surfacefont, surfaceR)
+        text = font.render("Start game", True, BLACK)
+        textpos = surfacefont.get_rect()
+        textpos.center = (280, 200)
+        self.sur.blit(text, textpos)
+        font.render("Exit Game", True, BLACK)
+        surfacefont.get_rect()
+        textpos.center = (280, 260)
+        self.sur.blit(surfacefont, surfaceR)
+        self.sur.blit(text, textpos)
+        pygame.display.update()
+
+    def button(self):
+        click = pygame.mouse.get_pressed()
+        pos = pygame.mouse.get_pos()
+
+        if 390 > pos[0] > 175 and 230 > pos[1] > 180:
+            pygame.draw.rect(screen, SLATEGRAY3, (180, 175, 180, 50))
+            if click[0] == 1:
+                self.RunGame()
+            else:
+                pygame.draw.rect(screen, WHITE, (180, 175, 180, 50))
+
+        if 390 > pos[0] > 220 and 275 > pos[1] > 230:
+            pygame.draw.rect(screen, SLATEGRAY3, (180, 230, 180, 50))
+            if click[0] == 1:
+                pygame.quit()
+                sys.exit()
+            else:
+                pygame.draw.rect(screen, WHITE, (180, 230, 180, 50))
+
+    def RunGame(self):
+        screen.fill(BLACK)
 
 x = 350
 y = 600
@@ -748,8 +801,8 @@ interior_layout_sur = pygame.Surface((600, 450))
 int_window_rect = pygame.Rect(250, 120, 610, 460)
 int_window = pygame.Surface((610, 460))
 
-battle_screen_width = 400
-battle_screen_height = 400
+battle_screen_width = 495
+battle_screen_height = 170
 battle_screen = pygame.Surface((battle_screen_width, battle_screen_height))
 battle = False
 net_menu_window = False
@@ -811,7 +864,6 @@ while True:
     player.y += moveY
     screen.fill(BLACK)
     screen.blit(back_round, (0, 0))
-
     for a in range(len(asteroid_list)):
         pygame.draw.circle(screen, GRAY78, asteroid_list[a], 1)
         asteroid_list[a][1] += 1
@@ -857,8 +909,9 @@ while True:
         screen.blit(radar_screen, radar_screen_rect)
     pygame.display.update()
     clock.tick(FPS)
+
     if battle is True:
-        screen.blit(battle_screen, (350, 100))
+        screen.blit(battle_screen, (280, 280))
         battle_screen.fill(BLACK)
         bullets_group.draw(battle_screen)
         battle_sprites.update()
