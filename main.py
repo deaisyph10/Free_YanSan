@@ -36,22 +36,21 @@ hit_sample_rect = pygame.draw.rect(screen, GRAY76, sample_rect)
 hit_sur = pygame.Surface((50, 50))
 drone_pos = []
 drone_rect = []
-x = 0
-y = 0
 steps = 6
 motionX = 2
 motionY = 1
+points = 0
+
 
 class Pilot(pygame.sprite.Sprite):
     def __init__(self):
         super(Pilot, self).__init__()
-        self.x = x
-        self.y = y
+        self.x = pygame.mouse.get_pos()[0]
+        self.y = pygame.mouse.get_pos()[1]
         self.image = pygame.image.load("images/templets/crosshairs_blue.png")
-        self.rect = self.image.get_rect()
+        self.rect = self.image.get_rect(center=(self.x, self.y))
 
     def update(self):
-        self.rect = pygame.mouse.get_pos()
         self.render()
 
     def create_bullet(self):
@@ -61,7 +60,7 @@ class Pilot(pygame.sprite.Sprite):
         return Bullets(pygame.mouse.get_pos()[0]+ 10, pygame.mouse.get_pos()[1]+ 10)
 
     def render(self):
-        screen.blit(self.image, (self.x, self.y))
+        screen.blit(self.image, (pygame.mouse.get_pos()[0] - 40, pygame.mouse.get_pos()[1] - 10))
 
 
 class Bullets(pygame.sprite.Sprite):
@@ -69,16 +68,18 @@ class Bullets(pygame.sprite.Sprite):
         super().__init__()
         self.x = pygame.mouse.get_pos()[0]
         self.y = pygame.mouse.get_pos()[1]
-        self.image = pygame.Surface((12, 3))
-        self.im1 = pygame.Surface((12, 3))
+        self.image = pygame.Surface((2, 5))
+        self.im1 = pygame.Surface((2, 5))
         # self.image.fill(white)
         self.im1.fill(WHITE)
         self.rect = self.image.get_rect(center=(int(x), int(y)))
         self.rect_2 = self.image.get_rect(center=(int(x), int(y)))
 
     def checkCollision(self):
+        points = 0
         if self.rect.colliderect(asteroid):
             laser.play()
+            points == 1
             self.kill()
             screen.blit(hit_sur, hit_sample_rect)
             asteroid.rect.y = random.randint(80, 250)
@@ -105,7 +106,7 @@ class Cockpit(pygame.sprite.Sprite):
         self.image = pygame.image.load("images/templets/Cockpit_Spaceship.png")
         self.rect = self.image.get_rect()
         self.x = 0
-        self.y = 90
+        self.y = 50
 
     def update(self):
         self.move()
@@ -119,7 +120,7 @@ class Cockpit(pygame.sprite.Sprite):
              self.x = motionX * -1
         if self.y >= 1:
              self.y = motionY * -1
-        self.y = 90
+        self.y = 50
         self.y += motionY
         self.x += motionX
 
@@ -214,7 +215,7 @@ class YainSan_Window(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.x = 5
-        self.y = 400
+        self.y = 560
         self.sur = pygame.Surface(((cell_pxl_size * 3), int(cell_pxl_size * 3)))
         self.rect = self.sur.get_rect()
         self.sur.fill(GRAY7)
@@ -257,7 +258,7 @@ class Bottom_mid_textbox(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.x = 330
-        self.y = 620
+        self.y = 560
         self.rect = pygame.Rect(self.x, self.y, (cell_pxl_size * 3) - 2, int(cell_pxl_size))
         self.white_border = pygame.Rect(self.x - 1, self.y - 1, (cell_pxl_size * 3), int(cell_pxl_size) + 2)
 
@@ -273,7 +274,8 @@ class Photon_Charger_Window(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.x = 550
-        self.y = 620
+        self.y = 560
+        self.image = pygame.image.load("images/planets/blue_bolt.png")
         self.title_text = str("PHOTON CHARGER")
         self.rect = pygame.Rect(self.x, self.y, (cell_pxl_size * 2), int(cell_pxl_size))
         self.white_border = pygame.Rect(self.x - 1, self.y - 1, (cell_pxl_size * 2) + 2, int(cell_pxl_size) + 2)
@@ -289,8 +291,9 @@ class Photon_Charger_Window(pygame.sprite.Sprite):
         pygame.draw.rect(screen, GRAY7, self.white_border)
         pygame.draw.rect(screen, BLACK, self.rect)
         screen.blit(self.charger_box, (self.x, self.y))
-        self.charger_box.fill(GRAY7)
+        self.charger_box.fill(BLACK)
         self.charger_box.blit(self.charger_label, (5, 10))
+        self.charger_box.blit(self.image, (0, 20))
 
 
 class Message_textbox(pygame.sprite.Sprite):
@@ -304,16 +307,25 @@ class Message_textbox(pygame.sprite.Sprite):
     def update(self):
         self.render()
 
+    def score(self):
+        score_text = str(points)
+        score_surface = game_font.render(score_text, True, WHITE)
+        score_x = 800
+        score_y = 640
+        score_rect = score_surface.get_rect(center=(score_x, score_y))
+        screen.blit(score_surface, score_rect)
+
     def render(self):
         pygame.draw.rect(screen, GRAY7, self.white_border)
         pygame.draw.rect(screen, BLACK, self.rect)
+        self.score()
 
 
 class Main_radar_textbox(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.x = 880
-        self.y = 620
+        self.y = 560
         self.rect = pygame.Rect(self.x, self.y, 200, 200 - 1)
         self.white_border = pygame.Rect(self.x - 1, self.y - 1, 200 + 2, 200 + 1)
 
@@ -722,12 +734,12 @@ class Grey_ship(pygame.sprite.Sprite):
 class Start_Up(pygame.sprite.Sprite):
     def __init__(self):
         super(Start_Up, self).__init__()
-        self.image = pygame.image.load("opening_backround.png")
+        self.image = pygame.image.load("images/templets/cockpit.blue.jpg")
         self.sur = pygame.Surface((1200, 800))
         self.rect = self.sur.get_rect()
         self.rect.x = 1200
         self.rect.y = 800
-        self.sur.blit(self.image, (250, 0))
+        self.sur.blit(self.image, (160, 0))
 
     def update(self):
         screen.blit(self.sur, (0, 0))
@@ -761,6 +773,7 @@ class Start_Up(pygame.sprite.Sprite):
             pygame.draw.rect(self.sur, SLATEGRAY3, (80, 175, 160, 50))
             if click[0] == 1:
                 self.kill()
+                pygame.mouse.set_visible(False)
             else:
                 pygame.draw.rect(self.sur, BLACK, (80, 175, 160, 50))
         if 180 > pos[0] > 10 and 275 > pos[1] > 230:
@@ -785,13 +798,14 @@ class Main:
         screen.blit(back_round, (0, 0))
         self.statments()
         bullet_group.draw(screen)
-        screen.blit(sample_rect_sur, sample_rect)
-        sample_rect_sur.fill(MIDNIGHTBLUE)
         planet_group.update()
         asteroid_group.update()
         all_sprites.update()
         character_group.update()
         menu_group.update()
+        screen.blit(sample_rect_sur, sample_rect)
+        sample_rect_sur.fill(MIDNIGHTBLUE)
+
         bullet_group.update()
         start_group.update()
         if battle is True:
