@@ -8,7 +8,7 @@ cell_pxl_size = 70
 cell_count = 10
 screen_width = 1200
 screen_height = 700
-FPS = 160
+FPS = 60
 moveX, moveY = 0, 0
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("FREE_YanSan")
@@ -30,7 +30,7 @@ pygame.mouse.set_visible(True)
 x = 0
 y = 0
 # music.play(10)
-sample_rect = pygame.Rect(800, 650, 50, 50)
+sample_rect = pygame.Rect(15, 460, 50, 50)
 sample_rect_sur = pygame.Surface((50, 50))
 hit_sample_rect = pygame.draw.rect(screen, GRAY76, sample_rect)
 hit_sur = pygame.Surface((50, 50))
@@ -39,8 +39,7 @@ drone_rect = []
 steps = 6
 motionX = 2
 motionY = 1
-points = 0
-
+points = 12
 
 class Pilot(pygame.sprite.Sprite):
     def __init__(self):
@@ -160,7 +159,7 @@ class Title_text(pygame.sprite.Sprite):
         super().__init__()
         self.x = 280
         self.y = 4
-        self.title_text = str("----FREE-------(Y//:AinSan)----")
+        self.title_text = str("----FREE-------(Y//:YanSan)----")
         self.title_surface = mono_font.render(self.title_text, True, WHITE)
         self.image = self.title_surface
         self.rect = self.image.get_rect()
@@ -211,11 +210,30 @@ class Header(pygame.sprite.Sprite):
         screen.blit(self.LLC_icon, (60, 10))
 
 
+class LeftToolbar(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.x = 0
+        self.y = 50
+        self.sur = pygame.Surface((200, 400))
+        self.rect = self.sur.get_rect()
+        self.sur.fill(GRAY7)
+        self.white_border = pygame.Rect(self.x, self.y, 202, 402)
+
+    def update(self):
+        self.render()
+
+    def render(self):
+        pygame.draw.rect(screen, WHITE, self.white_border)
+        screen.blit(self.sur, (self.x, self.y))
+        self.sur.fill(GRAY7)
+
+
 class YanSan_Window(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.x = 998
-        self.y = 10
+        self.y = 50
         self.sur = pygame.Surface((200, 400))
         self.rect = self.sur.get_rect()
         self.sur.fill(GRAY7)
@@ -264,11 +282,36 @@ class YanSan_Window(pygame.sprite.Sprite):
         self.sur.fill(GRAY7)
 
 
-class Ship_equipt_box(pygame.sprite.Sprite):
+class Menu_Box1(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.x = 330
-        self.y = 560
+        self.x = 0
+        self.y = 450
+        self.rect = pygame.Rect(self.x, self.y, 200, 200)
+        self.white_border = pygame.Rect(self.x - 1, self.y - 1, 202, 202)
+
+    def score(self):
+        score_text = str(points)
+        score_surface = game_font.render(score_text, True, WHITE)
+        score_x = 60
+        score_y = 100
+        score_rect = score_surface.get_rect(center=(score_x, score_y))
+        screen.blit(score_surface, score_rect)
+
+    def update(self):
+        self.render()
+
+    def render(self):
+        pygame.draw.rect(screen, GRAY7, self.white_border)
+        pygame.draw.rect(screen, BLACK, self.rect)
+        self.score()
+
+
+class Menu_box2(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.x = 1000
+        self.y = 450
         self.rect = pygame.Rect(self.x, self.y, 200, 200)
         self.white_border = pygame.Rect(self.x -1, self.y -1, 202, 202)
 
@@ -280,69 +323,157 @@ class Ship_equipt_box(pygame.sprite.Sprite):
         pygame.draw.rect(screen, BLACK, self.rect)
 
 
+class Main_Menu(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.x = 200
+        self.y = 200
+        self.rectX = 200
+        self.rectY = 200
+        self.rect = pygame.Rect(self.x, self.y, self.rectX, self.rectY)
+        self.Wrect = pygame.Rect(self.x - 1, self.y - 1, self.rectX - 2, self.rect.y - 2)
+
+    def update(self):
+        self.render()
+        self.copy1(200, 50)
+        self.copy2(400, 50)
+        self.copy3(600, 50)
+        self.copy4(800, 50)
+        self.copy5(200, 250)
+        self.copy6(400, 250)
+        self.copy7(600, 250)
+        self.copy8(800, 250)
+        self.copy9(200, 450)
+        self.copy10(400, 450)
+        self.copy11(600, 450)
+        self.copy12(800, 450)
+
+    def copy1(self, copyX, copyY):
+        self.rectX = copyX
+        self.rectY = copyY
+        self.rect1 = pygame.Rect(copyX, copyY, self.x, self.y)
+        self.Wrect1 = pygame.Rect(copyX - 2, copyY - 2, self.x - 1, self.y - 1)
+        pygame.draw.rect(screen, GRAY7, self.Wrect1)
+        pygame.draw.rect(screen, BLACK, self.rect1)
+
+    def copy2(self, copyX, copyY):
+        self.rectX = copyX
+        self.rectY = copyY
+        self.rect2 = pygame.Rect(copyX, copyY, self.x, self.y)
+        self.Wrect2 = pygame.Rect(copyX - 2, copyY - 2, self.x - 1, self.y - 1)
+        pygame.draw.rect(screen, GRAY7, self.Wrect2)
+        pygame.draw.rect(screen, BLACK, self.rect2)
+
+    def copy3(self, copyX, copyY):
+        self.rectX = copyX
+        self.rectY = copyY
+        self.rect3 = pygame.Rect(copyX, copyY, self.x, self.y)
+        self.Wrect3 = pygame.Rect(copyX - 2, copyY - 2, self.x - 1, self.y - 1)
+        pygame.draw.rect(screen, GRAY7, self.Wrect3)
+        pygame.draw.rect(screen, BLACK, self.rect3)
+
+    def copy4(self, copyX, copyY):
+        self.rectX = copyX
+        self.rectY = copyY
+        self.rect4 = pygame.Rect(copyX, copyY, self.x, self.y)
+        self.Wrect4 = pygame.Rect(copyX - 2, copyY - 2, self.x - 1, self.y - 1)
+        pygame.draw.rect(screen, GRAY7, self.Wrect4)
+        pygame.draw.rect(screen, BLACK, self.rect4)
+
+    def copy5(self, copyX, copyY):
+        self.rectX = copyX
+        self.rectY = copyY
+        self.rect5 = pygame.Rect(copyX, copyY, self.x, self.y)
+        self.Wrect5 = pygame.Rect(copyX - 2, copyY - 2, self.x - 1, self.y - 1)
+        pygame.draw.rect(screen, GRAY7, self.Wrect5)
+        pygame.draw.rect(screen, BLACK, self.rect5)
+
+    def copy6(self, copyX, copyY):
+        self.rectX = copyX
+        self.rectY = copyY
+        self.rect6 = pygame.Rect(copyX, copyY, self.x, self.y)
+        self.Wrect6 = pygame.Rect(copyX - 2, copyY - 2, self.x - 1, self.y - 1)
+        pygame.draw.rect(screen, GRAY7, self.Wrect6)
+        pygame.draw.rect(screen, BLACK, self.rect6)
+
+    def copy7(self, copyX, copyY):
+        self.rectX = copyX
+        self.rectY = copyY
+        self.rect7 = pygame.Rect(copyX, copyY, self.x, self.y)
+        self.Wrect7 = pygame.Rect(copyX - 2, copyY - 2, self.x - 1, self.y - 1)
+        pygame.draw.rect(screen, GRAY7, self.Wrect7)
+        pygame.draw.rect(screen, BLACK, self.rect7)
+
+    def copy8(self, copyX, copyY):
+        self.rectX = copyX
+        self.rectY = copyY
+        self.rect8 = pygame.Rect(copyX, copyY, self.x, self.y)
+        self.Wrect8 = pygame.Rect(copyX - 2, copyY - 2, self.x - 1, self.y - 1)
+        pygame.draw.rect(screen, GRAY7, self.Wrect8)
+        pygame.draw.rect(screen, BLACK, self.rect8)
+
+    def copy9(self, copyX, copyY):
+        self.rectX = copyX
+        self.rectY = copyY
+        self.rect9 = pygame.Rect(copyX, copyY, self.x, self.y)
+        self.Wrect9 = pygame.Rect(copyX - 2, copyY - 2, self.x - 1, self.y - 1)
+        pygame.draw.rect(screen, GRAY7, self.Wrect9)
+        pygame.draw.rect(screen, BLACK, self.rect9)
+
+    def copy10(self, copyX, copyY):
+        self.rectX = copyX
+        self.rectY = copyY
+        self.rect10 = pygame.Rect(copyX, copyY, self.x, self.y)
+        self.Wrect10 = pygame.Rect(copyX - 2, copyY - 2, self.x - 1, self.y - 1)
+        pygame.draw.rect(screen, GRAY7, self.Wrect10)
+        pygame.draw.rect(screen, BLACK, self.rect10)
+
+    def copy11(self, copyX, copyY):
+        self.rectX = copyX
+        self.rectY = copyY
+        self.rect11 = pygame.Rect(copyX, copyY, self.x, self.y)
+        self.Wrect11 = pygame.Rect(copyX - 2, copyY - 2, self.x - 1, self.y - 1)
+        pygame.draw.rect(screen, GRAY7, self.Wrect11)
+        pygame.draw.rect(screen, BLACK, self.rect11)
+
+    def copy12(self, copyX, copyY):
+        self.rectX = copyX
+        self.rectY = copyY
+        self.rect12 = pygame.Rect(copyX, copyY, self.x, self.y)
+        self.Wrect12 = pygame.Rect(copyX - 2, copyY - 2, self.x - 1, self.y - 1)
+        pygame.draw.rect(screen, GRAY7, self.Wrect12)
+        pygame.draw.rect(screen, BLACK, self.rect12)
+
+
+    def render(self):
+        pygame.draw.rect(screen, GRAY7, self.Wrect)
+        pygame.draw.rect(screen, BLACK, self.rect)
+
+
 class Photon_Charger_Window(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.x = 550
-        self.y = 560
+        self.x = 0
+        self.y = 450
         self.image = pygame.image.load("images/planets/blue_bolt.png")
         self.title_text = str("PHOTON CHARGER")
-        self.rect = pygame.Rect(self.x, self.y, 200, 150)
-        self.white_border = pygame.Surface((202, 152))
-        self.white_border_rect = pygame.Rect(self.x - 1, self.y - 1, 202, 152)
+        self.rect = pygame.Rect(self.x, self.y, 150, 150)
+        self.white_border = pygame.Surface((152, 152))
+        self.white_border_rect = self.white_border.get_rect()
         self.charger_label = game_font_2.render(self.title_text, True, GRAY76)
-        self.charger_box = pygame.Surface((200, 200))
+        self.charger_box = pygame.Surface((150, 150))
+        self.charger_box_rect = self.charger_box.get_rect()
 
     def update(self):
         self.render()
 
     def render(self):
-        screen.blit(self.white_border, self.white_border_rect)
+        screen.blit(self.white_border, (self.x, self.y))
+        self.white_border.fill(WHITE)
         screen.blit(self.charger_box, (self.x, self.y))
         self.charger_box.fill(BLACK)
-        self.charger_box.blit(self.charger_label, (0, 10))
-        self.charger_box.blit(self.image, (0, 0))
-
-
-class Message_textbox(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
-        self.x = 780
-        self.y = 620
-        self.rect = pygame.Rect(self.x, self.y, 200, 300 - 1)
-        self.white_border = pygame.Rect(self.x - 1, self.y - 1, 200 + 2, 300 + 1)
-
-    def update(self):
-        self.render()
-
-    def score(self):
-        score_text = str(points)
-        score_surface = game_font.render(score_text, True, WHITE)
-        score_x = 800
-        score_y = 640
-        score_rect = score_surface.get_rect(center=(score_x, score_y))
-        screen.blit(score_surface, score_rect)
-
-    def render(self):
-        pygame.draw.rect(screen, GRAY7, self.white_border)
-        pygame.draw.rect(screen, BLACK, self.rect)
-        self.score()
-
-
-class Main_radar_textbox(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
-        self.x = 950
-        self.y = 460
-        self.rect = pygame.Rect(self.x, self.y, 200, 200)
-        self.white_border = pygame.Rect(self.x - 1, self.y - 1, 202, 202)
-
-    def update(self):
-        self.render()
-
-    def render(self):
-        pygame.draw.rect(screen, GRAY7, self.white_border)
-        pygame.draw.rect(screen, BLACK, self.rect)
+        self.charger_box.blit(self.image, self.rect)
+        self.charger_box.blit(self.charger_label, (0, 120))
 
 
 class Alien_right(pygame.sprite.Sprite):
@@ -883,8 +1014,9 @@ class Main:
 start_group = pygame.sprite.Group()
 start_up = Start_Up()
 start_group.add(start_up)
-x = 350
-y = 600
+x = 1010
+y = 520
+LeftToolbar = LeftToolbar()
 purple_ship = Purple_ship()
 yellow_ship = Yellow_ship()
 grey_ship = Grey_ship()
@@ -902,10 +1034,10 @@ player = Pilot()
 header = Header()
 cockpit = Cockpit()
 YanSan_window = YanSan_Window()
-Ship_equipt_box = Ship_equipt_box()
+Menu_box2 = Menu_box2()
 photon_charger_window = Photon_Charger_Window()
-message_textbox = Message_textbox()
-main_radar_textbox = Main_radar_textbox()
+Main_Menu = Main_Menu()
+Menu_Box1 = Menu_Box1()
 alien_left = Alien_left()
 alien_right = Alien_right()
 planet_larger = Planet_larger()
@@ -926,8 +1058,8 @@ asteroid_group = pygame.sprite.Group()
 net_menu = pygame.sprite.Group()
 net_menu_sprite = Network_Map_Window()
 net_menu.add(net_menu_sprite)
-menu_group.add(header, game_title, message_textbox, main_radar_textbox)
-menu_group.add(Ship_equipt_box, photon_charger_window, YanSan_window, purple_fighter)
+menu_group.add(header, game_title, Main_Menu, Menu_Box1)
+menu_group.add(Menu_box2, photon_charger_window, YanSan_window, purple_fighter, LeftToolbar)
 planet_group.add(planet_larger, planet_yellow)
 character_group.add(alien_left, alien_right)
 asteroid_group.add(asteroid)
