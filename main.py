@@ -30,7 +30,7 @@ pygame.mouse.set_visible(True)
 x = 0
 y = 0
 # music.play(10)
-sample_rect = pygame.Rect(800, 650, 50, 50)
+sample_rect = pygame.Rect(80, 120, 50, 50)
 sample_rect_sur = pygame.Surface((50, 50))
 hit_sample_rect = pygame.draw.rect(screen, GRAY76, sample_rect)
 hit_sur = pygame.Surface((50, 50))
@@ -39,8 +39,7 @@ drone_rect = []
 steps = 6
 motionX = 2
 motionY = 1
-points = 0
-
+points = 12
 
 class Pilot(pygame.sprite.Sprite):
     def __init__(self):
@@ -264,11 +263,36 @@ class YanSan_Window(pygame.sprite.Sprite):
         self.sur.fill(GRAY7)
 
 
-class Ship_equipt_box(pygame.sprite.Sprite):
+class Menu_Box1(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.x = 330
-        self.y = 560
+        self.x = 10
+        self.y = 60
+        self.rect = pygame.Rect(self.x, self.y, 200, 200)
+        self.white_border = pygame.Rect(self.x - 1, self.y - 1, 202, 202)
+
+    def score(self):
+        score_text = str(points)
+        score_surface = game_font.render(score_text, True, WHITE)
+        score_x = 60
+        score_y = 100
+        score_rect = score_surface.get_rect(center=(score_x, score_y))
+        screen.blit(score_surface, score_rect)
+
+    def update(self):
+        self.render()
+
+    def render(self):
+        pygame.draw.rect(screen, GRAY7, self.white_border)
+        pygame.draw.rect(screen, BLACK, self.rect)
+        self.score()
+
+
+class Menu_box2(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.x = 1000
+        self.y = 420
         self.rect = pygame.Rect(self.x, self.y, 200, 200)
         self.white_border = pygame.Rect(self.x -1, self.y -1, 202, 202)
 
@@ -280,69 +304,47 @@ class Ship_equipt_box(pygame.sprite.Sprite):
         pygame.draw.rect(screen, BLACK, self.rect)
 
 
+class Main_Menu(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.x = 410
+        self.y = 60
+        self.rect = pygame.Rect(self.x, self.y, 200, 200 - 1)
+        self.white_border = pygame.Rect(self.x - 1, self.y - 1, 200 + 2, 200 + 1)
+
+    def update(self):
+        self.render()
+
+
+    def render(self):
+        pygame.draw.rect(screen, GRAY7, self.white_border)
+        pygame.draw.rect(screen, BLACK, self.rect)
+
+
 class Photon_Charger_Window(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.x = 550
-        self.y = 560
+        self.x = 50
+        self.y = 60
         self.image = pygame.image.load("images/planets/blue_bolt.png")
         self.title_text = str("PHOTON CHARGER")
-        self.rect = pygame.Rect(self.x, self.y, 200, 150)
-        self.white_border = pygame.Surface((202, 152))
-        self.white_border_rect = pygame.Rect(self.x - 1, self.y - 1, 202, 152)
+        self.rect = pygame.Rect(self.x, self.y, 150, 150)
+        self.white_border = pygame.Surface((152, 152))
+        self.white_border_rect = self.white_border.get_rect()
         self.charger_label = game_font_2.render(self.title_text, True, GRAY76)
-        self.charger_box = pygame.Surface((200, 200))
+        self.charger_box = pygame.Surface((150, 150))
+        self.charger_box_rect = self.charger_box.get_rect()
 
     def update(self):
         self.render()
 
     def render(self):
-        screen.blit(self.white_border, self.white_border_rect)
+        screen.blit(self.white_border, (self.x, self.y))
+        self.white_border.fill(WHITE)
         screen.blit(self.charger_box, (self.x, self.y))
         self.charger_box.fill(BLACK)
-        self.charger_box.blit(self.charger_label, (0, 10))
-        self.charger_box.blit(self.image, (0, 0))
-
-
-class Message_textbox(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
-        self.x = 780
-        self.y = 620
-        self.rect = pygame.Rect(self.x, self.y, 200, 300 - 1)
-        self.white_border = pygame.Rect(self.x - 1, self.y - 1, 200 + 2, 300 + 1)
-
-    def update(self):
-        self.render()
-
-    def score(self):
-        score_text = str(points)
-        score_surface = game_font.render(score_text, True, WHITE)
-        score_x = 800
-        score_y = 640
-        score_rect = score_surface.get_rect(center=(score_x, score_y))
-        screen.blit(score_surface, score_rect)
-
-    def render(self):
-        pygame.draw.rect(screen, GRAY7, self.white_border)
-        pygame.draw.rect(screen, BLACK, self.rect)
-        self.score()
-
-
-class Main_radar_textbox(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
-        self.x = 950
-        self.y = 460
-        self.rect = pygame.Rect(self.x, self.y, 200, 200)
-        self.white_border = pygame.Rect(self.x - 1, self.y - 1, 202, 202)
-
-    def update(self):
-        self.render()
-
-    def render(self):
-        pygame.draw.rect(screen, GRAY7, self.white_border)
-        pygame.draw.rect(screen, BLACK, self.rect)
+        self.charger_box.blit(self.image, self.rect)
+        self.charger_box.blit(self.charger_label, (20, 120))
 
 
 class Alien_right(pygame.sprite.Sprite):
@@ -883,8 +885,8 @@ class Main:
 start_group = pygame.sprite.Group()
 start_up = Start_Up()
 start_group.add(start_up)
-x = 350
-y = 600
+x = 1010
+y = 470
 purple_ship = Purple_ship()
 yellow_ship = Yellow_ship()
 grey_ship = Grey_ship()
@@ -902,10 +904,10 @@ player = Pilot()
 header = Header()
 cockpit = Cockpit()
 YanSan_window = YanSan_Window()
-Ship_equipt_box = Ship_equipt_box()
+Menu_box2 = Menu_box2()
 photon_charger_window = Photon_Charger_Window()
-message_textbox = Message_textbox()
-main_radar_textbox = Main_radar_textbox()
+Main_Menu = Main_Menu()
+Menu_Box1 = Menu_Box1()
 alien_left = Alien_left()
 alien_right = Alien_right()
 planet_larger = Planet_larger()
@@ -926,8 +928,8 @@ asteroid_group = pygame.sprite.Group()
 net_menu = pygame.sprite.Group()
 net_menu_sprite = Network_Map_Window()
 net_menu.add(net_menu_sprite)
-menu_group.add(header, game_title, message_textbox, main_radar_textbox)
-menu_group.add(Ship_equipt_box, photon_charger_window, YanSan_window, purple_fighter)
+menu_group.add(header, game_title, Main_Menu, Menu_Box1)
+menu_group.add(Menu_box2, photon_charger_window, YanSan_window, purple_fighter)
 planet_group.add(planet_larger, planet_yellow)
 character_group.add(alien_left, alien_right)
 asteroid_group.add(asteroid)
