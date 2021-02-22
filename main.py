@@ -2,14 +2,13 @@ import pygame
 import random
 import sys
 from Colors import *
-from PIL import Image
 pygame.init()
 pygame.font.init()
 cell_pxl_size = 70
 cell_count = 10
 screen_width = 1200
 screen_height = 700
-FPS = 70
+FPS = 60
 moveX, moveY = 0, 0
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("FREE_YanSan")
@@ -31,7 +30,11 @@ pygame.mouse.set_visible(True)
 x = 0
 y = 0
 # music.play(10)
+<<<<<<<<< Temporary merge branch 1
+sample_rect = pygame.Rect(80, 120, 50, 50)
+=========
 sample_rect = pygame.Rect(15, 460, 50, 50)
+>>>>>>>>> Temporary merge branch 2
 sample_rect_sur = pygame.Surface((50, 50))
 hit_sample_rect = pygame.draw.rect(screen, GRAY76, sample_rect)
 hit_sur = pygame.Surface((50, 50))
@@ -41,11 +44,6 @@ steps = 6
 motionX = 2
 motionY = 1
 points = 12
-im = Image.open("images/ships/10.png")
-angle = 235
-out = im.rotate(angle)
-out.save('images/ships/10_1.png')
-num = []
 
 class Pilot(pygame.sprite.Sprite):
     def __init__(self):
@@ -81,18 +79,14 @@ class Bullets(pygame.sprite.Sprite):
         self.rect_2 = self.image.get_rect(center=(int(x), int(y)))
 
     def checkCollision(self):
+        points = 0
         if self.rect.colliderect(asteroid):
             laser.play()
+            points == 1
             self.kill()
             screen.blit(hit_sur, hit_sample_rect)
             asteroid.rect.y = random.randint(80, 250)
             asteroid.rect.x = 0
-        if self.rect.colliderect(drone):
-            laser.play()
-            self.kill()
-            screen.blit(hit_sur, hit_sample_rect)
-            drone.rect.y = random.randint(80, 250)
-            drone.rect.x = 0
 
     def update(self):
         self.rect.y -= 15
@@ -115,11 +109,11 @@ class Cockpit(pygame.sprite.Sprite):
         self.image = pygame.image.load("images/templates/Cockpit_Spaceship.png")
         self.rect = self.image.get_rect()
         self.x = 0
-        self.y = 150
+        self.y = 50
 
     def update(self):
-        self.render()
         self.move()
+        self.render()
 
     def render(self):
         screen.blit(self.image, (self.x, self.y))
@@ -129,46 +123,25 @@ class Cockpit(pygame.sprite.Sprite):
              self.x = motionX * -1
         if self.y >= 1:
              self.y = motionY * -1
-        self.y = 150
+        self.y = 50
         self.y += motionY
         self.x += motionX
 
 
 class Drone(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, image_path):
         super(Drone, self).__init__()
-        self.image = pygame.image.load("images/ships/10_1.png")
+        self.image = pygame.image.load(image_path)
         self.rect = self.image.get_rect()
         self.rect.x = 0
-        self.rect.y = 30
+        self.rect.y = 0
 
     def update(self):
         self.render()
-        self.move()
-        self.clone(0, 100)
-
-    def clone(self, copyX, copyY):
-        selfX = copyX
-        selfY = copyY
-        im_clone = self.image
-        copyX += 1
-        copyY += 1
-        screen.blit(im_clone, (selfX, selfY))
-
-
-    def move(self):
-        self.rect.y += motionY
-        self.rect.x += motionX
-        if self.rect.x > 550:
-            self.rect.x += 6
-        if self.rect.y >= 600:
-            self.rect.y += 10
-        if self.rect.x >= 1200:
-            self.rect.x = 0
-            self.rect.y = 30
 
     def render(self):
         screen.blit(self.image, (self.rect.x, self.rect.y))
+
 
 class Purple_fighter(pygame.sprite.Sprite):
     def __init__(self):
@@ -316,8 +289,13 @@ class YanSan_Window(pygame.sprite.Sprite):
 class Menu_Box1(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
+<<<<<<<<< Temporary merge branch 1
+        self.x = 10
+        self.y = 60
+=========
         self.x = 0
         self.y = 450
+>>>>>>>>> Temporary merge branch 2
         self.rect = pygame.Rect(self.x, self.y, 200, 200)
         self.white_border = pygame.Rect(self.x - 1, self.y - 1, 202, 202)
 
@@ -342,7 +320,11 @@ class Menu_box2(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.x = 1000
+<<<<<<<<< Temporary merge branch 1
+        self.y = 420
+=========
         self.y = 450
+>>>>>>>>> Temporary merge branch 2
         self.rect = pygame.Rect(self.x, self.y, 200, 200)
         self.white_border = pygame.Rect(self.x -1, self.y -1, 202, 202)
 
@@ -357,12 +339,19 @@ class Menu_box2(pygame.sprite.Sprite):
 class Main_Menu(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
+<<<<<<<<< Temporary merge branch 1
+        self.x = 410
+        self.y = 60
+        self.rect = pygame.Rect(self.x, self.y, 200, 200 - 1)
+        self.white_border = pygame.Rect(self.x - 1, self.y - 1, 200 + 2, 200 + 1)
+=========
         self.x = 200
         self.y = 200
         self.rectX = 200
         self.rectY = 200
         self.rect = pygame.Rect(self.x, self.y, self.rectX, self.rectY)
         self.Wrect = pygame.Rect(self.x - 1, self.y - 1, self.rectX - 2, self.rect.y - 2)
+>>>>>>>>> Temporary merge branch 2
 
     def update(self):
         self.render()
@@ -484,8 +473,13 @@ class Main_Menu(pygame.sprite.Sprite):
 class Photon_Charger_Window(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
+<<<<<<<<< Temporary merge branch 1
+        self.x = 50
+        self.y = 60
+=========
         self.x = 0
         self.y = 450
+>>>>>>>>> Temporary merge branch 2
         self.image = pygame.image.load("images/planets/blue_bolt.png")
         self.title_text = str("PHOTON CHARGER")
         self.rect = pygame.Rect(self.x, self.y, 150, 150)
@@ -504,14 +498,18 @@ class Photon_Charger_Window(pygame.sprite.Sprite):
         screen.blit(self.charger_box, (self.x, self.y))
         self.charger_box.fill(BLACK)
         self.charger_box.blit(self.image, self.rect)
+<<<<<<<<< Temporary merge branch 1
+        self.charger_box.blit(self.charger_label, (20, 120))
+=========
         self.charger_box.blit(self.charger_label, (0, 120))
+>>>>>>>>> Temporary merge branch 2
 
 
 class Alien_right(pygame.sprite.Sprite):
     def __init__(self):
         super(Alien_right, self).__init__()
         self.x = 850
-        self.y = 400
+        self.y = 300
         self.image = pygame.image.load("images/player/profile_allien_2.png")
         self.rect = self.image.get_rect()
 
@@ -524,7 +522,7 @@ class Alien_right(pygame.sprite.Sprite):
             self.x = motionX * -1
         if self.y >= 301:
             self.y = motionY * -1
-        self.y = 400
+        self.y = 300
         self.x = 850
         self.y += motionY
         self.x += motionX
@@ -537,7 +535,7 @@ class Alien_left(pygame.sprite.Sprite):
     def __init__(self):
         super(Alien_left, self).__init__()
         self.x = 40
-        self.y = 700
+        self.y = 300
         self.image = pygame.image.load("images/player/profile_allien.png")
         self.rect = self.image.get_rect()
 
@@ -551,7 +549,7 @@ class Alien_left(pygame.sprite.Sprite):
         if self.y >= 301:
             self.y = motionY * -1
         self.x = 40
-        self.y = 400
+        self.y = 300
         self.y += motionY
         self.x += motionX
 
@@ -594,7 +592,7 @@ class Planet_yellow(pygame.sprite.Sprite):
 class Asteroid(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.x = 0
+        self.x = 50
         self.y = 200
         self.rect = pygame.Rect(self.x, self.y, 40, 40)
         pygame.sprite.Sprite.__init__(self)
@@ -665,7 +663,7 @@ class Asteroid(pygame.sprite.Sprite):
             self.index = 0
         self.image = self.images[self.index]
         if self.rect.x >= 1400 or self.rect.y >= 950:
-            self.rect.x = random.randint(-50, 0)
+            self.rect.x = random.randint(0, 60)
             self.rect.y = random.randint(20, 360)
 
     def render(self):
@@ -967,15 +965,16 @@ class Main:
     def update(self):
         screen.fill(BLACK)
         screen.blit(back_round, (0, 0))
-        menu_group.update()
         self.statments()
+        bullet_group.draw(screen)
         planet_group.update()
         asteroid_group.update()
-        bullet_group.draw(screen)
         all_sprites.update()
         character_group.update()
+        menu_group.update()
         screen.blit(sample_rect_sur, sample_rect)
         sample_rect_sur.fill(MIDNIGHTBLUE)
+
         bullet_group.update()
         start_group.update()
         if battle is True:
@@ -1030,24 +1029,27 @@ class Main:
                 asteroid_list[a][1] = Ay
                 Ax = random.randrange(40, 50)
                 asteroid_list[a][0] = Ax
-        #for i in range(len(star_list)):
-        #    pygame.draw.circle(screen, GRAY3, star_list[i], 1)
-        #    star_list[i][1] -= 0
-        ##    star_list[i][0] += 0
-         #   if star_list[i][0] > 10:
-         #       y = random.randrange(68, 510)
-         #       star_list[i][1] = y
-          #      x = random.randrange(68, 1030)
-           #     star_list[i][0] = x
+        for i in range(len(star_list)):
+            pygame.draw.circle(screen, GRAY3, star_list[i], 1)
+            star_list[i][1] -= 0
+            star_list[i][0] += 0
+            if star_list[i][0] > 10:
+                y = random.randrange(68, 510)
+                star_list[i][1] = y
+                x = random.randrange(68, 1030)
+                star_list[i][0] = x
 
 
-x = 1010
-y = 520
-drone = Drone()
 start_group = pygame.sprite.Group()
 start_up = Start_Up()
 start_group.add(start_up)
+x = 1010
+<<<<<<<<< Temporary merge branch 1
+y = 470
+=========
+y = 520
 LeftToolbar = LeftToolbar()
+>>>>>>>>> Temporary merge branch 2
 purple_ship = Purple_ship()
 yellow_ship = Yellow_ship()
 grey_ship = Grey_ship()
@@ -1090,19 +1092,23 @@ net_menu = pygame.sprite.Group()
 net_menu_sprite = Network_Map_Window()
 net_menu.add(net_menu_sprite)
 menu_group.add(header, game_title, Main_Menu, Menu_Box1)
+<<<<<<<<< Temporary merge branch 1
+menu_group.add(Menu_box2, photon_charger_window, YanSan_window, purple_fighter)
+=========
 menu_group.add(Menu_box2, photon_charger_window, YanSan_window, purple_fighter, LeftToolbar)
+>>>>>>>>> Temporary merge branch 2
 planet_group.add(planet_larger, planet_yellow)
 character_group.add(alien_left, alien_right)
-asteroid_group.add(asteroid, drone)
+asteroid_group.add(asteroid)
 all_sprites = pygame.sprite.Group()
-all_sprites.add(player)
+all_sprites.add(player, asteroid, cockpit)
 star_list = []
 asteroid_list = []
-for i in range(760):
+for i in range(7600):
     x = random.randrange(140, 1000)
     y = random.randrange(14, 36)
     star_list.append([x, y])
-for a in range(80):
+for a in range(140):
     Ax = random.randrange(100, 950)
     Ay = random.randrange(228, 340)
     asteroid_list.append([Ax, Ay])
@@ -1125,10 +1131,7 @@ while True:
             sys.exit()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_1:
-                WHITE = RED1
-                RED1 = BLUE
-                BLUE = WHEAT1
-                WHEAT1 = WHITE
+                back_round.blit(start_up.image, (280, 110))
             if event.key == pygame.K_0:
                 net_menu_window = True
             if event.key == pygame.K_LSHIFT:
@@ -1166,3 +1169,4 @@ while True:
                 purple_ship.attack()
     Main()
     pygame.display.update()
+
