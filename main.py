@@ -30,11 +30,8 @@ pygame.mouse.set_visible(True)
 x = 0
 y = 0
 # music.play(10)
-<<<<<<<<< Temporary merge branch 1
 sample_rect = pygame.Rect(80, 120, 50, 50)
-=========
 sample_rect = pygame.Rect(15, 460, 50, 50)
->>>>>>>>> Temporary merge branch 2
 sample_rect_sur = pygame.Surface((50, 50))
 hit_sample_rect = pygame.draw.rect(screen, GRAY76, sample_rect)
 hit_sur = pygame.Surface((50, 50))
@@ -44,6 +41,7 @@ steps = 6
 motionX = 2
 motionY = 1
 points = 12
+
 
 class Pilot(pygame.sprite.Sprite):
     def __init__(self):
@@ -289,13 +287,10 @@ class YanSan_Window(pygame.sprite.Sprite):
 class Menu_Box1(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-<<<<<<<<< Temporary merge branch 1
         self.x = 10
         self.y = 60
-=========
         self.x = 0
         self.y = 450
->>>>>>>>> Temporary merge branch 2
         self.rect = pygame.Rect(self.x, self.y, 200, 200)
         self.white_border = pygame.Rect(self.x - 1, self.y - 1, 202, 202)
 
@@ -320,11 +315,8 @@ class Menu_box2(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.x = 1000
-<<<<<<<<< Temporary merge branch 1
         self.y = 420
-=========
         self.y = 450
->>>>>>>>> Temporary merge branch 2
         self.rect = pygame.Rect(self.x, self.y, 200, 200)
         self.white_border = pygame.Rect(self.x -1, self.y -1, 202, 202)
 
@@ -339,19 +331,16 @@ class Menu_box2(pygame.sprite.Sprite):
 class Main_Menu(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-<<<<<<<<< Temporary merge branch 1
         self.x = 410
         self.y = 60
         self.rect = pygame.Rect(self.x, self.y, 200, 200 - 1)
         self.white_border = pygame.Rect(self.x - 1, self.y - 1, 200 + 2, 200 + 1)
-=========
         self.x = 200
         self.y = 200
         self.rectX = 200
         self.rectY = 200
         self.rect = pygame.Rect(self.x, self.y, self.rectX, self.rectY)
         self.Wrect = pygame.Rect(self.x - 1, self.y - 1, self.rectX - 2, self.rect.y - 2)
->>>>>>>>> Temporary merge branch 2
 
     def update(self):
         self.render()
@@ -473,13 +462,10 @@ class Main_Menu(pygame.sprite.Sprite):
 class Photon_Charger_Window(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-<<<<<<<<< Temporary merge branch 1
         self.x = 50
         self.y = 60
-=========
         self.x = 0
         self.y = 450
->>>>>>>>> Temporary merge branch 2
         self.image = pygame.image.load("images/planets/blue_bolt.png")
         self.title_text = str("PHOTON CHARGER")
         self.rect = pygame.Rect(self.x, self.y, 150, 150)
@@ -498,11 +484,8 @@ class Photon_Charger_Window(pygame.sprite.Sprite):
         screen.blit(self.charger_box, (self.x, self.y))
         self.charger_box.fill(BLACK)
         self.charger_box.blit(self.image, self.rect)
-<<<<<<<<< Temporary merge branch 1
         self.charger_box.blit(self.charger_label, (20, 120))
-=========
         self.charger_box.blit(self.charger_label, (0, 120))
->>>>>>>>> Temporary merge branch 2
 
 
 class Alien_right(pygame.sprite.Sprite):
@@ -1044,12 +1027,8 @@ start_group = pygame.sprite.Group()
 start_up = Start_Up()
 start_group.add(start_up)
 x = 1010
-<<<<<<<<< Temporary merge branch 1
-y = 470
-=========
 y = 520
 LeftToolbar = LeftToolbar()
->>>>>>>>> Temporary merge branch 2
 purple_ship = Purple_ship()
 yellow_ship = Yellow_ship()
 grey_ship = Grey_ship()
@@ -1092,11 +1071,8 @@ net_menu = pygame.sprite.Group()
 net_menu_sprite = Network_Map_Window()
 net_menu.add(net_menu_sprite)
 menu_group.add(header, game_title, Main_Menu, Menu_Box1)
-<<<<<<<<< Temporary merge branch 1
 menu_group.add(Menu_box2, photon_charger_window, YanSan_window, purple_fighter)
-=========
 menu_group.add(Menu_box2, photon_charger_window, YanSan_window, purple_fighter, LeftToolbar)
->>>>>>>>> Temporary merge branch 2
 planet_group.add(planet_larger, planet_yellow)
 character_group.add(alien_left, alien_right)
 asteroid_group.add(asteroid)
