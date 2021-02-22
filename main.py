@@ -259,31 +259,43 @@ class YanSan_Window(pygame.sprite.Sprite):
         self.rect = self.sur.get_rect()
         self.sur.fill(GRAY7)
         self.white_border = pygame.Rect(self.x, self.y, 202, 402)
+
+    def header(self):
+        self.textHeader = str("YanSan Driver Search Results:::")
+        self.textHeader_im = self.textHeader
+        self.dream_logo_2 = dream_logo_2
+
+    def Y_drive(self):
+        self.textY = str("'Y'..DRIVE.. ___ Artificial Intelligence ___")
+        self.icon_image = pygame.image.load("images/player/Yan_San_icon_blueglow.png")
+        self.icon_rect = self.icon_image.get_rect()
+        self.textY_sur = game_font_2.render(self.textY, True, WHITE)
+        self.textY_im = self.textY_sur
         self.icon_rect = pygame.Rect(60, 360, 20, 20)
         self.icon_box_sur = pygame.Surface((80, 80))
         self.icon_box_sur.fill(BLACK)
         self.blue_bor_icon = pygame.Surface((84, 84))
         self.blue_bor_icon.fill(CADETBLUE)
-        self.icon_image = pygame.image.load("images/player/Yan_San_icon_blueglow.png")
-        self.icon_rect = self.icon_image.get_rect()
-        self.textHeader = str("YanSan Driver Search Results:::")
-        self.textY = str("'Y'..DRIVE.. ___ Artificial Intelligence ___")
+
+    def X_drive(self):
         self.textX = str("'X'..DRIVE.. ___ Artificial Intelligence ___")
+        self.textX_sur = game_font_2.render(self.textX, True, WHITE)
+        self.textX_im = self.textX_sur
+
+    def Z_drive(self):
         self.textZ = str("'Z'..DRIVE.. ___ Artificial Intelligence ___")
         self.textHeader_sur = game_font_2.render(self.textHeader, True, WHITE)
-        self.textY_sur = game_font_2.render(self.textY, True, WHITE)
-        self.textX_sur = game_font_2.render(self.textX, True, WHITE)
         self.textZ_sur = game_font_2.render(self.textZ, True, WHITE)
-        self.textHeader_im = self.textHeader_sur
-        self.textY_im = self.textY_sur
-        self.textX_im = self.textX_sur
         self.textZ_im = self.textZ_sur
-        self.dream_logo_2 = dream_logo_2
 
     def update(self):
         self.render()
 
     def render(self):
+        self.header()
+        self.Y_drive()
+        self.X_drive()
+        self.Z_drive()
         pygame.draw.rect(screen, WHITE, self.white_border)
         self.sur.blit(self.textHeader_sur, (25, 10))
         self.sur.blit(self.textY_sur, (20, 115))
@@ -977,7 +989,7 @@ class Main:
         bullet_group.update()
         planet_group.update()
         menu_group.update()
-        character_group.update()
+    #    character_group.update()
         start_group.update()
         if battle is True:
             screen.blit(battle_screen, (280, 280))
