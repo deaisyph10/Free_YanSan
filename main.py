@@ -150,8 +150,9 @@ class Drone(pygame.sprite.Sprite):
     def move(self):
         self.rect.x += 4
         self.rect.y += 1
-        if self.rect.x > 600:
-            self.rect.x += 5
+        if self.rect.x > 400:
+            self.rect.x += 3
+            self.rect.y += 2
         if self.rect.x > 1200:
             self.rect.x = 0
             self.rect.y = 0
@@ -160,9 +161,9 @@ class Drone(pygame.sprite.Sprite):
         screen.blit(self.image, (self.rect.x, self.rect.y))
 
 
-class Purple_fighter(pygame.sprite.Sprite):
+class Grey_fighter(pygame.sprite.Sprite):
     def __init__(self):
-        super(Purple_fighter, self).__init__()
+        super(Grey_fighter, self).__init__()
         self.image = pygame.image.load("images/ships/13B.png")
         self.rect = self.image.get_rect()
         self.rect.x = x
@@ -173,6 +174,12 @@ class Purple_fighter(pygame.sprite.Sprite):
 
     def render(self):
         screen.blit(self.image, (self.rect.x, self.rect.y))
+
+    def overheat(self):
+        self.overheat = pygame.image.load("images/ships/13B_overheat.png")
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                screen.blit(self.overheat, (self.rect.x, self.rect.y))
 
 
 class Title_text(pygame.sprite.Sprite):
@@ -259,43 +266,31 @@ class YanSan_Window(pygame.sprite.Sprite):
         self.rect = self.sur.get_rect()
         self.sur.fill(GRAY7)
         self.white_border = pygame.Rect(self.x, self.y, 202, 402)
-
-    def header(self):
-        self.textHeader = str("YanSan Driver Search Results:::")
-        self.textHeader_im = self.textHeader
-        self.dream_logo_2 = dream_logo_2
-
-    def Y_drive(self):
-        self.textY = str("'Y'..DRIVE.. ___ Artificial Intelligence ___")
-        self.icon_image = pygame.image.load("images/player/Yan_San_icon_blueglow.png")
-        self.icon_rect = self.icon_image.get_rect()
-        self.textY_sur = game_font_2.render(self.textY, True, WHITE)
-        self.textY_im = self.textY_sur
         self.icon_rect = pygame.Rect(60, 360, 20, 20)
         self.icon_box_sur = pygame.Surface((80, 80))
         self.icon_box_sur.fill(BLACK)
         self.blue_bor_icon = pygame.Surface((84, 84))
         self.blue_bor_icon.fill(CADETBLUE)
-
-    def X_drive(self):
+        self.icon_image = pygame.image.load("images/player/Yan_San_icon_blueglow.png")
+        self.icon_rect = self.icon_image.get_rect()
+        self.textHeader = str("YanSan Driver Search Results:::")
+        self.textY = str("'Y'..DRIVE.. ___ Artificial Intelligence ___")
         self.textX = str("'X'..DRIVE.. ___ Artificial Intelligence ___")
-        self.textX_sur = game_font_2.render(self.textX, True, WHITE)
-        self.textX_im = self.textX_sur
-
-    def Z_drive(self):
         self.textZ = str("'Z'..DRIVE.. ___ Artificial Intelligence ___")
         self.textHeader_sur = game_font_2.render(self.textHeader, True, WHITE)
+        self.textY_sur = game_font_2.render(self.textY, True, WHITE)
+        self.textX_sur = game_font_2.render(self.textX, True, WHITE)
         self.textZ_sur = game_font_2.render(self.textZ, True, WHITE)
+        self.textHeader_im = self.textHeader_sur
+        self.textY_im = self.textY_sur
+        self.textX_im = self.textX_sur
         self.textZ_im = self.textZ_sur
+        self.dream_logo_2 = dream_logo_2
 
     def update(self):
         self.render()
 
     def render(self):
-        self.header()
-        self.Y_drive()
-        self.X_drive()
-        self.Z_drive()
         pygame.draw.rect(screen, WHITE, self.white_border)
         self.sur.blit(self.textHeader_sur, (25, 10))
         self.sur.blit(self.textY_sur, (20, 115))
@@ -979,17 +974,17 @@ class Main:
     def update(self):
         screen.fill(BLACK)
         screen.blit(back_round, (0, 0))
-        bullet_group.draw(screen)
         self.statments()
         all_sprites.update()
         self.belt()
         asteroid_group.update()
         screen.blit(sample_rect_sur, sample_rect)
         sample_rect_sur.fill(MIDNIGHTBLUE)
+        bullet_group.draw(screen)
         bullet_group.update()
         planet_group.update()
         menu_group.update()
-    #    character_group.update()
+        # character_group.update()
         start_group.update()
         if battle is True:
             screen.blit(battle_screen, (280, 280))
@@ -1089,7 +1084,7 @@ alien_right = Alien_right()
 planet_larger = Planet_larger()
 planet_yellow = Planet_yellow()
 game_title = Title_text()
-purple_fighter = Purple_fighter()
+grey_fighter = Grey_fighter()
 blue_bolt = pygame.image.load("images/planets/blue_bolt.png")
 blue_bolt_rect = pygame.Rect(10, 10, 400, 301)
 new_icon = pygame.image.load("images/player/Dream_Logic_new_icon.png")
@@ -1105,13 +1100,13 @@ net_menu = pygame.sprite.Group()
 net_menu_sprite = Network_Map_Window()
 net_menu.add(net_menu_sprite)
 menu_group.add(header, game_title, Menu_Box1)
-menu_group.add(Menu_box2, photon_charger_window, YanSan_window, purple_fighter)
-menu_group.add(Menu_box2, photon_charger_window, YanSan_window, purple_fighter, LeftToolbar)
-planet_group.add(planet_larger, planet_yellow, drone)
+menu_group.add(Menu_box2, photon_charger_window, YanSan_window, grey_fighter)
+menu_group.add(Menu_box2, photon_charger_window, YanSan_window, LeftToolbar)
+planet_group.add(planet_larger, planet_yellow, drone, player)
 character_group.add(alien_left, alien_right)
 asteroid_group.add(asteroid)
 all_sprites = pygame.sprite.Group()
-all_sprites.add(Main_Menu, player)
+all_sprites.add(Main_Menu)
 star_list = []
 asteroid_list = []
 for i in range(760):
