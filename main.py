@@ -3,6 +3,8 @@ import random
 import sys
 from Colors import *
 from PIL import Image
+
+# Init setup
 pygame.init()
 pygame.font.init()
 cell_pxl_size = 70
@@ -17,42 +19,57 @@ clock = pygame.time.Clock()
 back_round_im = pygame.image.load("images/templates/Stars.png")
 back_round = pygame.Surface((800, 400))
 back_round.blit(back_round_im, (0, 0))
+
+# Audio Variables
 music = pygame.mixer.Sound("images/sounds/monkeys wedding_low.wav")
 laser = pygame.mixer.Sound("images/sounds/laser_SE_hit.wav")
 shoot_laser = pygame.mixer.Sound("images/sounds/laser_SE_shoot.wav")
+# music.play(10)
+
+# Game Font
+game_font = pygame.font.Font("freesansbold.ttf", 42)
+game_font_10 = pygame.font.Font("freesansbold.ttf", 10)
+game_font_18 = pygame.font.Font("freesansbold.ttf", 18)
+mono_font = pygame.font.SysFont("monospace", 36)
+
+# rotate image
+im = Image.open("images/ships/10.png")
+angle = 45
+out = im.rotate(angle)
+out.save("images/ships/10.1.png")
+
+# rotate image
+im = Image.open("images/ships/SpaceHero/red_ship_micro.png")
+angle = 180
+out = im.rotate(angle)
+out.save("images/ships/SpaceHero/red_ship_micro2.png")
+
+# other add-ins
+blue_bolt = pygame.image.load("images/planets/blue_bolt.png")
+blue_bolt_rect = pygame.Rect(10, 10, 400, 301)
+new_icon = pygame.image.load("images/player/Dream_Logic_new_icon.png")
+new_icon_rect = pygame.Rect(230, 450, 60, 60)
 dream_logo = pygame.image.load("images/templates/Dream_Logo.png")
 dream_logo_2 = pygame.transform.scale(dream_logo, (40, 40))
 LLC_icon = pygame.image.load("images/templates/Dream_green_title.png")
 LLC_icon_micro = pygame.transform.scale(LLC_icon, (200, 40))
 
-game_font = pygame.font.Font("freesansbold.ttf", 42)
-game_font_10 = pygame.font.Font("freesansbold.ttf", 10)
-game_font_18 = pygame.font.Font("freesansbold.ttf", 18)
-mono_font = pygame.font.SysFont("monospace", 36)
+# Pop-up windows
+radar_screen = pygame.image.load("images/templates/opohgknlov.jpeg")
+radar_screen_rect = pygame.Rect(0, 0, 1051, 515)
+game_time = pygame.time.get_ticks()
+interior_layout = pygame.image.load("images/templates/interior_edit_600x450.jpg").convert()
+interior_layout_sur = pygame.Surface((600, 450))
+int_window_rect = pygame.Rect(250, 120, 610, 460)
+int_window = pygame.Surface((610, 460))
+battle_screen_width = 495
+battle_screen_height = 170
+battle_screen = pygame.Surface((battle_screen_width, battle_screen_height))
+battle = False
+net_menu_window = False
+interior_window = False
+radar_screen_value = False
 pygame.mouse.set_visible(True)
-x = 0
-y = 0
-# music.play(10)
-sample_rect = pygame.Rect(80, 120, 50, 50)
-sample_rect = pygame.Rect(15, 460, 50, 50)
-sample_rect_sur = pygame.Surface((50, 50))
-hit_sample_rect = pygame.draw.rect(screen, GRAY76, sample_rect)
-hit_sur = pygame.Surface((50, 50))
-drone_pos = []
-drone_rect = []
-steps = 6
-motionX = 2
-motionY = 1
-points = 12
-im = Image.open("images/ships/10.png")
-angle = 45
-out = im.rotate(angle)
-out.save("images/ships/10.1.png")
-Ascore = 0
-im = Image.open("images/ships/SpaceHero/red_ship_micro.png")
-angle = 180
-out = im.rotate(angle)
-out.save("images/ships/SpaceHero/red_ship_micro2.png")
 
 
 class Pilot(pygame.sprite.Sprite):
@@ -81,9 +98,9 @@ class Bullets(pygame.sprite.Sprite):
         super().__init__()
         self.x = pygame.mouse.get_pos()[0]
         self.y = pygame.mouse.get_pos()[1]
-        self.image = pygame.Surface((2, 5))
-        self.im1 = pygame.Surface((2, 5))
-        # self.image.fill(white)
+        self.image = pygame.Surface((2, 25))
+        self.im1 = pygame.Surface((2, 25))
+        self.image.fill(WHITE)
         self.im1.fill(WHITE)
         self.rect = self.image.get_rect(center=(int(x), int(y)))
         self.rect_2 = self.image.get_rect(center=(int(x), int(y)))
@@ -106,26 +123,22 @@ class Bullets(pygame.sprite.Sprite):
         if self.rect.colliderect(asteroid):
             laser.play()
             self.kill()
-            screen.blit(hit_sur, hit_sample_rect)
             asteroid.rect.y = random.randint(80, 250)
             asteroid.rect.x = 0
             self.hits += 1
         if self.rect.colliderect(drone):
             laser.play()
             self.kill()
-            screen.blit(hit_sur, hit_sample_rect)
             drone.rect.y = random.randint(80, 250)
             drone.rect.x = 0
         if self.rect.colliderect(yellow_ship):
             laser.play()
             self.kill()
-            screen.blit(hit_sur, hit_sample_rect)
             yellow_ship.rect.y = random.randint(80, 250)
             yellow_ship.rect.x = 0
         if self.rect.colliderect(red_ship):
             laser.play()
             self.kill()
-            screen.blit(hit_sur, hit_sample_rect)
             red_ship.rect.y = random.randint(80, 250)
             red_ship.rect.x = 0
 
@@ -141,31 +154,6 @@ class Bullets(pygame.sprite.Sprite):
         if self.rect_2.y <= pygame.mouse.get_pos()[1] - 40:
             self.kill()
         self.checkCollision()
-
-
-class Cockpit(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
-        self.image = pygame.image.load("images/templates/Cockpit_Spaceship.png")
-        self.rect = self.image.get_rect()
-        self.x = 0
-        self.y = 50
-
-    def update(self):
-        self.move()
-        self.render()
-
-    def render(self):
-        screen.blit(self.image, (self.x, self.y))
-
-    def move(self):
-        if self.x >= 1:
-             self.x = motionX * -1
-        if self.y >= 1:
-             self.y = motionY * -1
-        self.y = 50
-        self.y += motionY
-        self.x += motionX
 
 
 class Drone(pygame.sprite.Sprite):
@@ -209,7 +197,6 @@ class Title_text(pygame.sprite.Sprite):
 
     def render(self):
         screen.blit(self.image, (self.x, self.y))
-
 
 
 class Network_Map_Window(pygame.sprite.Sprite):
@@ -259,15 +246,22 @@ class LeftToolbar(pygame.sprite.Sprite):
         self.sur = pygame.Surface((200, 400))
         self.rect = self.sur.get_rect()
         self.sur.fill(GRAY7)
-        self.white_border = pygame.Rect(self.x, self.y, 202, 402)
+        self.white_border = pygame.Surface((200, 400))
+        self.white_border.fill(WHITE)
 
-    def update(self):
-        self.render()
+    def BattleKey(self):
+        self.sur.blit(red_ship.image, (160, 40))
+        self.sur.blit(yellow_ship.image, (20, 50))
+        self.sur.blit(purple_ship.image, (60, 50))
+        self.sur.blit(grey_ship.image, (120, 50))
 
     def render(self):
-        pygame.draw.rect(screen, WHITE, self.white_border)
-        screen.blit(self.sur, (self.x, self.y))
-        self.sur.fill(GRAY7)
+        self.white_border.blit(self.sur, (2, 2))
+        screen.blit(self.white_border, (self.x, self.y))
+
+    def update(self):
+        self.BattleKey()
+        self.render()
 
 
 class YanSan_Window(pygame.sprite.Sprite):
@@ -275,36 +269,40 @@ class YanSan_Window(pygame.sprite.Sprite):
         super().__init__()
         self.x = 998
         self.y = 50
+
+    def window_setup(self):
+        self.white_border = pygame.Surface((200, 400))
+        self.white_border.fill(WHITE)
         self.sur = pygame.Surface((200, 400))
         self.rect = self.sur.get_rect()
         self.sur.fill(GRAY7)
-        self.white_border = pygame.Rect(self.x, self.y, 202, 402)
+
+    def YanSan_logo(self):
+        self.icon_image = pygame.image.load("images/player/Yan_San_icon_blueglow.png")
         self.icon_rect = pygame.Rect(60, 360, 20, 20)
-        self.icon_box_sur = pygame.Surface((80, 80))
-        self.icon_box_sur.fill(BLACK)
+        self.dream_logo_2 = dream_logo_2
         self.blue_bor_icon = pygame.Surface((84, 84))
         self.blue_bor_icon.fill(CADETBLUE)
-        self.icon_image = pygame.image.load("images/player/Yan_San_icon_blueglow.png")
-        self.icon_rect = self.icon_image.get_rect()
-        self.textHeader = str("YanSan Driver Search Results:::")
-        self.textY = str("'Y'..DRIVE.. ___ Artificial Intelligence ___")
-        self.textX = str("'X'..DRIVE.. ___ Artificial Intelligence ___")
-        self.textZ = str("'Z'..DRIVE.. ___ Artificial Intelligence ___")
-        self.textHeader_sur = game_font_10.render(self.textHeader, True, WHITE)
-        self.textY_sur = game_font_10.render(self.textY, True, WHITE)
-        self.textX_sur = game_font_10.render(self.textX, True, WHITE)
-        self.textZ_sur = game_font_10.render(self.textZ, True, WHITE)
-        self.textHeader_im = self.textHeader_sur
-        self.textY_im = self.textY_sur
-        self.textX_im = self.textX_sur
-        self.textZ_im = self.textZ_sur
-        self.dream_logo_2 = dream_logo_2
+        self.icon_box_sur = pygame.Surface((80, 80))
+        self.icon_box_sur.fill(BLACK)
 
-    def update(self):
-        self.render()
+    def header(self):
+        self.textHeader = str("YanSan Driver Search Results:::")
+        self.textHeader_sur = game_font_10.render(self.textHeader, True, WHITE)
+
+    def Y_drive(self):
+        self.textY = str("'Y'..DRIVE.. ___ Artificial Intelligence ___")
+        self.textY_sur = game_font_10.render(self.textY, True, WHITE)
+
+    def X_drive(self):
+        self.textX = str("'X'..DRIVE.. ___ Artificial Intelligence ___")
+        self.textX_sur = game_font_10.render(self.textX, True, WHITE)
+
+    def Z_drive(self):
+        self.textZ = str("'Z'..DRIVE.. ___ Artificial Intelligence ___")
+        self.textZ_sur = game_font_10.render(self.textZ, True, WHITE)
 
     def render(self):
-        pygame.draw.rect(screen, WHITE, self.white_border)
         self.sur.blit(self.textHeader_sur, (25, 10))
         self.sur.blit(self.textY_sur, (20, 115))
         self.sur.blit(self.textX_sur, (20, 215))
@@ -315,12 +313,23 @@ class YanSan_Window(pygame.sprite.Sprite):
         self.sur.blit(self.icon_box_sur, (10, 230))
         self.sur.blit(self.icon_box_sur, (10, 130))
         self.sur.blit(self.icon_box_sur, (10, 30))
+        self.sur.blit(self.icon_image, (10, 230))
+        self.sur.blit(self.icon_image, (10, 130))
         self.sur.blit(self.icon_image, (10, 30))
         self.sur.blit(self.dream_logo_2, (160, 70))
         self.sur.blit(self.dream_logo_2, (160, 170))
         self.sur.blit(self.dream_logo_2, (160, 270))
+        screen.blit(self.white_border, (1000, 50))
         screen.blit(self.sur, (self.x, self.y))
-        self.sur.fill(GRAY7)
+
+    def update(self):
+        self.window_setup()
+        self.header()
+        self.X_drive()
+        self.Y_drive()
+        self.Z_drive()
+        self.YanSan_logo()
+        self.render()
 
 
 class Menu_Box1(pygame.sprite.Sprite):
@@ -543,58 +552,6 @@ class Photon_Charger_Window(pygame.sprite.Sprite):
         self.charger_box.blit(self.charger_label, (0, 120))
 
 
-class Alien_right(pygame.sprite.Sprite):
-    def __init__(self):
-        super(Alien_right, self).__init__()
-        self.x = 850
-        self.y = 300
-        self.image = pygame.image.load("images/player/profile_allien_2.png")
-        self.rect = self.image.get_rect()
-
-    def update(self):
-        self.render()
-        self.move()
-
-    def move(self):
-        if self.x >= 851:
-            self.x = motionX * -1
-        if self.y >= 301:
-            self.y = motionY * -1
-        self.y = 300
-        self.x = 850
-        self.y += motionY
-        self.x += motionX
-
-    def render(self):
-        screen.blit(self.image, (self.x, self.y))
-
-
-class Alien_left(pygame.sprite.Sprite):
-    def __init__(self):
-        super(Alien_left, self).__init__()
-        self.x = 40
-        self.y = 300
-        self.image = pygame.image.load("images/player/profile_allien.png")
-        self.rect = self.image.get_rect()
-
-    def update(self):
-        self.render()
-        self.move()
-
-    def move(self):
-        if self.x >= 41:
-            self.x = motionX * -1
-        if self.y >= 301:
-            self.y = motionY * -1
-        self.x = 40
-        self.y = 300
-        self.y += motionY
-        self.x += motionX
-
-    def render(self):
-        screen.blit(self.image, (self.x, self.y))
-
-
 class Planet_larger(pygame.sprite.Sprite):
     def __init__(self):
         self.x = 734
@@ -814,7 +771,7 @@ class Enemy_Bullets(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super(Enemy_Bullets, self).__init__()
         self.image = pygame.Surface((1, 3))
-        self.image.fill((255, 255, 255))
+        self.image.fill(WHITE)
         self.x = x
         self.y = y
         self.rect = self.image.get_rect(topleft=(x, y))
@@ -997,17 +954,16 @@ class Main:
     def update(self):
         screen.fill(BLACK)
         screen.blit(back_round, (0, 0))
+        grid_group.update()
         self.statments()
         all_sprites.update()
         self.belt()
         asteroid_group.update()
-        sample_rect_sur.fill(MIDNIGHTBLUE)
         bullet_group.draw(screen)
         planet_group.update()
         menu_group.update()
         bullet_group.update()
         start_group.update()
-        screen.blit(sample_rect_sur, sample_rect)
         if battle is True:
             screen.blit(battle_screen, (280, 280))
             battle_screen.fill(BLACK)
@@ -1072,62 +1028,66 @@ class Main:
                 star_list[i][0] = x
 
 
-start_group = pygame.sprite.Group()
-start_up = Start_Up()
-start_group.add(start_up)
+# Lists
+star_list = []
+asteroid_list = []
+
+# Variables
+steps = 6
+motionX = 2
+motionY = 1
+points = 12
+
 x = 1010
 y = 520
-LeftToolbar = LeftToolbar()
+
+bullets = Bullet(x, y)
+enemy_bullets = Enemy_Bullets(x, y)
+bullet = Bullets(x, y)
+# Variables
+drone = Drone()
+asteroid = Asteroid()
 purple_ship = Purple_ship()
 yellow_ship = Yellow_ship()
 grey_ship = Grey_ship()
 red_ship = Red_ship()
-drone = Drone()
-bullets = Bullet(x, y)
-enemy_bullets = Enemy_Bullets(x, y)
-battle_sprites = pygame.sprite.Group()
-battle_sprites.add(red_ship, yellow_ship, purple_ship)
-draw_group = pygame.sprite.Group()
-bullets_group = pygame.sprite.Group()
-bullets_group.add(bullets, enemy_bullets)
-asteroid = Asteroid()
-bullet = Bullets(x, y)
 player = Pilot()
+planet_larger = Planet_larger()
+planet_yellow = Planet_yellow()
+# Variables
+start_up = Start_Up()
+LeftToolbar = LeftToolbar()
 header = Header()
-cockpit = Cockpit()
 YanSan_window = YanSan_Window()
 playerInfobox = PlayerInfobox()
 photon_charger_window = Photon_Charger_Window()
 Main_Menu = Main_Menu()
 Menu_Box1 = Menu_Box1()
-alien_left = Alien_left()
-alien_right = Alien_right()
-planet_larger = Planet_larger()
-planet_yellow = Planet_yellow()
 game_title = Title_text()
-blue_bolt = pygame.image.load("images/planets/blue_bolt.png")
-blue_bolt_rect = pygame.Rect(10, 10, 400, 301)
-new_icon = pygame.image.load("images/player/Dream_Logic_new_icon.png")
-new_icon_rect = pygame.Rect(230, 450, 60, 60)
-radar_screen = pygame.image.load("images/templates/opohgknlov.jpeg")
-radar_screen_rect = pygame.Rect(0, 0, 1051, 515)
+# Sprite Groups
+grid_group = pygame.sprite.Group()
+battle_sprites = pygame.sprite.Group()
 menu_group = pygame.sprite.Group()
+start_group = pygame.sprite.Group()
+draw_group = pygame.sprite.Group()
+bullets_group = pygame.sprite.Group()
 bullet_group = pygame.sprite.Group()
 planet_group = pygame.sprite.Group()
 character_group = pygame.sprite.Group()
 asteroid_group = pygame.sprite.Group()
+all_sprites = pygame.sprite.Group()
 net_menu = pygame.sprite.Group()
 net_menu_sprite = Network_Map_Window()
+# Fill the groups with their Sprites
 net_menu.add(net_menu_sprite)
 menu_group.add(header, game_title, photon_charger_window, YanSan_window, Menu_Box1)
+bullets_group.add(bullets, enemy_bullets)
+battle_sprites.add(red_ship, yellow_ship, purple_ship)
 menu_group.add(playerInfobox, photon_charger_window, YanSan_window, LeftToolbar)
-planet_group.add(planet_larger, planet_yellow, drone, grey_ship, red_ship, purple_ship, yellow_ship, player)
-character_group.add(alien_left, alien_right)
-asteroid_group.add(asteroid)
-all_sprites = pygame.sprite.Group()
-all_sprites.add(Main_Menu)
-star_list = []
-asteroid_list = []
+all_sprites.add(planet_larger, planet_yellow, asteroid, drone, grey_ship, red_ship, purple_ship, yellow_ship, player)
+start_group.add(start_up)
+grid_group.add(Main_Menu)
+# 'for' statements
 for i in range(760):
     x = random.randrange(140, 1000)
     y = random.randrange(14, 36)
@@ -1136,18 +1096,6 @@ for a in range(140):
     Ax = random.randrange(100, 950)
     Ay = random.randrange(228, 340)
     asteroid_list.append([Ax, Ay])
-game_time = pygame.time.get_ticks()
-interior_layout = pygame.image.load("images/templates/interior_edit_600x450.jpg").convert()
-interior_layout_sur = pygame.Surface((600, 450))
-int_window_rect = pygame.Rect(250, 120, 610, 460)
-int_window = pygame.Surface((610, 460))
-battle_screen_width = 495
-battle_screen_height = 170
-battle_screen = pygame.Surface((battle_screen_width, battle_screen_height))
-battle = False
-net_menu_window = False
-interior_window = False
-radar_screen_value = False
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
