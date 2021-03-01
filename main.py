@@ -973,12 +973,16 @@ class Start_Up(pygame.sprite.Sprite):
 class World_map(pygame.sprite.Sprite):
     def __init__(self):
         super(World_map, self).__init__()
-        self.image = pygame.Surface((1200, 800))
-        self.sur = self.image
+        self.image = pygame.image.load("images/templates/Stars.png")
+        self.sur = pygame.Surface((1200, 800))
         self.rect = self.sur.get_rect()
         self.sur.fill(GRAY4)
         self.movex = 0
         self.movey = 0
+
+    def threeDship(self, TDx, TDy):
+        thrDship = pygame.image.load("images/ships/Delux_ships1.2_1.png")
+        self.sur.blit(thrDship, (TDx, TDy))
 
     def banner(self):
         bufRect= pygame.Rect(212, 20, 960, 160)
@@ -988,20 +992,65 @@ class World_map(pygame.sprite.Sprite):
         self.logo = pygame.image.load("images/templates/Dream_Logo.png")
         self.logoR = self.logo.get_rect()
         self.sur.blit(self.logo, (220, 4))
+        self.sur.blit(game_title.title_surface, (380, 10))
 
-    def cursor(self, cx, cy):
+    def lvl_1(self):
         lvl_1_box = pygame.Rect(200, 210, 190, 190)
         lvl_1_sur = pygame.Surface((190, 190))
-        self.sur.blit(planet_larger.image, (860, 10))
-        self.sur.blit(planet_yellow.image, (880, 30))
+        lvl_1 = str("Level 1")
+        lvl_1_text = game_font_18.render(lvl_1, True, WHITE)
+        lvl_1_sur.blit(lvl_1_text, (5, 0))
+        self.sur.blit(planet_larger.image, (960, 10))
+        self.sur.blit(planet_yellow.image, (980, 30))
         self.sur.blit(lvl_1_sur, lvl_1_box)
+
+    def lvl_2(self):
+        lvl_2 = str("Level 2")
+        lvl_2_text = game_font_18.render(lvl_2, True, WHITE)
+        lvl_2_sur = pygame.Surface((190, 190))
+        lvl_2_sur.blit(lvl_2_text, (5, 0))
+        lvl_2_box = pygame.Rect(400, 210, 190, 190)
+        self.sur.blit(lvl_2_sur, lvl_2_box)
+
+    def lvl_3(self):
+        lvl_3 = str("Level 3")
+        lvl_3_text = game_font_18.render(lvl_3, True, WHITE)
+        lvl_3_sur = pygame.Surface((190, 190))
+        lvl_3_sur.blit(lvl_3_text, (5, 0))
+        lvl_3_box = pygame.Rect(600, 210, 190, 190)
+        self.sur.blit(lvl_3_sur, lvl_3_box)
+
+    def lvl_4(self):
+        lvl_4 = str("Level 4")
+        lvl_4_text = game_font_18.render(lvl_4, True, WHITE)
+        lvl_4_sur = pygame.Surface((190, 190))
+        lvl_4_sur.blit(lvl_4_text, (5, 0))
+        lvl_4_box = pygame.Rect(800, 210, 190, 190)
+        self.sur.blit(lvl_4_sur, lvl_4_box)
+
+    def lvl_5(self):
+        lvl_5 = str("Level 5")
+        lvl_5_text = game_font_18.render(lvl_5, True, WHITE)
+        lvl_5_sur = pygame.Surface((190, 190))
+        lvl_5_sur.blit(lvl_5_text, (5, 0))
+        lvl_5_box = pygame.Rect(200, 410, 190, 190)
+        self.sur.blit(lvl_5_sur, lvl_5_box)
+
+    def lvl_6(self):
+        lvl_6 = str("Level 6")
+        lvl_6_text = game_font_18.render(lvl_6, True, WHITE)
+        lvl_6_sur = pygame.Surface((190, 190))
+        lvl_6_sur.blit(lvl_6_text, (5, 0))
+        lvl_6_box = pygame.Rect(400, 410, 190, 190)
+        self.sur.blit(lvl_6_sur, lvl_6_box)
+
+    def cursor(self, cx, cy):
         self.movex += cx
         self.movey += cy
         posX = self.movex + 198
         posY = self.movey + 208
         selectRect = pygame.Rect(posX, posY, 194, 194)
         selectSur = pygame.Surface((194, 194))
-        selectSur.fill(ROYALBLUE)
         self.sur.blit(selectSur, selectRect)
 # lvl1
 
@@ -1009,12 +1058,7 @@ class World_map(pygame.sprite.Sprite):
         RT = pygame.Rect(200, 10, 990, 190)
         RL = pygame.Rect(0, 10, 190, 590)
         Bottom = pygame.Rect(0, 620, 1190, 60)
-        R1_4 = pygame.Rect(400, 210, 190, 190)
-        R1_6 = pygame.Rect(600, 210, 190, 190)
-        R1_8 = pygame.Rect(800, 210, 190, 190)
         R1_10 = pygame.Rect(1000, 210, 190, 190)
-        R2_2 = pygame.Rect(200, 410, 190, 190)
-        R2_4 = pygame.Rect(400, 410, 190, 190)
         R2_6 = pygame.Rect(600, 410, 190, 190)
         R2_8 = pygame.Rect(800, 410, 190, 190)
         R2_10 = pygame.Rect(1000, 410, 190, 190)
@@ -1022,22 +1066,27 @@ class World_map(pygame.sprite.Sprite):
         pygame.draw.rect(self.sur, BLACK, Bottom)
         pygame.draw.rect(self.sur, BLACK, RT)
         pygame.draw.rect(self.sur, BLACK, RL)
-        pygame.draw.rect(self.sur, BLACK, R1_4)
-        pygame.draw.rect(self.sur, BLACK, R1_6)
-        pygame.draw.rect(self.sur, BLACK, R1_8)
         pygame.draw.rect(self.sur, BLACK, R1_10)
-        pygame.draw.rect(self.sur, BLACK, R2_2)
-        pygame.draw.rect(self.sur, BLACK, R2_4)
         pygame.draw.rect(self.sur, BLACK, R2_6)
         pygame.draw.rect(self.sur, BLACK, R2_8)
         pygame.draw.rect(self.sur, BLACK, R2_10)
 
     def update(self):
         screen.blit(self.sur, (0, 0))
+        self.sur.blit(self.image, (0, 0))
+        self.lvl_1()
+        self.lvl_2()
+        self.lvl_3()
+        self.lvl_4()
+        self.lvl_5()
+        self.lvl_6()
         self.Grid()
         self.banner()
         self.cursor(0, 0)
-
+        self.threeDship(400, 10)
+        self.threeDship(500, 10)
+        self.threeDship(600, 10)
+        self.threeDship(700, 10)
 class Main:
     def __init__(self):
         self.update()
