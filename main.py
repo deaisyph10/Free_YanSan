@@ -53,6 +53,7 @@ dream_logo_2 = pygame.transform.scale(dream_logo, (40, 40))
 LLC_icon = pygame.image.load("images/templates/Dream_green_title.png")
 LLC_icon_micro = pygame.transform.scale(LLC_icon, (200, 40))
 score: int = 0
+curmov = 200
 # Pop-up windows
 radar_screen = pygame.image.load("images/templates/opohgknlov.jpeg")
 radar_screen_rect = pygame.Rect(0, 0, 1051, 515)
@@ -421,14 +422,12 @@ class PlayerInfobox(pygame.sprite.Sprite):
 class Main_Menu(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.x = 410
-        self.y = 60
-        self.rect = pygame.Rect(self.x, self.y, 200, 200 - 1)
-        self.white_border = pygame.Rect(self.x - 1, self.y - 1, 200 + 2, 200 + 1)
         self.x = 200
         self.y = 200
         self.rectX = 200
         self.rectY = 200
+        self.rect = pygame.Rect(self.x, self.y, 200, 200 - 1)
+        self.white_border = pygame.Rect(self.x - 1, self.y - 1, 200 + 2, 200 + 1)
         self.rect = pygame.Rect(self.x, self.y, self.rectX, self.rectY)
         self.Wrect = pygame.Rect(self.x - 1, self.y - 1, self.rectX - 2, self.rect.y - 2)
 
@@ -928,7 +927,6 @@ class Start_Up(pygame.sprite.Sprite):
         self.button()
         self.text()
 
-
     def text(self):
         font = mono_font
         surfacefont = font.render("FREE YanSan", True, MIDNIGHTBLUE)
@@ -972,6 +970,74 @@ class Start_Up(pygame.sprite.Sprite):
         self.sur.fill(BLACK)
 
 
+class World_map(pygame.sprite.Sprite):
+    def __init__(self):
+        super(World_map, self).__init__()
+        self.image = pygame.Surface((1200, 800))
+        self.sur = self.image
+        self.rect = self.sur.get_rect()
+        self.sur.fill(GRAY4)
+        self.movex = 0
+        self.movey = 0
+
+    def banner(self):
+        bufRect= pygame.Rect(212, 20, 960, 160)
+        bufSur = pygame.Surface((960, 160))
+        bufSur.fill(GRAY5)
+        self.sur.blit(bufSur, bufRect)
+        self.logo = pygame.image.load("images/templates/Dream_Logo.png")
+        self.logoR = self.logo.get_rect()
+        self.sur.blit(self.logo, (220, 4))
+
+    def cursor(self, cx, cy):
+        lvl_1_box = pygame.Rect(200, 210, 190, 190)
+        lvl_1_sur = pygame.Surface((190, 190))
+        self.sur.blit(planet_larger.image, (860, 10))
+        self.sur.blit(planet_yellow.image, (880, 30))
+        self.sur.blit(lvl_1_sur, lvl_1_box)
+        self.movex += cx
+        self.movey += cy
+        posX = self.movex + 198
+        posY = self.movey + 208
+        selectRect = pygame.Rect(posX, posY, 194, 194)
+        selectSur = pygame.Surface((194, 194))
+        selectSur.fill(ROYALBLUE)
+        self.sur.blit(selectSur, selectRect)
+# lvl1
+
+    def Grid(self):
+        RT = pygame.Rect(200, 10, 990, 190)
+        RL = pygame.Rect(0, 10, 190, 590)
+        Bottom = pygame.Rect(0, 620, 1190, 60)
+        R1_4 = pygame.Rect(400, 210, 190, 190)
+        R1_6 = pygame.Rect(600, 210, 190, 190)
+        R1_8 = pygame.Rect(800, 210, 190, 190)
+        R1_10 = pygame.Rect(1000, 210, 190, 190)
+        R2_2 = pygame.Rect(200, 410, 190, 190)
+        R2_4 = pygame.Rect(400, 410, 190, 190)
+        R2_6 = pygame.Rect(600, 410, 190, 190)
+        R2_8 = pygame.Rect(800, 410, 190, 190)
+        R2_10 = pygame.Rect(1000, 410, 190, 190)
+
+        pygame.draw.rect(self.sur, BLACK, Bottom)
+        pygame.draw.rect(self.sur, BLACK, RT)
+        pygame.draw.rect(self.sur, BLACK, RL)
+        pygame.draw.rect(self.sur, BLACK, R1_4)
+        pygame.draw.rect(self.sur, BLACK, R1_6)
+        pygame.draw.rect(self.sur, BLACK, R1_8)
+        pygame.draw.rect(self.sur, BLACK, R1_10)
+        pygame.draw.rect(self.sur, BLACK, R2_2)
+        pygame.draw.rect(self.sur, BLACK, R2_4)
+        pygame.draw.rect(self.sur, BLACK, R2_6)
+        pygame.draw.rect(self.sur, BLACK, R2_8)
+        pygame.draw.rect(self.sur, BLACK, R2_10)
+
+    def update(self):
+        screen.blit(self.sur, (0, 0))
+        self.Grid()
+        self.banner()
+        self.cursor(0, 0)
+
 class Main:
     def __init__(self):
         self.update()
@@ -989,7 +1055,8 @@ class Main:
         planet_group.update()
         menu_group.update()
         bullet_group.update()
-        start_group.update()
+        # start_group.update()
+        map_group.update()
         if battle is True:
             screen.blit(battle_screen, (280, 280))
             battle_screen.fill(BLACK)
@@ -1069,6 +1136,7 @@ y = 520
 enemy_bullets = Enemy_Bullets(x, y)
 bullet = Bullets(x, y)
 # Variables
+world_map = World_map()
 drone = Drone()
 asteroid = Asteroid()
 purple_ship = Purple_ship()
@@ -1100,6 +1168,7 @@ planet_group = pygame.sprite.Group()
 character_group = pygame.sprite.Group()
 asteroid_group = pygame.sprite.Group()
 all_sprites = pygame.sprite.Group()
+map_group = pygame.sprite.Group()
 net_menu = pygame.sprite.Group()
 net_menu_sprite = Network_Map_Window()
 # Fill the groups with their Sprites
@@ -1109,8 +1178,9 @@ bullets_group.add(enemy_bullets)
 battle_sprites.add(red_ship, yellow_ship, purple_ship)
 menu_group.add(playerInfobox, photon_charger_window, YanSan_window, LeftToolbar)
 all_sprites.add(planet_larger, planet_yellow, asteroid, drone, grey_ship, red_ship, purple_ship, yellow_ship, player)
-start_group.add(start_up)
+start_group.add(world_map, start_up)
 grid_group.add(Main_Menu)
+map_group.add(world_map)
 # 'for' statements
 for i in range(760):
     x = random.randrange(140, 1000)
@@ -1144,9 +1214,13 @@ while True:
             if event.key == pygame.K_RETURN:
                 planet_group.add(grey_ship.create_clone())
             if event.key == pygame.K_LEFT:
-                purple_ship.control(steps, 0)
+                world_map.cursor(-curmov, 0)
             if event.key == pygame.K_RIGHT:
-                purple_ship.control(steps, 0)
+                world_map.cursor(curmov, 0)
+            if event.key == pygame.K_DOWN:
+                world_map.cursor(0, curmov)
+            if event.key == pygame.K_UP:
+                world_map.cursor(0, -curmov)
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_1:
                 battle = False
@@ -1156,16 +1230,17 @@ while True:
                 interior_window = False
             if event.key == pygame.K_RETURN:
                 radar_screen_value = False
-            if event.key == pygame.K_LEFT:
-                purple_ship.control(steps, 0)
-            if event.key == pygame.K_RIGHT:
-                purple_ship.control(-steps, 0)
-            if event.key == pygame.K_UP:
-                bullets_group.add(purple_ship.create_bullet())
-                bullets_group.add(purple_ship.sec_bullet())
+            #if event.key == pygame.K_DOWN:
+            #    world_map.cursor(0, curmov)
+            #if event.key == pygame.K_LEFT:
+            #    world_map.cursor(-curmov, 0)
+            #if event.key == pygame.K_RIGHT:
+            #    world_map.cursor(curmov, 0)
+            #if event.key == pygame.K_UP:
+            #    world_map.cursor(0, -curmov)
             if event.key == pygame.K_SPACE:
                 purple_ship.attack()
     Main()
-    scoretext = game_font_18.render("Score {0}".format(score), True, WHITE)
-    screen.blit(scoretext, (5, 150))
+    # scoretext = game_font_18.render("Score {0}".format(score), True, WHITE)
+    # screen.blit(scoretext, (5, 150))
     pygame.display.update()
