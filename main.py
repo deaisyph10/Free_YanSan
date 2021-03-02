@@ -988,6 +988,22 @@ class World_map(pygame.sprite.Sprite):
         neb_blu2 = pygame.image.load("images/planets/Nebula3.png")
         self.sur.blit(neb_blu2, (400, 200))
 
+    def world_tiles(self):
+        T1 = pygame.image.load("images/Extras/tile-01.png")
+        T2 = pygame.image.load("images/Extras/tile-02.png")
+        T3 = pygame.image.load("images/Extras/tile-03.png")
+        T4 = pygame.image.load("images/Extras/tile-04.png")
+        T5 = pygame.image.load("images/Extras/tile-05.png")
+        T6 = pygame.image.load("images/Extras/tile-06.png")
+        T7 = pygame.image.load("images/Extras/tile-07.png")
+        self.sur.blit(T1, (204, 400))
+        self.sur.blit(T2, (228, 400))
+        self.sur.blit(T3, (252, 400))
+        self.sur.blit(T4, (276, 400))
+        self.sur.blit(T5, (300, 400))
+        self.sur.blit(T6, (324, 400))
+        self.sur.blit(T7, (348, 400))
+
     def banner(self):
         bufRect= pygame.Rect(212, 20, 960, 160)
         bufSur = pygame.Surface((960, 160))
@@ -1107,6 +1123,7 @@ class World_map(pygame.sprite.Sprite):
         self.lvl_3()
         self.lvl_4()
         self.lvl_5()
+        self.world_tiles()
         self.Grid()
         self.bottom()
         self.banner()
