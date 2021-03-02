@@ -984,6 +984,10 @@ class World_map(pygame.sprite.Sprite):
         thrDship = pygame.image.load("images/ships/Delux_ships1.2_1.png")
         self.sur.blit(thrDship, (TDx, TDy))
 
+    def Neb(self):
+        neb_blu2 = pygame.image.load("images/planets/Nebula3.png")
+        self.sur.blit(neb_blu2, (400, 200))
+
     def banner(self):
         bufRect= pygame.Rect(212, 20, 960, 160)
         bufSur = pygame.Surface((960, 160))
@@ -998,75 +1002,98 @@ class World_map(pygame.sprite.Sprite):
         lvl_1_box = pygame.Rect(200, 210, 190, 190)
         lvl_1_sur = pygame.Surface((190, 190))
         lvl_1 = str("Level 1")
-        lvl_1_text = game_font_18.render(lvl_1, True, WHITE)
-        lvl_1_sur.blit(lvl_1_text, (5, 0))
+        lvl_1_text = game_font.render(lvl_1, True, GOLD3)
+        text = pygame.image.load("images/Textures/trak_trim22.jpg")
+        planet = pygame.image.load("images/planets/planet4.png")
+        shipIcon = pygame.image.load("images/ships/Delux_ships1.2_1.png")
+        lvl_1_sur.blit(text, (5, 5))
+        lvl_1_sur.blit(planet, (10, 10))
+        lvl_1_sur.blit(shipIcon, (0, 60))
+        lvl_1_sur.blit(shipIcon, (-15, 15))
+        lvl_1_sur.blit(shipIcon, (-60, 80))
+        lvl_1_sur.blit(lvl_1_text, (10, 40))
+
         self.sur.blit(planet_larger.image, (960, 10))
         self.sur.blit(planet_yellow.image, (980, 30))
         self.sur.blit(lvl_1_sur, lvl_1_box)
 
     def lvl_2(self):
-        lvl_2 = str("Level 2")
-        lvl_2_text = game_font_18.render(lvl_2, True, WHITE)
+        text = pygame.image.load("images/Textures/trak_trimplain_warning_g.jpg")
+        planet = pygame.image.load("images/planets/planet17.png.")
         lvl_2_sur = pygame.Surface((190, 190))
+        lvl_2 = str("Level 2")
+        lvl_2_text = game_font_18.render(lvl_2, True, GRAY6)
         lvl_2_sur.blit(lvl_2_text, (5, 0))
+        lvl_2_sur.blit(text, (5, 5))
+        lvl_2_sur.blit(planet, (10, 10))
+        lvl_2_sur.blit(lvl_2_text, (15, 55))
         lvl_2_box = pygame.Rect(400, 210, 190, 190)
         self.sur.blit(lvl_2_sur, lvl_2_box)
 
     def lvl_3(self):
+        text = pygame.image.load("images/Textures/trak_trimplain_warning_g.jpg")
+        planet = pygame.image.load("images/planets/planet6.png.")
         lvl_3 = str("Level 3")
-        lvl_3_text = game_font_18.render(lvl_3, True, WHITE)
+        lvl_3_text = game_font_18.render(lvl_3, True, GRAY6)
         lvl_3_sur = pygame.Surface((190, 190))
         lvl_3_sur.blit(lvl_3_text, (5, 0))
+        lvl_3_sur.blit(text, (5, 5))
+        lvl_3_sur.blit(planet, (10, 10))
+        lvl_3_sur.blit(lvl_3_text, (15, 55))
         lvl_3_box = pygame.Rect(600, 210, 190, 190)
         self.sur.blit(lvl_3_sur, lvl_3_box)
 
     def lvl_4(self):
+        text = pygame.image.load("images/Textures/trak_trimplain_warning_g.jpg")
+        planet = pygame.image.load("images/planets/planet2.png")
         lvl_4 = str("Level 4")
-        lvl_4_text = game_font_18.render(lvl_4, True, WHITE)
+        lvl_4_text = game_font_18.render(lvl_4, True, GRAY6)
         lvl_4_sur = pygame.Surface((190, 190))
         lvl_4_sur.blit(lvl_4_text, (5, 0))
+        lvl_4_sur.blit(text, (5, 5))
+        lvl_4_sur.blit(planet, (10, 10))
+        lvl_4_sur.blit(lvl_4_text, (15, 55))
         lvl_4_box = pygame.Rect(800, 210, 190, 190)
         self.sur.blit(lvl_4_sur, lvl_4_box)
 
     def lvl_5(self):
+        text = pygame.image.load("images/Textures/trak_trimplain_warning_g.jpg")
+        planet = pygame.image.load("images/planets/planet19.png")
         lvl_5 = str("Level 5")
-        lvl_5_text = game_font_18.render(lvl_5, True, WHITE)
+        lvl_5_text = game_font_18.render(lvl_5, True, GRAY6)
         lvl_5_sur = pygame.Surface((190, 190))
         lvl_5_sur.blit(lvl_5_text, (5, 0))
-        lvl_5_box = pygame.Rect(200, 410, 190, 190)
+        lvl_5_sur.blit(text, (5, 5))
+        lvl_5_sur.blit(planet, (10, 10))
+        lvl_5_sur.blit(lvl_5_text, (15, 55))
+        lvl_5_box = pygame.Rect(1000, 210, 190, 190)
         self.sur.blit(lvl_5_sur, lvl_5_box)
+        R1_10 = pygame.Rect(400, 410, 190, 190)
+        pygame.draw.rect(self.sur, BLACK, R1_10)
 
-    def lvl_6(self):
-        lvl_6 = str("Level 6")
-        lvl_6_text = game_font_18.render(lvl_6, True, WHITE)
-        lvl_6_sur = pygame.Surface((190, 190))
-        lvl_6_sur.blit(lvl_6_text, (5, 0))
-        lvl_6_box = pygame.Rect(400, 410, 190, 190)
-        self.sur.blit(lvl_6_sur, lvl_6_box)
-
-    def cursor(self, cx, cy):
-        self.movex += cx
-        self.movey += cy
-        posX = self.movex + 198
-        posY = self.movey + 208
-        selectRect = pygame.Rect(posX, posY, 194, 194)
-        selectSur = pygame.Surface((194, 194))
-        self.sur.blit(selectSur, selectRect)
-# lvl1
+    def bottom(self):
+        self.Sur = pygame.Surface((1200, 60))
+        self.Rect = pygame.Rect(0, 600, 1190, 60)
+        texture = pygame.image.load("images/Textures/trak_light1.blend.jpg")
+        world_map.sur.blit(self.Sur, self.Rect)
+        self.sur.blit(texture, (0, 600))
+        self.sur.blit(texture, (300, 600))
+        self.sur.blit(texture, (600, 600))
+        self.sur.blit(texture, (900, 600))
+        self.sur.blit(planet_yellow.image, (266, 600))
+        self.sur.blit(planet_yellow.image, (566, 600))
+        self.sur.blit(planet_yellow.image, (866, 600))
+        self.sur.blit(planet_yellow.image, (1166, 600))
 
     def Grid(self):
         RT = pygame.Rect(200, 10, 990, 190)
         RL = pygame.Rect(0, 10, 190, 590)
-        Bottom = pygame.Rect(0, 620, 1190, 60)
-        R1_10 = pygame.Rect(1000, 210, 190, 190)
         R2_6 = pygame.Rect(600, 410, 190, 190)
         R2_8 = pygame.Rect(800, 410, 190, 190)
         R2_10 = pygame.Rect(1000, 410, 190, 190)
 
-        pygame.draw.rect(self.sur, BLACK, Bottom)
         pygame.draw.rect(self.sur, BLACK, RT)
         pygame.draw.rect(self.sur, BLACK, RL)
-        pygame.draw.rect(self.sur, BLACK, R1_10)
         pygame.draw.rect(self.sur, BLACK, R2_6)
         pygame.draw.rect(self.sur, BLACK, R2_8)
         pygame.draw.rect(self.sur, BLACK, R2_10)
@@ -1074,19 +1101,50 @@ class World_map(pygame.sprite.Sprite):
     def update(self):
         screen.blit(self.sur, (0, 0))
         self.sur.blit(self.image, (0, 0))
+        self.Neb()
         self.lvl_1()
         self.lvl_2()
         self.lvl_3()
         self.lvl_4()
         self.lvl_5()
-        self.lvl_6()
         self.Grid()
+        self.bottom()
         self.banner()
-        self.cursor(0, 0)
         self.threeDship(400, 10)
         self.threeDship(500, 10)
         self.threeDship(600, 10)
         self.threeDship(700, 10)
+
+
+class Cursor(pygame.sprite.Sprite):
+    def __init__(self):
+        super(Cursor, self).__init__()
+        self.movex = 0
+        self.movey = 0
+        self.sur = pygame.Surface((168, 148))
+        self.rect = self.sur.get_rect()
+
+    def curpos(self, cx, cy):
+        self.movex += cx
+        self.movey += cy
+        posX = self.movex + 210
+        posY = self.movey + 240
+        self.rect = pygame.Rect(posX, posY, 194, 194)
+        if self.rect.x >= 800:
+            self.rect.x = 800
+        if self.rect.x <= 198:
+            self.rect.x = 198
+        if self.rect.y >= 600:
+            self.rect.y = 600
+        if self.rect.y <= 200:
+            self.rect.y = 200
+
+    def update(self):
+        world_map.sur.blit(self.sur, self.rect)
+        self.sur.fill(GRAY26)
+        self.curpos(1, 0)
+
+
 class Main:
     def __init__(self):
         self.update()
@@ -1106,6 +1164,7 @@ class Main:
         bullet_group.update()
         # start_group.update()
         map_group.update()
+
         if battle is True:
             screen.blit(battle_screen, (280, 280))
             battle_screen.fill(BLACK)
@@ -1205,6 +1264,7 @@ photon_charger_window = Photon_Charger_Window()
 Main_Menu = Main_Menu()
 Menu_Box1 = Menu_Box1()
 game_title = Title_text()
+cursor = Cursor()
 # Sprite Groups
 grid_group = pygame.sprite.Group()
 battle_sprites = pygame.sprite.Group()
@@ -1229,7 +1289,7 @@ menu_group.add(playerInfobox, photon_charger_window, YanSan_window, LeftToolbar)
 all_sprites.add(planet_larger, planet_yellow, asteroid, drone, grey_ship, red_ship, purple_ship, yellow_ship, player)
 start_group.add(world_map, start_up)
 grid_group.add(Main_Menu)
-map_group.add(world_map)
+map_group.add(cursor, world_map)
 # 'for' statements
 for i in range(760):
     x = random.randrange(140, 1000)
@@ -1263,13 +1323,13 @@ while True:
             if event.key == pygame.K_RETURN:
                 planet_group.add(grey_ship.create_clone())
             if event.key == pygame.K_LEFT:
-                world_map.cursor(-curmov, 0)
+                cursor.curpos(-curmov, 0)
             if event.key == pygame.K_RIGHT:
-                world_map.cursor(curmov, 0)
+                cursor.curpos(curmov, 0)
             if event.key == pygame.K_DOWN:
-                world_map.cursor(0, curmov)
+                cursor.curpos(0, curmov)
             if event.key == pygame.K_UP:
-                world_map.cursor(0, -curmov)
+                cursor.curpos(0, -curmov)
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_1:
                 battle = False
