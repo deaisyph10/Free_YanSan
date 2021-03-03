@@ -927,6 +927,7 @@ class Start_Up(pygame.sprite.Sprite):
         self.DL_display()
         self.button()
         self.text()
+        self.icons()
 
     def DL_display(self):
         DLdisp = pygame.image.load("images/templates/DL-Display004.png")
@@ -934,42 +935,48 @@ class Start_Up(pygame.sprite.Sprite):
 
     def text(self):
         font = mono_font
-        surfacefont = font.render("FREE YanSan", True, MIDNIGHTBLUE)
-        surfaceR = surfacefont.get_rect()
+        text = font.render("FREE YanSan", True, WHITE)
+        surfaceR = text.get_rect()
         surfaceR.center = (120, 50)
-        self.sur.blit(surfacefont, surfaceR)
-        text = font.render("Start game", True, MIDNIGHTBLUE)
-        textpos = surfacefont.get_rect()
-        textpos.center = (120, 200)
-        self.sur.blit(text, textpos)
-        text = font.render("Exit Game", True, MIDNIGHTBLUE)
-        surfacefont.get_rect()
-        textpos.center = (120, 260)
-        self.sur.blit(surfacefont, surfaceR)
-        self.sur.blit(text, textpos)
+        self.sur.blit(text, surfaceR)
         YanSan_window.render()
         pygame.display.update()
+
+    def icons(self):
+        quit = pygame.image.load("images/Extras/icons_Quit.png")
+        start = pygame.image.load("images/Extras/icons_play.png")
+        pause = pygame.image.load("images/Extras/icons_pause.png")
+        refresh = pygame.image.load("images/Extras/icons_refresh.png")
+        self.sur.blit(quit, (6, 240))
+        self.sur.blit(start, (0, 60))
+        self.sur.blit(pause, (6, 550))
+        self.sur.blit(refresh, (0, 400))
 
     def button(self):
         click = pygame.mouse.get_pressed()
         pos = pygame.mouse.get_pos()
         posX = pos[0]
         posY = pos[1]
-
-        if 190 > posX > 10 and 230 > posY > 180:
-            pygame.draw.rect(self.sur, SLATEGRAY3, (80, 175, 160, 50))
+        starton = pygame.image.load("Sprites/transparentLight/transparentLight40.png")
+        startoff = pygame.image.load("Sprites/transparentDark/transparentDark40.png")
+        quiton = pygame.image.load("Sprites/transparentLight/transparentLight45.png")
+        quitoff = pygame.image.load("Sprites/transparentDark/transparentDark45.png")
+        if 150 > posX > 10 and 230 > posY > 120:
+            self.sur.blit(starton, (24, 182))
             if click[0] == 1:
                 self.kill()
                 pygame.mouse.set_visible(True)
-            else:
-                pygame.draw.rect(self.sur, BLACK, (80, 175, 160, 50))
-        if 180 > posX > 10 and 275 > posY > 230:
-            pygame.draw.rect(self.sur, SLATEGRAY3, (80, 230, 160, 50))
+        else:
+            self.sur.blit(startoff, (24, 182))
+
+        if 180 > posX > 10 and 330 > posY > 250:
+            self.sur.blit(quiton, (36, 265))
             if click[0] == 1:
                 pygame.quit()
                 sys.exit()
-            else:
-                pygame.draw.rect(self.sur, BLACK, (80, 230, 160, 50))
+        else:
+            self.sur.blit(quitoff, (36, 265))
+
 
     def RunGame(self):
         self.sur.fill(BLACK)
