@@ -924,8 +924,13 @@ class Start_Up(pygame.sprite.Sprite):
 
     def update(self):
         screen.blit(self.sur, (0, 0))
+        self.DL_display()
         self.button()
         self.text()
+
+    def DL_display(self):
+        DLdisp = pygame.image.load("images/templates/DL-Display004.png")
+        self.sur.blit(DLdisp, (560, 250))
 
     def text(self):
         font = mono_font
@@ -1046,26 +1051,27 @@ class World_map(pygame.sprite.Sprite):
         lvl_1_text = pygame.image.load("images/Textures/trak_trim22.jpg")
         self.sur.blit(bufSur, bufRect)
         self.logo = pygame.image.load("images/templates/Dream_Logo.png")
-        self.sur.blit(lvl_1_text, (300, 40))
-        self.sur.blit(lvl_1_text, (500, 40))
-        self.sur.blit(lvl_1_text, (700, 40))
-        self.sur.blit(lvl_1_text, (900, 40))
+        bufSur.blit(lvl_1_text, (100, 10))
+        bufSur.blit(lvl_1_text, (300, 10))
+        bufSur.blit(lvl_1_text, (500, 10))
+        bufSur.blit(lvl_1_text, (700, 10))
         planet = pygame.image.load("images/planets/planet4.png")
         self.sur.blit(planet, (900, 40))
         self.logoR = self.logo.get_rect()
-        self.sur.blit(self.logo, (220, 4))
-        self.sur.blit(game_title.title_surface, (380, 10))
+        bufSur.blit(self.logo, (20, 4))
+        bufSur.blit(game_title.title_surface, (80, 10))
 
     def lvl_1(self):
         lvl_1_box = pygame.Rect(200, 210, 190, 190)
         lvl_1_sur = pygame.Surface((190, 190))
         lvl_1 = str("Level 1")
-        lvl_1_text = game_font.render(lvl_1, True, GOLD3)
+        lvl_1_text = game_font.render(lvl_1, True, WHITE)
         text = pygame.image.load("images/Textures/trak_trim22.jpg")
         planet = pygame.image.load("images/planets/planet4.png")
         shipIcon = pygame.image.load("images/ships/Delux_ships1.2_1.png")
         lvl_1_sur.blit(text, (5, 5))
         lvl_1_sur.blit(planet, (10, 10))
+
         lvl_1_sur.blit(shipIcon, (0, 60))
         lvl_1_sur.blit(shipIcon, (-15, 15))
         lvl_1_sur.blit(shipIcon, (-60, 80))
