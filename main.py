@@ -111,34 +111,41 @@ class Bullets(pygame.sprite.Sprite):
         if self.rect.colliderect(grey_ship.create_clone()):
             laser.play()
             self.kill()
+            score += 1
         if self.rect.colliderect(grey_ship):
             laser.play()
             grey_ship.rect.x = 0
             grey_ship.rect.y = random.randint(80, 250)
             self.kill()
+            score += 1
         if self.rect.colliderect(purple_ship):
             laser.play()
             purple_ship.rect.x = 0
             purple_ship.rect.y = random.randint(80, 250)
             self.kill()
+            score += 1
         if self.rect.colliderect(asteroid):
             laser.play()
             self.kill()
+            score += 1
             asteroid.rect.y = random.randint(80, 250)
             asteroid.rect.x = 0
         if self.rect.colliderect(drone):
             laser.play()
             self.kill()
+            score += 1
             drone.rect.y = random.randint(80, 250)
             drone.rect.x = 0
         if self.rect.colliderect(yellow_ship):
             laser.play()
             self.kill()
+            score += 1
             yellow_ship.rect.y = random.randint(80, 250)
             yellow_ship.rect.x = 0
         if self.rect.colliderect(red_ship):
             laser.play()
             self.kill()
+            score += 1
             red_ship.rect.y = random.randint(80, 250)
             red_ship.rect.x = 0
 
@@ -922,12 +929,6 @@ class Start_Up(pygame.sprite.Sprite):
         self.rect.y = 800
         self.sur.blit(self.image, (160, 0))
 
-    def update(self):
-        screen.blit(self.sur, (0, 0))
-        self.DL_display()
-        self.button()
-        self.text()
-        self.icons()
 
     def DL_display(self):
         DLdisp = pygame.image.load("images/templates/DL-Display004.png")
@@ -977,9 +978,15 @@ class Start_Up(pygame.sprite.Sprite):
         else:
             self.sur.blit(quitoff, (36, 265))
 
-
     def RunGame(self):
         self.sur.fill(BLACK)
+
+    def update(self):
+        screen.blit(self.sur, (0, 0))
+        self.DL_display()
+        self.text()
+        self.icons()
+        self.button()
 
 
 class World_map(pygame.sprite.Sprite):
@@ -992,44 +999,49 @@ class World_map(pygame.sprite.Sprite):
         self.movex = 0
         self.movey = 0
 
+    def icons(self):
+        quit = pygame.image.load("images/Extras/icons_Quit.png")
+        start = pygame.image.load("images/Extras/icons_play.png")
+        pause = pygame.image.load("images/Extras/icons_pause.png")
+        refresh = pygame.image.load("images/Extras/icons_refresh.png")
+        self.sur.blit(quit, (6, 240))
+
     def text(self):
         font = game_font_18
-
         surfacefont = font.render("FREE YanSan", True, MIDNIGHTBLUE)
         surfaceR = surfacefont.get_rect()
         surfaceR.center = (0, 10)
         screen.blit(surfacefont, surfaceR)
 
-        surfacefont = font.render("Level 1", True, MIDNIGHTBLUE)
-        surfaceR = surfacefont.get_rect()
-        surfaceR.center = (200, 210)
-        screen.blit(surfacefont, surfaceR)
 
-        surfacefont = font.render("Exit Game", True, MIDNIGHTBLUE)
+        surfacefont = game_font.render("Level 1", True, BLACK)
         surfaceR = surfacefont.get_rect()
-        surfaceR.center = (40, 260)
+        surfaceR.center = (280, 270)
         screen.blit(surfacefont, surfaceR)
 
     def button(self):
+        surfacefont = game_font.render("Level 1", True, ROYALBLUE2)
+        surfaceR = surfacefont.get_rect()
+        surfaceR.center = (280, 270)
         click = pygame.mouse.get_pressed()
         pos = pygame.mouse.get_pos()
         posX = pos[0]
         posY = pos[1]
+        quiton = pygame.image.load("Sprites/transparentLight/transparentLight45.png")
+        quitoff = pygame.image.load("Sprites/transparentDark/transparentDark45.png")
 
-        if 290 > posX > 110 and 330 > posY > 200:
-            pygame.draw.rect(screen, SLATEGRAY3, (0, 175, 160, 50))
+        if 400 > posX > 180 and 400 > posY > 200:
+            screen.blit(surfacefont, surfaceR)
             if click[0] == 1:
                 self.kill()
                 pygame.mouse.set_visible(False)
-            else:
-                pygame.draw.rect(screen, BLACK, (0, 175, 160, 50))
-        if 180 > posX > 10 and 275 > posY > 230:
-            pygame.draw.rect(screen, SLATEGRAY3, (0, 230, 160, 50))
+        if 180 > posX > 10 and 330 > posY > 250:
+            self.sur.blit(quiton, (36, 265))
             if click[0] == 1:
                 pygame.quit()
                 sys.exit()
             else:
-                pygame.draw.rect(screen, BLACK, (0, 230, 160, 50))
+                self.sur.blit(quitoff, (36, 265))
 
     def threeDship(self, TDx, TDy):
         thrDship = pygame.image.load("images/ships/Delux_ships1.2_1.png")
@@ -1183,6 +1195,7 @@ class World_map(pygame.sprite.Sprite):
         self.bottom()
         self.banner()
         self.world_tiles()
+        self.icons()
         self.threeDship(400, 10)
         self.threeDship(500, 10)
         self.threeDship(600, 10)
@@ -1427,6 +1440,8 @@ while True:
             if event.key == pygame.K_SPACE:
                 purple_ship.attack()
     Main()
-    # scoretext = game_font_18.render("Score {0}".format(score), True, WHITE)
-    # screen.blit(scoretext, (5, 150))
+    scoretext = game_font_18.render("Score {0}".format(score), True, WHITE)
+    if bullet.rect_2.colliderect(asteroid):
+        score = 1
+    screen.blit(scoretext, (5, 650))
     pygame.display.update()
