@@ -78,5 +78,35 @@ class Cockpit(pygame.sprite.Sprite):
         self.y += motionY
         self.x += motionX
 
+class Cursor(pygame.sprite.Sprite):
+    def __init__(self):
+        super(Cursor, self).__init__()
+        self.movex = 0
+        self.movey = 0
+        self.sur = pygame.Surface((168, 148))
+        self.rect = self.sur.get_rect()
+
+    def curpos(self, cx, cy):
+        self.movex += cx
+        self.movey += cy
+        posX = self.movex + 194
+        posY = self.movey + 194
+        self.rect = pygame.Rect(posX, posY, 194, 194)
+        if self.rect.x >= 790:
+            self.rect.x = 790
+        if self.rect.x <= 194:
+            self.rect.x = 194
+        if self.rect.y >= 600:
+            self.rect.y = 600
+        if self.rect.y <= 194:
+            self.rect.y = 194
+
+    def update(self):
+        world_map.sur.blit(self.sur, self.rect)
+        self.sur.fill(WHITE)
+        self.curpos(0, 0)
+
+
+
 
 cockpit = Cockpit()
