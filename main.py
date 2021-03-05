@@ -1007,7 +1007,6 @@ class Start_Up(pygame.sprite.Sprite):
             if click[0] == 1:
                 self.sur.blit(backdrop, (150, 250))
 
-
     def update(self):
         screen.blit(self.sur, (0, 0))
         self.DL_display()
