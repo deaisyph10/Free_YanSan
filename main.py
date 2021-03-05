@@ -84,17 +84,18 @@ class Pilot(pygame.sprite.Sprite):
         self.image = pygame.image.load("images/templates/crosshairs_blue.png")
         self.rect = self.image.get_rect(topleft=(self.x, self.y))
 
-    def update(self):
-        self.render()
-
     def create_bullet(self):
         return Bullets(pygame.mouse.get_pos()[0] + 35, pygame.mouse.get_pos()[1] + 160)
 
     def sec_bul(self):
         return Bullets(pygame.mouse.get_pos()[0] + 65, pygame.mouse.get_pos()[1] + 160)
 
-    def render(self):
+    def draw(self):
         screen.blit(self.image, (pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]))
+
+    def update(self):
+        self.x = pygame.mouse.get_pos()[0]
+        self.y = pygame.mouse.get_pos()[1]
 
 
 class Bullets(pygame.sprite.Sprite):
@@ -173,9 +174,8 @@ class Drone(pygame.sprite.Sprite):
         self.rect.x = 0
         self.rect.y = 0
 
-    def update(self):
-        self.render()
-        self.move()
+    def draw(self):
+        screen.blit(self.image, (self.rect.x, self.rect.y))
 
     def move(self):
         self.rect.x += 4
@@ -187,8 +187,8 @@ class Drone(pygame.sprite.Sprite):
             self.rect.x = 0
             self.rect.y = 0
 
-    def render(self):
-        screen.blit(self.image, (self.rect.x, self.rect.y))
+    def update(self):
+        self.move()
 
 
 class Title_text(pygame.sprite.Sprite):
@@ -201,10 +201,7 @@ class Title_text(pygame.sprite.Sprite):
         self.image = self.title_surface
         self.rect = self.image.get_rect()
 
-    def update(self):
-        self.render()
-
-    def render(self):
+    def draw(self):
         screen.blit(self.image, (self.x, self.y))
 
 
@@ -219,10 +216,7 @@ class Network_Map_Window(pygame.sprite.Sprite):
         self.dream_logo = dream_logo
         self.dream_title = pygame.image.load("images/templates/Dream_green_title.png")
 
-    def update(self):
-        self.render()
-
-    def render(self):
+    def draw(self):
         self.sur.fill(GRAY7)
         back_round.blit(self.sur, (self.x, self.y))
 
@@ -232,17 +226,16 @@ class Header(pygame.sprite.Sprite):
         super().__init__()
         self.x = 1
         self.y = 1
-        self.rect = pygame.Rect(self.x, self.y, screen_width - 2, cell_pxl_size - 32)
+        self.sur = pygame.Surface((screen_width - 2, cell_pxl_size - 32))
+        self.rect = self.sur.get_rect()
+        self.image = self.sur
         self.white_border = pygame.Rect(self.x - 1, self.y - 1, screen_width, cell_pxl_size - 30)
         self.dream_logo_2 = dream_logo_2
         self.LLC_icon = LLC_icon_micro
 
-    def update(self):
-        self.render()
-
-    def render(self):
-        pygame.draw.rect(screen, GRAY76, self.white_border)
-        pygame.draw.rect(screen, GRAY7, self.rect)
+    def draw(self):
+        screen.blit(self.white_border, (0, 0))
+        screen.blit(self.image, (1, 1))
         screen.blit(self.dream_logo_2, (10, 10))
         screen.blit(self.LLC_icon, (60, 10))
 
@@ -250,14 +243,12 @@ class Header(pygame.sprite.Sprite):
 class LeftToolbar(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.x = 0
-        self.y = 50
         self.sur = pygame.Surface((200, 400))
         self.rect = self.sur.get_rect()
+        self.image = self.sur
         self.sur.fill(GRAY7)
         self.white_border = pygame.Surface((200, 400))
         self.white_border.fill(WHITE)
-        self.boxes()
 
     def boxes(self):
         self.box1 = pygame.Surface((200, 50))
@@ -291,26 +282,24 @@ class LeftToolbar(pygame.sprite.Sprite):
         self.sur.blit(purple_ship.image, (80, 202))
         self.sur.blit(grey_ship.image, (85, 104))
 
-    def render(self):
+    def draw(self):
         self.white_border.blit(self.sur, (2, 2))
-        screen.blit(self.white_border, (self.x, self.y))
+        screen.blit(self.white_border, (0, 50))
 
     def update(self):
         self.BattleKey()
-        self.render()
-
+        self.boxes()
 
 class YanSan_Window(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.x = 998
         self.y = 50
-
-    def window_setup(self):
         self.white_border = pygame.Surface((200, 400))
         self.white_border.fill(WHITE)
         self.sur = pygame.Surface((200, 400))
         self.rect = self.sur.get_rect()
+        self.image = self.sur
         self.sur.fill(GRAY7)
 
     def YanSan_logo(self):
@@ -338,7 +327,7 @@ class YanSan_Window(pygame.sprite.Sprite):
         self.textZ = str("'Z'..DRIVE.. ___ Artificial Intelligence ___")
         self.textZ_sur = game_font_10.render(self.textZ, True, WHITE)
 
-    def render(self):
+    def draw(self):
         self.sur.blit(self.textHeader_sur, (25, 10))
         self.sur.blit(self.textY_sur, (20, 115))
         self.sur.blit(self.textX_sur, (20, 215))
@@ -359,32 +348,29 @@ class YanSan_Window(pygame.sprite.Sprite):
         screen.blit(self.sur, (self.x, self.y))
 
     def update(self):
-        self.window_setup()
         self.header()
         self.X_drive()
         self.Y_drive()
         self.Z_drive()
         self.YanSan_logo()
-        self.render()
 
 
 class Menu_Box1(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.x = 10
-        self.y = 60
         self.x = 0
         self.y = 450
         self.sur = pygame.Surface((200, 200))
+        self.rect = self.sur.get_rect()
+        self.image = self.sur
         self.sur.fill(BLACK)
-        self.white_border = pygame.Rect(self.x - 1, self.y - 1, 202, 202)
+        self.white_border = pygame.Surface((202, 202))
+        self.Wrect = self.white_border.get_rect()
+        self.white_border.fill(WHITE)
 
-    def update(self):
-        self.render()
-
-    def render(self):
-        screen.blit(self.sur, (0, 450))
-        pygame.draw.rect(self.sur, GRAY7, self.white_border)
+    def draw(self):
+        screen.blit(self.image, (0, 450))
+        screen.blit(self.white_border, (0, 450))
 
 
 class PlayerInfobox(pygame.sprite.Sprite):
@@ -396,9 +382,6 @@ class PlayerInfobox(pygame.sprite.Sprite):
         self.Bsur = pygame.Surface((self.x, self.y))
         self.playership()
         self.score(0)
-
-    def update(self):
-        self.render()
 
     def playership(self):
         self.image = pygame.image.load("images/ships/13B.png")
@@ -412,7 +395,7 @@ class PlayerInfobox(pygame.sprite.Sprite):
     def score(self, Ascore):
         self.text_sur = game_font_18.render("_Asteriods_Kills_" + str(Ascore), True, WHITE)
 
-    def render(self):
+    def draw(self):
         screen.blit(self.Bsur, (998, 450))
         self.Bsur.fill(WHITE)
         self.Bsur.blit(self.sur, (1, 1))
@@ -425,27 +408,11 @@ class Main_Menu(pygame.sprite.Sprite):
         super().__init__()
         self.x = 200
         self.y = 200
-        self.rectX = 200
-        self.rectY = 200
-        self.rect = pygame.Rect(self.x, self.y, 200, 200 - 1)
-        self.white_border = pygame.Rect(self.x - 1, self.y - 1, 200 + 2, 200 + 1)
-        self.rect = pygame.Rect(self.x, self.y, self.rectX, self.rectY)
-        self.Wrect = pygame.Rect(self.x - 1, self.y - 1, self.rectX - 2, self.rect.y - 2)
-
-    def update(self):
-        self.render()
-        self.copy1(200, 50)
-        self.copy2(400, 50)
-        self.copy3(600, 50)
-        self.copy4(800, 50)
-        self.copy5(200, 250)
-        self.copy6(400, 250)
-        self.copy7(600, 250)
-        self.copy8(800, 250)
-        self.copy9(200, 450)
-        self.copy10(400, 450)
-        self.copy11(600, 450)
-        self.copy12(800, 450)
+        self.sur = pygame.Surface((200, 200 - 1))
+        self.image = self.sur
+        self.white_border = pygame.Surface((202, 201))
+        self.rect = self.sur.get_rect()
+        self.Wrect = self.white_border.get_rect()
 
     def copy1(self, copyX, copyY):
         self.rectX = copyX
@@ -543,10 +510,22 @@ class Main_Menu(pygame.sprite.Sprite):
         pygame.draw.rect(screen, GRAY7, self.Wrect12)
         pygame.draw.rect(screen, BLACK, self.rect12)
 
+    def draw(self):
+        screen.blit(self.image, (200,  200))
 
-    def render(self):
-        pygame.draw.rect(screen, GRAY7, self.Wrect)
-        pygame.draw.rect(screen, BLACK, self.rect)
+    def update(self):
+        self.copy1(200, 50)
+        self.copy2(400, 50)
+        self.copy3(600, 50)
+        self.copy4(800, 50)
+        self.copy5(200, 250)
+        self.copy6(400, 250)
+        self.copy7(600, 250)
+        self.copy8(800, 250)
+        self.copy9(200, 450)
+        self.copy10(400, 450)
+        self.copy11(600, 450)
+        self.copy12(800, 450)
 
 
 class Photon_Charger_Window(pygame.sprite.Sprite):
@@ -565,10 +544,7 @@ class Photon_Charger_Window(pygame.sprite.Sprite):
         self.charger_box = pygame.Surface((150, 150))
         self.charger_box_rect = self.charger_box.get_rect()
 
-    def update(self):
-        self.render()
-
-    def render(self):
+    def draw(self):
         screen.blit(self.white_border, (self.x, self.y))
         self.white_border.fill(WHITE)
         screen.blit(self.charger_box, (self.x, self.y))
@@ -587,10 +563,7 @@ class Planet_larger(pygame.sprite.Sprite):
         self.surface = self.image
         self.rect = self.image.get_rect()
 
-    def update(self):
-        self.render()
-
-    def render(self):
+    def draw(self):
         screen.blit(self.image, (self.x, self.y))
 
 
@@ -603,10 +576,7 @@ class Planet_yellow(pygame.sprite.Sprite):
         self.surface = self.image
         self.rect = self.image.get_rect()
 
-    def update(self):
-        self.render()
-
-    def render(self):
+    def draw(self):
         screen.blit(self.image, (self.x, self.y))
 
 
@@ -676,7 +646,6 @@ class Asteroid(pygame.sprite.Sprite):
     def update(self):
         self.spin()
         self.move()
-        self.render()
 
     def spin(self):
         self.index += 1
@@ -687,7 +656,7 @@ class Asteroid(pygame.sprite.Sprite):
             self.rect.x = random.randint(0, 60)
             self.rect.y = random.randint(20, 360)
 
-    def render(self):
+    def draw(self):
         screen.blit(self.image, (self.rect.x, self.rect.y))
 
 
@@ -712,9 +681,8 @@ class Red_ship(pygame.sprite.Sprite):
         self.create_bullet()
         self.sec_bullet()
 
-    def render(self):
+    def draw(self):
         screen.blit(self.image, (self.rect.x, self.rect.y))
-        self.move()
 
     def create_bullet(self):
         return Enemy_fire(self.rect.x, self.rect.y)
@@ -723,7 +691,7 @@ class Red_ship(pygame.sprite.Sprite):
         return Enemy_fire(self.rect.x + 22, self.rect.y)
 
     def update(self):
-        self.render()
+        self.move()
 
 
 class Enemy_fire(pygame.sprite.Sprite):
@@ -783,14 +751,13 @@ class Purple_ship(pygame.sprite.Sprite):
         bullets_group.add(purple_ship.create_bullet())
         bullets_group.add(purple_ship.sec_bullet())
 
+    def draw(self):
+        screen.blit(self.image, (self.rect.x, self.rect.y))
+
     def update(self):
         self.rect.x = self.rect.x + self.movex
         self.rect.y = self.rect.y + self.movey
-        self.render()
         self.move()
-
-    def render(self):
-        screen.blit(self.image, (self.rect.x, self.rect.y))
 
 
 class Enemy_Bullets(pygame.sprite.Sprite):
@@ -836,12 +803,6 @@ class Yellow_ship(pygame.sprite.Sprite):
         if self.rect.y <= 0:
             self.rect.y = 0
 
-    def update(self):
-        self.rect.x = self.rect.x + self.movex
-        self.rect.y = self.rect.y + self.movey
-        self.render()
-        self.move()
-
     def attack(self):
         self.create_bullet()
         self.sec_bullet()
@@ -858,8 +819,13 @@ class Yellow_ship(pygame.sprite.Sprite):
     def sec_bullet(self):
         return Enemy_Bullets(self.rect.x + 20, self.y)
 
-    def render(self):
+    def draw(self):
         screen.blit(self.image, (self.rect.x, self.rect.y))
+
+    def update(self):
+        self.rect.x = self.rect.x + self.movex
+        self.rect.y = self.rect.y + self.movey
+        self.move()
 
 
 class Grey_ship(pygame.sprite.Sprite):
@@ -884,12 +850,6 @@ class Grey_ship(pygame.sprite.Sprite):
         if self.rect.y <= 0:
             self.rect.y = 0
 
-    def update(self):
-        self.rect.x = self.rect.x + self.movex
-        self.rect.y = self.rect.y + self.movey
-        self.render()
-        self.move()
-
     def attack(self):
         self.create_bullet()
         self.sec_bullet()
@@ -909,23 +869,25 @@ class Grey_ship(pygame.sprite.Sprite):
     def create_clone(self):
         return Grey_ship()
 
-    def render(self):
+    def draw(self):
         screen.blit(self.image, (self.rect.x, self.rect.y))
+
+    def update(self):
+        self.rect.x = self.rect.x + self.movex
+        self.rect.y = self.rect.y + self.movey
+        self.move()
 
 
 class Start_Up(pygame.sprite.Sprite):
     def __init__(self):
         super(Start_Up, self).__init__()
-        self.image = pygame.image.load("images/templates/cockpit.blue.jpg")
+        self.back = pygame.image.load("images/templates/cockpit.blue.jpg")
+        self.DLdisp = pygame.image.load("images/templates/DL-Display004.png")
         self.sur = pygame.Surface((1200, 800))
+        self.sur.blit(self.back, (160, 0))
+        self.back.blit(self.DLdisp, (560, 250))
         self.rect = self.sur.get_rect()
-        self.rect.x = 1200
-        self.rect.y = 800
-        self.sur.blit(self.image, (160, 0))
-
-    def DL_display(self):
-        DLdisp = pygame.image.load("images/templates/DL-Display004.png")
-        self.sur.blit(DLdisp, (560, 250))
+        self.image = self.sur
 
     def text(self):
         font = mono_font
@@ -933,8 +895,6 @@ class Start_Up(pygame.sprite.Sprite):
         surfaceR = text.get_rect()
         surfaceR.center = (120, 50)
         self.sur.blit(text, surfaceR)
-        YanSan_window.render()
-        pygame.display.update()
 
     def icons(self):
         quit = pygame.image.load("images/icons/icons_quit_white.png")
@@ -983,17 +943,11 @@ class Start_Up(pygame.sprite.Sprite):
                 backdrop.fill(BLACK)
                 self.sur.blit(backdrop, (150, 250))
 
-        else:
-            self.sur.blit(setup, (22, 260))
-            backdrop.fill(GRAY3)
-
         if 180 > posX > 10 and 640 > posY > 560:
             self.sur.blit(quiton, (36, 575))
             if click[0] == 1:
                 pygame.quit()
                 sys.exit()
-        else:
-            self.sur.blit(quitoff, (36, 575))
 
     def setup_menu(self):
         click = pygame.mouse.get_pressed()
@@ -1007,9 +961,10 @@ class Start_Up(pygame.sprite.Sprite):
             if click[0] == 1:
                 self.sur.blit(backdrop, (150, 250))
 
+    def draw(self):
+        screen.blit(self.image, (0, 0))
+
     def update(self):
-        screen.blit(self.sur, (0, 0))
-        self.DL_display()
         self.text()
         self.icons()
         self.button()
@@ -1197,9 +1152,11 @@ class World_map(pygame.sprite.Sprite):
         pygame.draw.rect(self.sur, BLACK, R2_8)
         pygame.draw.rect(self.sur, BLACK, R2_10)
 
-    def update(self):
+    def draw(self):
         screen.blit(self.sur, (0, 0))
         self.sur.blit(self.image, (0, 0))
+
+    def update(self):
         self.lvl_1()
         self.lvl_2()
         self.lvl_3()
@@ -1218,6 +1175,60 @@ class World_map(pygame.sprite.Sprite):
         self.button()
 
 
+class GalaxyWin(pygame.sprite.Sprite):
+    def __init__(self):
+        super(GalaxyWin, self).__init__()
+        self.sur = pygame.Surface((600, 300))
+        self.image = self.sur
+        self.rect = self.sur.get_rect()
+        self.sur.fill(GRAY31)
+        self.moveX = 0
+        self.moveY = 0
+
+    def move(self, mx, my):
+        self.moveX += mx
+        self.moveY += my
+        self.rect.x = self.moveX + self.rect.x
+        self.rect.y = self.moveY + self.rect.y
+
+    def buttons(self):
+        choice1 = pygame.Surface((120, 80))
+        choice2 = pygame.Surface((120, 80))
+        choice3 = pygame.Surface((120, 80))
+        choice4 = pygame.Surface((120, 80))
+        click = pygame.mouse.get_pressed()
+        pos = pygame.mouse.get_pos()
+        posX = pos[0]
+        posY = pos[1]
+        if 300 > posX > 180 and 300 > posY > 220:
+            self.sur.blit(choice1, (10, 80))
+            choice1.fill(GRAY54)
+        if 440 > posX > 320 and 300 > posY > 220:
+            self.sur.blit(choice2, (160, 80))
+            choice2.fill(GRAY54)
+        if 580 > posX > 460 and 300 > posY > 220:
+            self.sur.blit(choice3, (310, 80))
+            choice3.fill(GRAY54)
+        if 720 > posX > 600 and 300 > posY > 220:
+            self.sur.blit(choice4, (460, 80))
+            choice4.fill(GRAY34)
+            if click[0] == 1:
+                self.kill()
+
+    def headertext(self):
+        select = str("Select a Galaxy to Explore")
+        headertxt = game_font.render(select, True, WHITE)
+        self.sur.blit(headertxt, (0, 10))
+
+    def draw(self):
+        screen.blit(self.sur, (160, 120))
+
+    def update(self):
+        self.move(0, 0)
+        self.headertext()
+        self.buttons()
+
+
 class Main:
     def __init__(self):
         self.update()
@@ -1226,16 +1237,23 @@ class Main:
     def update(self):
         screen.fill(BLACK)
         screen.blit(back_round, (0, 0))
-        grid_group.update()
-        self.statments()
-        all_sprites.update()
-        self.belt()
-        asteroid_group.update()
-        bullet_group.draw(screen)
-        planet_group.update()
-        menu_group.update()
-        bullet_group.update()
+        #grid_group.draw(screen)
+        #grid_group.update()
+        #self.statments()
+        #all_sprites.draw(screen)
+        #all_sprites.update()
+        #self.belt()
+        #asteroid_group.draw(screen)
+        #asteroid_group.update()
+        #bullet_group.draw(screen)
+        #planet_group.draw(screen)
+        #planet_group.update()
+        #menu_group.draw(screen)
+        #menu_group.update()
+        #bullet_group.update()
+        map_group.draw(screen)
         map_group.update()
+        start_group.draw(screen)
         start_group.update()
 
         if battle is True:
@@ -1316,7 +1334,9 @@ x = 1010
 y = 520
 enemy_bullets = Enemy_Bullets(x, y)
 bullet = Bullets(x, y)
+
 # Variables
+galaxy_win = GalaxyWin()
 world_map = World_map()
 drone = Drone()
 asteroid = Asteroid()
@@ -1359,7 +1379,7 @@ bullets_group.add(enemy_bullets)
 battle_sprites.add(red_ship, yellow_ship, purple_ship)
 menu_group.add(playerInfobox, photon_charger_window, YanSan_window, LeftToolbar)
 all_sprites.add(planet_larger, planet_yellow, asteroid, drone, grey_ship, red_ship, purple_ship, yellow_ship, player)
-start_group.add(world_map, start_up)
+start_group.add(galaxy_win, start_up)
 grid_group.add(Main_Menu)
 map_group.add(world_map)
 # 'for' statements

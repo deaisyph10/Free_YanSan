@@ -6,9 +6,6 @@ class GalaxyWin(pygame.sprite.Sprite):
         self.sur.fill(GRAY31)
         self.moveX = 0
         self.moveY = 0
-        self.move(0, 0)
-        self.headertext()
-        self.buttons()
 
     def move(self, mx, my):
         self.moveX += mx
@@ -45,10 +42,10 @@ class GalaxyWin(pygame.sprite.Sprite):
         headertxt = game_font.render(select, True, WHITE)
         self.sur.blit(headertxt, (0, 10))
 
-    def render(self):
+    def draw(self):
         screen.blit(self.sur, (160, 120))
 
     def update(self):
-        self.render()
-
-
+        self.move(0, 0)
+        self.headertext()
+        self.buttons()
