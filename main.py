@@ -290,6 +290,7 @@ class LeftToolbar(pygame.sprite.Sprite):
         self.BattleKey()
         self.boxes()
 
+
 class YanSan_Window(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -917,20 +918,16 @@ class Start_Up(pygame.sprite.Sprite):
         startoff = pygame.image.load("images/Sprites/transparentDark/transparentDark40.png")
         quiton = pygame.image.load("images/icons/icons_quit_gray.png")
         quitoff = pygame.image.load("images/icons/icons_quit_white.png")
-        startgalaxy = pygame.Surface((600, 160))
-        startgalaxy.fill(GRAY3)
-        startgalaxy.blit(dream_logo, (200, 0))
         setup = pygame.image.load("images/icons/icons_setup_white2.png")
         setup2 = pygame.image.load("images/icons/icons_setup_gray3.png")
         backdrop = pygame.Surface((300, 500))
         backdrop.fill(GRAY3)
 
         if 150 > posX > 10 and 230 > posY > 120:
-            self.sur.blit(startgalaxy, (150, 80))
-            self.sur.blit(starttxt, (20, 160))
             self.sur.blit(starton, (16, 61))
             if click[0] == 1:
-                self.kill()
+                start_group.add(galaxy_win)
+                start_group.draw(screen)
         else:
             self.sur.blit(startoff, (20, 160))
             self.sur.blit(start, (20, 60))
@@ -1178,10 +1175,10 @@ class World_map(pygame.sprite.Sprite):
 class GalaxyWin(pygame.sprite.Sprite):
     def __init__(self):
         super(GalaxyWin, self).__init__()
-        self.sur = pygame.Surface((600, 300))
+        self.sur = pygame.Surface((600, 250))
         self.image = self.sur
         self.rect = self.sur.get_rect()
-        self.sur.fill(GRAY31)
+        self.sur.fill(GRAY3)
         self.moveX = 0
         self.moveY = 0
 
@@ -1201,17 +1198,17 @@ class GalaxyWin(pygame.sprite.Sprite):
         posX = pos[0]
         posY = pos[1]
         if 300 > posX > 180 and 300 > posY > 220:
+            choice1.fill(WHITE)
             self.sur.blit(choice1, (10, 80))
-            choice1.fill(GRAY54)
         if 440 > posX > 320 and 300 > posY > 220:
+            choice2.fill(WHITE)
             self.sur.blit(choice2, (160, 80))
-            choice2.fill(GRAY54)
         if 580 > posX > 460 and 300 > posY > 220:
+            choice3.fill(WHITE)
             self.sur.blit(choice3, (310, 80))
-            choice3.fill(GRAY54)
         if 720 > posX > 600 and 300 > posY > 220:
+            choice4.fill(WHITE)
             self.sur.blit(choice4, (460, 80))
-            choice4.fill(GRAY34)
             if click[0] == 1:
                 self.kill()
 
@@ -1221,12 +1218,14 @@ class GalaxyWin(pygame.sprite.Sprite):
         self.sur.blit(headertxt, (0, 10))
 
     def draw(self):
-        screen.blit(self.sur, (160, 120))
+        screen.blit(self.image, (200, 200))
 
     def update(self):
-        self.move(0, 0)
         self.headertext()
         self.buttons()
+        self.move(10, 0)
+        if self.rect.x >= 180:
+            self.rect.x = 180
 
 
 class Main:
@@ -1379,7 +1378,7 @@ bullets_group.add(enemy_bullets)
 battle_sprites.add(red_ship, yellow_ship, purple_ship)
 menu_group.add(playerInfobox, photon_charger_window, YanSan_window, LeftToolbar)
 all_sprites.add(planet_larger, planet_yellow, asteroid, drone, grey_ship, red_ship, purple_ship, yellow_ship, player)
-start_group.add(galaxy_win, start_up)
+start_group.add(start_up)
 grid_group.add(Main_Menu)
 map_group.add(world_map)
 # 'for' statements
