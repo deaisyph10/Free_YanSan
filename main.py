@@ -23,7 +23,8 @@ back_round.blit(back_round_im, (0, 0))
 music = pygame.mixer.Sound("images/sounds/monkeys wedding_low.wav")
 laser = pygame.mixer.Sound("images/sounds/laser_SE_hit.wav")
 shoot_laser = pygame.mixer.Sound("images/sounds/laser_SE_shoot.wav")
-# music.play(10)
+sound_click = pygame.mixer.Sound("images/sounds/click.mp3")
+
 
 
 # Game Font
@@ -114,19 +115,16 @@ class Bullets(pygame.sprite.Sprite):
         if self.rect.colliderect(grey_ship.create_clone()):
             laser.play()
             self.kill()
-
         if self.rect.colliderect(grey_ship):
             laser.play()
             grey_ship.rect.x = 0
             grey_ship.rect.y = random.randint(80, 250)
             self.kill()
-
         if self.rect.colliderect(purple_ship):
             laser.play()
             purple_ship.rect.x = 0
             purple_ship.rect.y = random.randint(80, 250)
             self.kill()
-
         if self.rect.colliderect(asteroid):
             laser.play()
             self.kill()
@@ -882,13 +880,15 @@ class Grey_ship(pygame.sprite.Sprite):
 class Start_Up(pygame.sprite.Sprite):
     def __init__(self):
         super(Start_Up, self).__init__()
-        self.back = pygame.image.load("images/templates/cockpit.blue.jpg")
+        self.back = pygame.image.load("images/templates/matrix_slate_1200x800.jpg")
+        self.menu_screen = pygame.image.load("images/templates/cockpit.blue.jpg")
         self.DLdisp = pygame.image.load("images/templates/DL-Display004.png")
         self.sur = pygame.Surface((1200, 800))
-        self.sur.blit(self.back, (160, 0))
-        self.back.blit(self.DLdisp, (560, 250))
-        self.rect = self.sur.get_rect()
         self.image = self.sur
+        self.menu_screen.blit(self.DLdisp, (400, 250))
+        self.rect = self.sur.get_rect()
+        self.image.blit(self.back, (-400, 0))
+        self.back.blit(self.menu_screen, (160, 0))
 
     def text(self):
         font = mono_font
@@ -920,52 +920,38 @@ class Start_Up(pygame.sprite.Sprite):
         quitoff = pygame.image.load("images/icons/icons_quit_white.png")
         setup = pygame.image.load("images/icons/icons_setup_white2.png")
         setup2 = pygame.image.load("images/icons/icons_setup_gray3.png")
-        backdrop = pygame.Surface((300, 500))
-        backdrop.fill(GRAY3)
+        backdrop = pygame.Surface((580, 300))
 
         if 150 > posX > 10 and 230 > posY > 120:
             self.sur.blit(starton, (16, 61))
             if click[0] == 1:
                 start_group.add(galaxy_win)
                 start_group.draw(screen)
+                sound_click.play()
         else:
-            self.sur.blit(startoff, (20, 160))
-            self.sur.blit(start, (20, 60))
+            self.back.blit(startoff, (20, 160))
+            self.back.blit(start, (20, 60))
 
         if 150 > posX > 10 and 350 > posY > 260:
             self.icons()
-            self.sur.blit(backdrop, (150, 250))
             if click[0] == 1:
-                self.sur.blit(setup2, (22, 260))
+                self.back.blit(setup2, (22, 260))
                 backdrop.fill(BLACK)
-                self.sur.blit(backdrop, (150, 250))
-
+                self.back.blit(backdrop, (180, 310))
         if 180 > posX > 10 and 640 > posY > 560:
             self.sur.blit(quiton, (36, 575))
             if click[0] == 1:
                 pygame.quit()
                 sys.exit()
 
-    def setup_menu(self):
-        click = pygame.mouse.get_pressed()
-        pos = pygame.mouse.get_pos()
-        posX = pos[0]
-        posY = pos[1]
-        backdrop = pygame.Surface((300, 500))
-        backdrop.fill(GRAY3)
-        if 150 > posX > 10 and 350 > posY > 260:
-            self.icons()
-            if click[0] == 1:
-                self.sur.blit(backdrop, (150, 250))
-
     def draw(self):
-        screen.blit(self.image, (0, 0))
+        self.sur.blit(self.back, (0, 0))
 
     def update(self):
+        self.draw()
         self.text()
         self.icons()
         self.button()
-        self.setup_menu()
 
 
 class World_map(pygame.sprite.Sprite):
@@ -1176,11 +1162,13 @@ class GalaxyWin(pygame.sprite.Sprite):
     def __init__(self):
         super(GalaxyWin, self).__init__()
         self.sur = pygame.Surface((600, 250))
+        self.stars = pygame.image.load("images/templates/Stars.png")
         self.image = self.sur
         self.rect = self.sur.get_rect()
-        self.sur.fill(GRAY3)
+        self.sur.blit(self.stars, (0, 0))
         self.moveX = 0
         self.moveY = 0
+        self.rect.y = 50
 
     def move(self, mx, my):
         self.moveX += mx
@@ -1189,25 +1177,32 @@ class GalaxyWin(pygame.sprite.Sprite):
         self.rect.y = self.moveY + self.rect.y
 
     def buttons(self):
-        choice1 = pygame.Surface((120, 80))
-        choice2 = pygame.Surface((120, 80))
-        choice3 = pygame.Surface((120, 80))
-        choice4 = pygame.Surface((120, 80))
+        choice1 = pygame.image.load("images/templates/BOX.4star.png")
+        choice2 = pygame.image.load("images/templates/BOX.4star.png")
+        choice3 = pygame.image.load("images/templates/BOX.4star.png")
+        choice4 = pygame.image.load("images/templates/BOX.4star.png")
         click = pygame.mouse.get_pressed()
         pos = pygame.mouse.get_pos()
         posX = pos[0]
         posY = pos[1]
-        if 300 > posX > 180 and 300 > posY > 220:
-            choice1.fill(WHITE)
+        self.explore_image = pygame.image.load("images/icons/explore_button.png")
+        self.sur.blit(self.explore_image, (20, 180))
+        self.gal1 = pygame.image.load("images/planets/galaxy_1s.jpg")
+        self.sur.blit(self.gal1, (10, 80))
+        self.gal2 = pygame.image.load("images/planets/galaxy_2s.jpg")
+        self.sur.blit(self.gal2, (160, 80))
+        self.gal3 = pygame.image.load("images/planets/galaxy_3.png")
+        self.sur.blit(self.gal3, (310, 80))
+        self.gal4 = pygame.image.load("images/planets/galaxy_4s.jpg")
+        self.sur.blit(self.gal4, (460, 80))
+
+        if 300 > posX > 180 and 200 > posY > 120:
             self.sur.blit(choice1, (10, 80))
-        if 440 > posX > 320 and 300 > posY > 220:
-            choice2.fill(WHITE)
+        if 420 > posX > 360 and 200 > posY > 120:
             self.sur.blit(choice2, (160, 80))
-        if 580 > posX > 460 and 300 > posY > 220:
-            choice3.fill(WHITE)
+        if 580 > posX > 500 and 200 > posY > 120:
             self.sur.blit(choice3, (310, 80))
-        if 720 > posX > 600 and 300 > posY > 220:
-            choice4.fill(WHITE)
+        if 720 > posX > 640 and 200 > posY > 120:
             self.sur.blit(choice4, (460, 80))
             if click[0] == 1:
                 self.kill()
@@ -1218,7 +1213,7 @@ class GalaxyWin(pygame.sprite.Sprite):
         self.sur.blit(headertxt, (0, 10))
 
     def draw(self):
-        screen.blit(self.image, (200, 200))
+        screen.blit(self.sur, (200, 400))
 
     def update(self):
         self.headertext()
