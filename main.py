@@ -938,6 +938,7 @@ class Start_Up(pygame.sprite.Sprite):
                 self.back.blit(setup2, (22, 260))
                 backdrop.fill(BLACK)
                 self.back.blit(backdrop, (180, 310))
+                sound_click.play()
         if 180 > posX > 10 and 640 > posY > 560:
             self.sur.blit(quiton, (36, 575))
             if click[0] == 1:
@@ -1202,8 +1203,6 @@ class GalaxyWin(pygame.sprite.Sprite):
         choice2_2 = pygame.image.load("images/icons/BOX.4star.outerblack.png")
         choice3_2 = pygame.image.load("images/icons/BOX.4star.outerblack.png")
         choice4_2 = pygame.image.load("images/icons/BOX.4star.outerblack.png")
-
-
         click = pygame.mouse.get_pressed()
         pos = pygame.mouse.get_pos()
         posX = pos[0]
@@ -1218,31 +1217,35 @@ class GalaxyWin(pygame.sprite.Sprite):
         self.sur.blit(self.gal3, (310, 80))
         self.gal4 = pygame.image.load("images/planets/galaxy_4s.jpg")
         self.sur.blit(self.gal4, (460, 80))
-
         if 220 > posX > 180 and 115 > posY > 70:
             if click[0] == 1:
                 self.kill()
+                sound_click.play()
         if 300 > posX > 180 and 200 > posY > 120:
             self.sur.blit(choice1, (10, 80))
             self.sur.blit(choice1_1, (10, 80))
             if click[0] == 1:
                 self.sur.blit(choice1_2, (10, 80))
                 self.nav_box()
+                sound_click.play()
         if 420 > posX > 360 and 200 > posY > 120:
             self.sur.blit(choice2, (160, 80))
             self.sur.blit(choice2_1, (160, 80))
             if click[0] == 1:
                 self.sur.blit(choice2_2, (160, 80))
+                sound_click.play()
         if 580 > posX > 500 and 200 > posY > 120:
             self.sur.blit(choice3, (310, 80))
             self.sur.blit(choice3_1, (310, 80))
             if click[0] == 1:
                 self.sur.blit(choice3_2, (310, 80))
+                sound_click.play()
         if 720 > posX > 640 and 200 > posY > 120:
             self.sur.blit(choice4, (460, 80))
             self.sur.blit(choice4_1, (460, 80))
             if click[0] == 1:
                 self.sur.blit(choice4_2, (460, 80))
+                sound_click.play()
 
     def headertext(self):
         select = str("Select a Galaxy to Explore")
@@ -1259,6 +1262,51 @@ class GalaxyWin(pygame.sprite.Sprite):
         if self.rect.x >= 180:
             self.rect.x = 180
 
+
+class Galaxy_data_Window(pygame.sprite.Sprite):
+    def __init__(self):
+        super(Galaxy_data_Window, self).__init__()
+        self.sur = pygame.Surface((200, 600))
+        self.rect = self.sur.get_rect()
+        self.moveX = 0
+        self.moveY = 0
+        self.arrow = pygame.image.load("images/icons/arrow.50x50.png")
+        self.sur.fill(BLACK)
+        self.sur.blit(self.arrow, (0, 2))
+
+    def galaxy_image(self):
+        self.image = pygame.image.load("images.")
+        self.image_rect = self.image.get_rect()
+        self.image_label_str = str("Galaxy 1 'Boiteese'")
+        self.image_label = game_font_10.render(self.image_label_str, True, WHITE)
+        self.image_label_rect = self.image_label.get_rect()
+        self.image_label_icon = pygame.image.load("images.")
+
+    def data(self):
+        self.text_sur = pygame.Surface((150, 100))
+        self.text_sur_rect = self.text_sur.get_rect()
+        self.text_str = str("Galaxy 1")
+        self.text = game_font_10.render(self.text_str, True, WHITE)
+        self.text_rect = self.text.get_rect()
+        self.text_icon = pygame.image.load("images.")
+
+    def move(self, mx, my):
+        self.moveX = mx
+        self.moveY = my
+        self.rect.x = self.rect.x + self.moveX
+        self.rect.y = self.rect.y + self.moveY
+
+    def draw(self):
+        self.text_sur.blit(self.text, (10, 10))
+        self.sur.blit(self.image, (30, 40))
+        self.sur.blit(self.image_label, (5, 5))
+        screen.blit(self.sur, (600, 100))
+
+    def update(self):
+        self.data()
+        self.move()
+        self.galaxy_image()
+        self.draw()
 
 class Main:
     def __init__(self):
@@ -1284,6 +1332,7 @@ class Main:
         #bullet_group.update()
         map_group.draw(screen)
         map_group.update()
+        Galaxy_group.update()
         start_group.draw(screen)
         start_group.update()
 
@@ -1367,6 +1416,7 @@ enemy_bullets = Enemy_Bullets(x, y)
 bullet = Bullets(x, y)
 
 # Variables
+galaxy_data_win = Galaxy_data_Window()
 galaxy_win = GalaxyWin()
 world_map = World_map()
 drone = Drone()
@@ -1402,6 +1452,7 @@ asteroid_group = pygame.sprite.Group()
 all_sprites = pygame.sprite.Group()
 map_group = pygame.sprite.Group()
 net_menu = pygame.sprite.Group()
+Galaxy_group = pygame.sprite.Group()
 net_menu_sprite = Network_Map_Window()
 # Fill the groups with their Sprites
 net_menu.add(net_menu_sprite)
@@ -1413,9 +1464,12 @@ all_sprites.add(planet_larger, planet_yellow, asteroid, drone, grey_ship, red_sh
 start_group.add(start_up)
 grid_group.add(Main_Menu)
 map_group.add(world_map)
+Galaxy_group.add(galaxy_data_win)
+
 # 'for' statements
 voice1.play()
 # voice2.play()
+
 for i in range(760):
     x = random.randrange(140, 1000)
     y = random.randrange(14, 36)
