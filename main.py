@@ -1174,14 +1174,13 @@ class GalaxyWin(pygame.sprite.Sprite):
 
     def nav_box(self):
         navstring = str("Send coordinate-cache data block via ::// SHIP_navigation.SYSTEMS")
-        selected_image = pygame.image.load("images/planets/galaxy_1s.jpg")
+        ship_image = pygame.image.load("images/ships/Ship_ICON.png")
         self.navtext = game_font_10.render(navstring, True, WHITE)
         self.navimage = pygame.Surface((360, 80))
         self.navimage.fill(BLACK)
         self.navimage.blit(self.navtext, (5, 10))
-        self.navimage.blit(selected_image, (260, 0))
+        self.navimage.blit(ship_image, (260, 10))
         self.sur.blit(self.navimage, (200, 170))
-
 
     def move(self, mx, my):
         self.moveX += mx
@@ -1194,6 +1193,17 @@ class GalaxyWin(pygame.sprite.Sprite):
         choice2 = pygame.image.load("images/templates/BOX.4star.png")
         choice3 = pygame.image.load("images/templates/BOX.4star.png")
         choice4 = pygame.image.load("images/templates/BOX.4star.png")
+        choice1_1 = pygame.image.load("images/icons/BOX.4star.innerblack.png")
+        choice2_1 = pygame.image.load("images/icons/BOX.4star.innerblack.png")
+        choice3_1 = pygame.image.load("images/icons/BOX.4star.innerblack.png")
+        choice4_1 = pygame.image.load("images/icons/BOX.4star.innerblack.png")
+
+        choice1_2 = pygame.image.load("images/icons/BOX.4star.outerblack.png")
+        choice2_2 = pygame.image.load("images/icons/BOX.4star.outerblack.png")
+        choice3_2 = pygame.image.load("images/icons/BOX.4star.outerblack.png")
+        choice4_2 = pygame.image.load("images/icons/BOX.4star.outerblack.png")
+
+
         click = pygame.mouse.get_pressed()
         pos = pygame.mouse.get_pos()
         posX = pos[0]
@@ -1214,14 +1224,25 @@ class GalaxyWin(pygame.sprite.Sprite):
                 self.kill()
         if 300 > posX > 180 and 200 > posY > 120:
             self.sur.blit(choice1, (10, 80))
+            self.sur.blit(choice1_1, (10, 80))
             if click[0] == 1:
+                self.sur.blit(choice1_2, (10, 80))
                 self.nav_box()
         if 420 > posX > 360 and 200 > posY > 120:
             self.sur.blit(choice2, (160, 80))
+            self.sur.blit(choice2_1, (160, 80))
+            if click[0] == 1:
+                self.sur.blit(choice2_2, (160, 80))
         if 580 > posX > 500 and 200 > posY > 120:
             self.sur.blit(choice3, (310, 80))
+            self.sur.blit(choice3_1, (310, 80))
+            if click[0] == 1:
+                self.sur.blit(choice3_2, (310, 80))
         if 720 > posX > 640 and 200 > posY > 120:
             self.sur.blit(choice4, (460, 80))
+            self.sur.blit(choice4_1, (460, 80))
+            if click[0] == 1:
+                self.sur.blit(choice4_2, (460, 80))
 
     def headertext(self):
         select = str("Select a Galaxy to Explore")
