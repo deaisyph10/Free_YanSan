@@ -1169,6 +1169,19 @@ class GalaxyWin(pygame.sprite.Sprite):
         self.moveX = 0
         self.moveY = 0
         self.rect.y = 50
+        self.arrow = pygame.image.load("images/icons/arrow.50x50.png")
+        self.sur.blit(self.arrow, (-10, 30))
+
+    def nav_box(self):
+        navstring = str("Send coordinate-cache data block via ::// SHIP_navigation.SYSTEMS")
+        selected_image = pygame.image.load("images/planets/galaxy_1s.jpg")
+        self.navtext = game_font_10.render(navstring, True, WHITE)
+        self.navimage = pygame.Surface((360, 80))
+        self.navimage.fill(BLACK)
+        self.navimage.blit(self.navtext, (5, 10))
+        self.navimage.blit(selected_image, (260, 0))
+        self.sur.blit(self.navimage, (200, 170))
+
 
     def move(self, mx, my):
         self.moveX += mx
@@ -1196,21 +1209,24 @@ class GalaxyWin(pygame.sprite.Sprite):
         self.gal4 = pygame.image.load("images/planets/galaxy_4s.jpg")
         self.sur.blit(self.gal4, (460, 80))
 
+        if 220 > posX > 180 and 115 > posY > 70:
+            if click[0] == 1:
+                self.kill()
         if 300 > posX > 180 and 200 > posY > 120:
             self.sur.blit(choice1, (10, 80))
+            if click[0] == 1:
+                self.nav_box()
         if 420 > posX > 360 and 200 > posY > 120:
             self.sur.blit(choice2, (160, 80))
         if 580 > posX > 500 and 200 > posY > 120:
             self.sur.blit(choice3, (310, 80))
         if 720 > posX > 640 and 200 > posY > 120:
             self.sur.blit(choice4, (460, 80))
-            if click[0] == 1:
-                self.kill()
 
     def headertext(self):
         select = str("Select a Galaxy to Explore")
         headertxt = game_font.render(select, True, WHITE)
-        self.sur.blit(headertxt, (0, 10))
+        self.sur.blit(headertxt, (40, 10))
 
     def draw(self):
         screen.blit(self.sur, (200, 400))
