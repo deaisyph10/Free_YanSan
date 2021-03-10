@@ -933,12 +933,16 @@ class Start_Up(pygame.sprite.Sprite):
             self.back.blit(start, (20, 60))
 
         if 150 > posX > 10 and 350 > posY > 260:
-            self.icons()
+            self.back.blit(setup, (22, 260))
             if click[0] == 1:
                 self.back.blit(setup2, (22, 260))
-                backdrop.fill(BLACK)
-                self.back.blit(backdrop, (180, 310))
+                backdrop.fill(GRAY6)
+                self.back.blit(backdrop, (190, 310))
                 sound_click.play()
+        else:
+            self.back.blit(setup, (22, 260))
+            self.icons()
+
         if 180 > posX > 10 and 640 > posY > 560:
             self.sur.blit(quiton, (36, 575))
             if click[0] == 1:
@@ -1163,6 +1167,7 @@ class GalaxyWin(pygame.sprite.Sprite):
     def __init__(self):
         super(GalaxyWin, self).__init__()
         self.sur = pygame.Surface((600, 250))
+        self.sur.fill(GRAY6)
         self.stars = pygame.image.load("images/templates/Stars.png")
         self.image = self.sur
         self.rect = self.sur.get_rect()
@@ -1176,12 +1181,12 @@ class GalaxyWin(pygame.sprite.Sprite):
     def nav_box(self):
         navstring = str("Send coordinate-cache data block via ::// SHIP_navigation.SYSTEMS")
         ship_image = pygame.image.load("images/ships/Ship_ICON.png")
-        self.navtext = game_font_10.render(navstring, True, WHITE)
-        self.navimage = pygame.Surface((360, 80))
-        self.navimage.fill(BLACK)
+        self.navtext = game_font_10.render(navstring, True, GRAY95)
+        self.navimage = pygame.Surface((360, 60))
+        self.navimage.fill(GRAY9)
         self.navimage.blit(self.navtext, (5, 10))
-        self.navimage.blit(ship_image, (260, 10))
-        self.sur.blit(self.navimage, (200, 170))
+        self.navimage.blit(ship_image, (260, 0))
+        self.sur.blit(self.navimage, (220, 170))
 
     def move(self, mx, my):
         self.moveX += mx
@@ -1207,8 +1212,8 @@ class GalaxyWin(pygame.sprite.Sprite):
         pos = pygame.mouse.get_pos()
         posX = pos[0]
         posY = pos[1]
-        self.explore_image = pygame.image.load("images/icons/explore_button.png")
-        self.sur.blit(self.explore_image, (20, 180))
+        self.explore_image = pygame.image.load("images/icons/buttons_explore_black.png")
+        self.sur.blit(self.explore_image, (15, 182))
         self.gal1 = pygame.image.load("images/planets/galaxy_1s.jpg")
         self.sur.blit(self.gal1, (10, 80))
         self.gal2 = pygame.image.load("images/planets/galaxy_2s.jpg")
@@ -1268,7 +1273,8 @@ class Galaxy_data_Window(pygame.sprite.Sprite):
     def __init__(self):
         super(Galaxy_data_Window, self).__init__()
         self.sur = pygame.Surface((350, 600))
-        self.rect = self.sur.get_rect()
+        self.image = self.sur
+        self.rect = self.image.get_rect()
         self.moveX = 0
         self.moveY = 0
         self.arrow = pygame.image.load("images/icons/arrow.50x50.png")
@@ -1276,19 +1282,22 @@ class Galaxy_data_Window(pygame.sprite.Sprite):
         self.sur.blit(self.arrow, (0, 2))
 
     def galaxy_image(self):
-        self.image = pygame.image.load("images/icons/icon_galaxy_1data.jpg")
+        self.image1 = pygame.image.load("images/icons/icon_galaxy_1data.jpg")
         self.image_rect = self.image.get_rect()
         self.image_label_str = str("'SR22-87.23'")
-        self.image_label = game_font.render(self.image_label_str, True, WHITE)
+        self.image_label = game_font.render(self.image_label_str, True, GRAY95)
         self.image_label_rect = self.image_label.get_rect()
         self.image_label_icon = pygame.image.load("images/icons/saturn_icon.png")
 
     def data(self):
+        self.start_box = pygame.Surface((200, 80))
+        self.start_box.fill(GRAY39)
+        self.start = pygame.image.load("images/icons/buttons_start_machine200.png")
         self.text_sur = pygame.Surface((300, 100))
-        self.text_sur.fill(GRAY26)
+        self.text_sur.fill(GRAY9)
         self.text_sur_rect = self.text_sur.get_rect()
         self.text_str = str("Galaxy 1")
-        self.text = game_font_18.render(self.text_str, True, WHITE)
+        self.text = game_font_18.render(self.text_str, True, GRAY95)
         self.text_rect = self.text.get_rect()
         self.text_icon = pygame.image.load("images/icons/galaxy_description.png")
 
@@ -1299,17 +1308,18 @@ class Galaxy_data_Window(pygame.sprite.Sprite):
         self.rect.y = self.rect.y + self.moveY
 
     def draw(self):
+        self.text_sur.blit(self.start_box, (98, 10))
         self.text_sur.blit(self.text, (0, 15))
-        self.sur.blit(self.text_sur, (30, 480))
-        self.sur.blit(self.image, (30, 60))
-        self.sur.blit(self.image_label_icon, (270, 480))
-        self.sur.blit(self.text_icon, (80, 450))
+        self.text_sur.blit(self.start, (98, 14))
+        self.sur.blit(self.text_sur, (30, 490))
+        self.sur.blit(self.image1, (30, 60))
+        self.sur.blit(self.image_label_icon, (80, 456))
+        self.sur.blit(self.text_icon, (140, 450))
         self.sur.blit(self.image_label, (75, 5))
         screen.blit(self.sur, (800, 60))
 
     def update(self):
         self.data()
-        self.move(0, 0)
         self.galaxy_image()
         self.draw()
 
