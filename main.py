@@ -936,8 +936,7 @@ class Start_Up(pygame.sprite.Sprite):
             self.back.blit(setup, (22, 260))
             if click[0] == 1:
                 self.back.blit(setup2, (22, 260))
-                backdrop.fill(GRAY6)
-                self.back.blit(backdrop, (190, 310))
+                start_group.add(setupWin)
                 sound_click.play()
         else:
             self.back.blit(setup, (22, 260))
@@ -1203,15 +1202,16 @@ class GalaxyWin(pygame.sprite.Sprite):
         choice2_1 = pygame.image.load("images/icons/BOX.4star.innerblack.png")
         choice3_1 = pygame.image.load("images/icons/BOX.4star.innerblack.png")
         choice4_1 = pygame.image.load("images/icons/BOX.4star.innerblack.png")
-
         choice1_2 = pygame.image.load("images/icons/BOX.4star.outerblack.png")
         choice2_2 = pygame.image.load("images/icons/BOX.4star.outerblack.png")
         choice3_2 = pygame.image.load("images/icons/BOX.4star.outerblack.png")
         choice4_2 = pygame.image.load("images/icons/BOX.4star.outerblack.png")
+
         click = pygame.mouse.get_pressed()
         pos = pygame.mouse.get_pos()
         posX = pos[0]
         posY = pos[1]
+
         self.explore_image = pygame.image.load("images/icons/buttons_explore_black.png")
         self.sur.blit(self.explore_image, (15, 182))
         self.gal1 = pygame.image.load("images/planets/galaxy_1s.jpg")
@@ -1222,6 +1222,7 @@ class GalaxyWin(pygame.sprite.Sprite):
         self.sur.blit(self.gal3, (310, 80))
         self.gal4 = pygame.image.load("images/planets/galaxy_4s.jpg")
         self.sur.blit(self.gal4, (460, 80))
+
         if 220 > posX > 180 and 115 > posY > 70:
             if click[0] == 1:
                 self.kill()
@@ -1290,9 +1291,9 @@ class Galaxy_data_Window(pygame.sprite.Sprite):
         self.image_label_icon = pygame.image.load("images/icons/saturn_icon.png")
 
     def data(self):
-        self.start_box = pygame.Surface((200, 80))
-        self.start_box.fill(GRAY39)
-        self.start = pygame.image.load("images/icons/buttons_start_machine200.png")
+        self.start_box = pygame.Surface((280, 80))
+        self.start_box.fill(GRAY6)
+        self.start = pygame.image.load("images/icons/buttons_explore_black.png")
         self.text_sur = pygame.Surface((300, 100))
         self.text_sur.fill(GRAY9)
         self.text_sur_rect = self.text_sur.get_rect()
@@ -1308,13 +1309,13 @@ class Galaxy_data_Window(pygame.sprite.Sprite):
         self.rect.y = self.rect.y + self.moveY
 
     def draw(self):
-        self.text_sur.blit(self.start_box, (98, 10))
-        self.text_sur.blit(self.text, (0, 15))
-        self.text_sur.blit(self.start, (98, 14))
-        self.sur.blit(self.text_sur, (30, 490))
+        self.text_sur.blit(self.start_box, (10, 10))
+        self.sur.blit(self.text, (30, 470))
+        self.text_sur.blit(self.start, (20, 18))
+        self.sur.blit(self.text_sur, (20, 490))
         self.sur.blit(self.image1, (30, 60))
-        self.sur.blit(self.image_label_icon, (80, 456))
-        self.sur.blit(self.text_icon, (140, 450))
+        self.sur.blit(self.image_label_icon, (80, 200))
+        self.sur.blit(self.text_icon, (120, 450))
         self.sur.blit(self.image_label, (75, 5))
         screen.blit(self.sur, (800, 60))
 
@@ -1322,6 +1323,31 @@ class Galaxy_data_Window(pygame.sprite.Sprite):
         self.data()
         self.galaxy_image()
         self.draw()
+
+
+class setupWin(pygame.sprite.Sprite):
+    def __init__(self):
+        super(setupWin,  self).__init__()
+        self.sur = pygame.Surface((580, 300))
+        self.sur.fill(GRAY6)
+        self.image = self.sur
+        self.rect = self.sur.get_rect()
+        self.moveX = 0
+        self.moveY = 0
+        self.rect.y = 310
+        self.rect.x = 180
+
+    def move(self, mx, my):
+        self.moveX = mx
+        self.moveY = my
+        self.rect.x = self.rect.x + self.moveX
+        self.rect.y = self.rect.y + self.moveY
+
+    def draw(self):
+        screen.blit(self.sur, (0, 0))
+
+    def update(self):
+        self.move(0, 0)
 
 
 class Main:
@@ -1432,6 +1458,7 @@ enemy_bullets = Enemy_Bullets(x, y)
 bullet = Bullets(x, y)
 
 # Variables
+setupWin = setupWin()
 galaxy_data_win = Galaxy_data_Window()
 galaxy_win = GalaxyWin()
 world_map = World_map()
