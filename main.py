@@ -1273,14 +1273,16 @@ class GalaxyWin(pygame.sprite.Sprite):
 class Galaxy_data_Window(pygame.sprite.Sprite):
     def __init__(self):
         super(Galaxy_data_Window, self).__init__()
-        self.sur = pygame.Surface((350, 600))
+        self.sur = pygame.Surface((300, 600))
         self.image = self.sur
         self.rect = self.image.get_rect()
+        self.frame = pygame.image.load("images/templates/frame_YanSan300x600.png")
+        self.stars = pygame.image.load("images/templates/Stars.png")
         self.moveX = 0
         self.moveY = 0
         self.arrow = pygame.image.load("images/icons/arrow.50x50.png")
-        self.sur.fill(GRAY6)
-        self.sur.blit(self.arrow, (0, 2))
+        self.sur.fill(BLACK)
+
 
     def galaxy_image(self):
         self.image1 = pygame.image.load("images/icons/icon_galaxy_1data.jpg")
@@ -1290,11 +1292,33 @@ class Galaxy_data_Window(pygame.sprite.Sprite):
         self.image_label_rect = self.image_label.get_rect()
         self.image_label_icon = pygame.image.load("images/icons/saturn_icon.png")
 
+    def button(self):
+        click = pygame.mouse.get_pressed()
+        pos = pygame.mouse.get_pos()
+        posX = pos[0]
+        posY = pos[1]
+
+        if 850 > posX > 800 and 190 > posY > 140:
+            if click[0] == 1:
+                self.kill()
+                sound_click.play()
+        if 1120 > posX > 840 and 640 > posY > 560:
+            self.text_sur.blit(self.start2_1, (20, 18))
+            if click[0] == 1:
+                self.kill()
+                start_up.kill()
+                galaxy_win.kill()
+                setupWin.kill()
+            else:
+                self.text_sur.blit(self.start, (20, 18))
+
     def data(self):
         self.start_box = pygame.Surface((280, 80))
-        self.start_box.fill(GRAY6)
+        self.start_box.fill(BLACK)
         self.start = pygame.image.load("images/icons/buttons_explore_black.png")
-        self.text_sur = pygame.Surface((300, 100))
+        self.start2 = pygame.image.load("images/icons/buttons_explore_gray_black8.png")
+        self.start2_1 = pygame.image.load("images/icons/buttons_explore_gray_blue.png")
+        self.text_sur = pygame.Surface((300, 60))
         self.text_sur.fill(GRAY9)
         self.text_sur_rect = self.text_sur.get_rect()
         self.text_str = str("Galaxy 1")
@@ -1309,17 +1333,22 @@ class Galaxy_data_Window(pygame.sprite.Sprite):
         self.rect.y = self.rect.y + self.moveY
 
     def draw(self):
-        self.text_sur.blit(self.start_box, (10, 10))
-        self.sur.blit(self.text, (30, 470))
-        self.text_sur.blit(self.start, (20, 18))
-        self.sur.blit(self.text_sur, (20, 490))
-        self.sur.blit(self.image1, (30, 60))
-        self.sur.blit(self.image_label_icon, (80, 200))
-        self.sur.blit(self.text_icon, (120, 450))
-        self.sur.blit(self.image_label, (75, 5))
+        self.sur.blit(self.stars, (0, 200))
+        self.sur.blit(self.start2_1, (30, 465))
+        self.sur.blit(self.image1, (-20, -20))
+        self.sur.blit(self.image_label, (30, 55))
+        # self.sur.blit(self.text_sur, (10, 460))
+        self.sur.blit(self.text, (35, 410))
+        self.sur.blit(self.frame, (0, 0))
+        self.sur.blit(self.text_icon, (80, 360))
+        self.sur.blit(self.image_label_icon, (28, 362))
+        self.sur.blit(self.arrow, (0, 80))
+
+
         screen.blit(self.sur, (800, 60))
 
     def update(self):
+        self.button()
         self.data()
         self.galaxy_image()
         self.draw()
