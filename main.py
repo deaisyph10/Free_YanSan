@@ -20,10 +20,10 @@ back_round_im = pygame.image.load("images/templates/Stars.png")
 back_round = pygame.Surface((800, 400))
 back_round.blit(back_round_im, (0, 0))
 # Audio Variables
-music = pygame.mixer.Sound("images/sounds/monkeys wedding_low.wav")
-laser = pygame.mixer.Sound("images/sounds/laser_SE_hit.wav")
-shoot_laser = pygame.mixer.Sound("images/sounds/laser_SE_shoot.wav")
-sound_click = pygame.mixer.Sound("images/sounds/click.mp3")
+music = pygame.mixer.Sound("images/Sprites/sounds/monkeys wedding_low.wav")
+laser = pygame.mixer.Sound("images/Sprites/sounds/laser_SE_hit.wav")
+shoot_laser = pygame.mixer.Sound("images/Sprites/sounds/laser_SE_shoot.wav")
+sound_click = pygame.mixer.Sound("images/Sprites/sounds/click.mp3")
 
 
 
@@ -56,7 +56,10 @@ LLC_icon = pygame.image.load("images/templates/Dream_green_title.png")
 LLC_icon_micro = pygame.transform.scale(LLC_icon, (200, 40))
 score: int = 0
 curmov = 200
-
+click = pygame.mouse.get_pressed()
+pos = pygame.mouse.get_pos()
+posX = pos[0]
+posY = pos[1]
 # Pop-up windows
 radar_screen = pygame.image.load("images/templates/opohgknlov.jpeg")
 radar_screen_rect = pygame.Rect(0, 0, 1051, 515)
@@ -1167,16 +1170,15 @@ class GalaxyWin(pygame.sprite.Sprite):
     def __init__(self):
         super(GalaxyWin, self).__init__()
         self.sur = pygame.Surface((600, 250))
-        self.sur.fill(GRAY6)
         self.stars = pygame.image.load("images/templates/frame_YanSan600X250.png")
-        self.image = self.sur
-        self.rect = self.sur.get_rect()
+        self.image = self.stars
+        self.rect = self.image.get_rect()
         self.sur.blit(self.stars, (0, 0))
         self.moveX = 0
         self.moveY = 0
         self.rect.y = 50
         self.arrow = pygame.image.load("images/icons/arrow.50x50.png")
-        self.sur.blit(self.arrow, (-10, 30))
+        self.image.blit(self.arrow, (-10, 30))
 
     def nav_box(self):
         navstring = str("Send coordinate-cache data block via ::// SHIP_navigation.SYSTEMS")
@@ -1186,7 +1188,7 @@ class GalaxyWin(pygame.sprite.Sprite):
         self.navimage.fill(GRAY9)
         self.navimage.blit(self.navtext, (5, 10))
         self.navimage.blit(ship_image, (260, 0))
-        self.sur.blit(self.navimage, (220, 170))
+        self.image.blit(self.navimage, (220, 170))
 
     def move(self, mx, my):
         self.moveX += mx
@@ -1214,54 +1216,54 @@ class GalaxyWin(pygame.sprite.Sprite):
         posY = pos[1]
 
         self.explore_image = pygame.image.load("images/icons/buttons_explore_black.png")
-        self.sur.blit(self.explore_image, (15, 182))
+        self.image.blit(self.explore_image, (15, 182))
         self.gal1 = pygame.image.load("images/planets/galaxy_1s.jpg")
-        self.sur.blit(self.gal1, (10, 80))
+        self.image.blit(self.gal1, (10, 80))
         self.gal2 = pygame.image.load("images/planets/galaxy_2s.jpg")
-        self.sur.blit(self.gal2, (160, 80))
+        self.image.blit(self.gal2, (160, 80))
         self.gal3 = pygame.image.load("images/planets/galaxy_3.png")
-        self.sur.blit(self.gal3, (310, 80))
+        self.image.blit(self.gal3, (310, 80))
         self.gal4 = pygame.image.load("images/planets/galaxy_4s.jpg")
-        self.sur.blit(self.gal4, (460, 80))
+        self.image.blit(self.gal4, (460, 80))
 
         if 220 > posX > 180 and 115 > posY > 70:
             if click[0] == 1:
                 self.kill()
                 sound_click.play()
         if 300 > posX > 180 and 200 > posY > 120:
-            self.sur.blit(choice1, (10, 80))
-            self.sur.blit(choice1_1, (10, 80))
+            self.image.blit(choice1, (10, 80))
+            self.image.blit(choice1_1, (10, 80))
             if click[0] == 1:
-                self.sur.blit(choice1_2, (10, 80))
+                self.image.blit(choice1_2, (10, 80))
                 self.nav_box()
                 Galaxy_group.add(galaxy_data_win)
                 sound_click.play()
         if 420 > posX > 360 and 200 > posY > 120:
-            self.sur.blit(choice2, (160, 80))
-            self.sur.blit(choice2_1, (160, 80))
+            self.image.blit(choice2, (160, 80))
+            self.image.blit(choice2_1, (160, 80))
             if click[0] == 1:
-                self.sur.blit(choice2_2, (160, 80))
+                self.image.blit(choice2_2, (160, 80))
                 sound_click.play()
         if 580 > posX > 500 and 200 > posY > 120:
-            self.sur.blit(choice3, (310, 80))
-            self.sur.blit(choice3_1, (310, 80))
+            self.image.blit(choice3, (310, 80))
+            self.image.blit(choice3_1, (310, 80))
             if click[0] == 1:
-                self.sur.blit(choice3_2, (310, 80))
+                self.image.blit(choice3_2, (310, 80))
                 sound_click.play()
         if 720 > posX > 640 and 200 > posY > 120:
-            self.sur.blit(choice4, (460, 80))
-            self.sur.blit(choice4_1, (460, 80))
+            self.image.blit(choice4, (460, 80))
+            self.image.blit(choice4_1, (460, 80))
             if click[0] == 1:
-                self.sur.blit(choice4_2, (460, 80))
+                self.image.blit(choice4_2, (460, 80))
                 sound_click.play()
 
     def headertext(self):
         select = str("Select a Galaxy to Explore")
         headertxt = game_font.render(select, True, WHITE)
-        self.sur.blit(headertxt, (40, 10))
+        self.image.blit(headertxt, (40, 10))
 
     def draw(self):
-        screen.blit(self.sur, (200, 400))
+        screen.blit(self.image, (200, 400))
 
     def update(self):
         self.headertext()
@@ -1274,20 +1276,17 @@ class GalaxyWin(pygame.sprite.Sprite):
 class Galaxy_data_Window(pygame.sprite.Sprite):
     def __init__(self):
         super(Galaxy_data_Window, self).__init__()
-        self.sur = pygame.Surface((300, 600))
-        self.image = self.sur
-        self.rect = self.image.get_rect()
         self.frame = pygame.image.load("images/templates/frame_YanSan300x600.png")
-        self.stars = pygame.image.load("images/templates/Stars.png")
+        self.image = pygame. Surface((300, 600))
+        self.rect = self.image.get_rect()
         self.moveX = 0
         self.moveY = 0
         self.arrow = pygame.image.load("images/icons/arrow.50x50.png")
-        self.sur.fill(BLACK)
 
 
     def galaxy_image(self):
         self.image1 = pygame.image.load("images/icons/icon_galaxy_1data.jpg")
-        self.image_rect = self.image.get_rect()
+        self.image_rect = self.image1.get_rect()
         self.image_label_str = str("'SR22-87.23'")
         self.image_label = game_font.render(self.image_label_str, True, GRAY95)
         self.image_label_rect = self.image_label.get_rect()
@@ -1299,10 +1298,11 @@ class Galaxy_data_Window(pygame.sprite.Sprite):
         posX = pos[0]
         posY = pos[1]
 
-        if 850 > posX > 800 and 190 > posY > 140:
+        if 900 > posX > 850 and 190 > posY > 140:
             if click[0] == 1:
-                self.kill()
                 sound_click.play()
+                self.kill()
+
         if 1120 > posX > 840 and 640 > posY > 560:
             self.text_sur.blit(self.start2_1, (20, 18))
             if click[0] == 1:
@@ -1315,12 +1315,12 @@ class Galaxy_data_Window(pygame.sprite.Sprite):
 
     def data(self):
         self.start_box = pygame.Surface((280, 80))
-        self.start_box.fill(BLACK)
+        self.start_box.fill(GRAY4)
         self.start = pygame.image.load("images/icons/buttons_explore_black.png")
         self.start2 = pygame.image.load("images/icons/buttons_explore_gray_black8.png")
         self.start2_1 = pygame.image.load("images/icons/buttons_explore_gray_blue.png")
         self.text_sur = pygame.Surface((300, 60))
-        self.text_sur.fill(GRAY9)
+        self.text_sur.fill(GRAY14)
         self.text_sur_rect = self.text_sur.get_rect()
         self.text_str = str("Galaxy 1")
         self.text = game_font_18.render(self.text_str, True, GRAY95)
@@ -1333,25 +1333,23 @@ class Galaxy_data_Window(pygame.sprite.Sprite):
         self.rect.x = self.rect.x + self.moveX
         self.rect.y = self.rect.y + self.moveY
 
+
     def draw(self):
-        self.sur.blit(self.stars, (0, 200))
-        self.sur.blit(self.start2_1, (30, 465))
-        self.sur.blit(self.image1, (-20, -20))
-        self.sur.blit(self.image_label, (30, 55))
+        self.image.blit(self.image1, (0, 0))
+        self.image.blit(self.start2_1, (30, 465))
+        self.image.blit(self.image_label, (30, 55))
         # self.sur.blit(self.text_sur, (10, 460))
-        self.sur.blit(self.text, (35, 410))
-        self.sur.blit(self.frame, (0, 0))
-        self.sur.blit(self.text_icon, (80, 360))
-        self.sur.blit(self.image_label_icon, (28, 362))
-        self.sur.blit(self.arrow, (0, 80))
-
-
-        screen.blit(self.sur, (850, 60))
+        self.image.blit(self.text, (35, 410))
+        self.image.blit(self.frame, (0, 0))
+        self.image.blit(self.text_icon, (80, 360))
+        self.image.blit(self.image_label_icon, (28, 362))
+        self.image.blit(self.arrow, (0, 80))
+        screen.blit(self.image, (850, 60))
 
     def update(self):
+        self.galaxy_image()
         self.button()
         self.data()
-        self.galaxy_image()
         self.draw()
 
 
@@ -1396,6 +1394,57 @@ class setupWin(pygame.sprite.Sprite):
         self.move(50, 0)
         if self.rect.x >= 180:
             self.rect.x = 180
+
+
+class Toolbar(pygame.sprite.Sprite):
+    def __init__(self):
+        super(Toolbar,self).__init__()
+        self.sur = pygame.Surface((300, 50))
+        self.sur.fill(BLACK)
+        self.image = self.sur
+        self.rect = self.image.get_rect()
+
+    def icons(self):
+        self.mainmenu = pygame.image.load("images/Sprites/shadedDark/shadedDark33.png")
+        self.quit = pygame.image.load("images/Sprites/shadedDark/shadedDark35.png")
+        self.music_on = pygame.image.load("images/Sprites/shadedDark/shadedDark17.png")
+        self.music_off = pygame.image.load("images/Sprites/shadedDark/shadedDark19.png")
+        self.setup = pygame.image.load("images/Sprites/shadedDark/shadedDark31.png")
+        self.search = pygame.image.load("images/Sprites/shadedDark/shadedDark32.png")
+        self.maximize = pygame.image.load("images/Sprites/shadedDark/shadedDark30.png")
+        self.save = pygame.image.load("images/Sprites/shadedDark/shadedDark34.png")
+        self.check = pygame.image.load("images/Sprites/shadedDark/shadedDark33.png")
+        self.select = pygame.image.load("images/Sprites/shadedDark/shadedDark33.png")
+        self.pause = pygame.image.load("images/Sprites/shadedDark/shadedDark14.png")
+        self.volume_on = pygame.image.load("images/Sprites/shadedDark/shadedDark13.png")
+        self.volume_off = pygame.image.load("images/Sprites/shadedDark/shadedDark15.png")
+
+    def buttons(self):
+        if 950 > posX > 900 and 46 > posY > 1:
+            self.mainmenu.blit()
+        if 1000 > posX > 952 and 46 > posY > 1:
+            self.setup.blit()
+        if 1050 > posX > 1002 and 46 > posY > 1:
+            self.volume_off.blit()
+        if 1100 > posX > 1052 and 46 > posY > 1:
+            self.music_off.blit()
+        if 1150 > posX > 1102 and 46 > posY > 1:
+            self.save.blit()
+        if 1200 > posX > 1152 and 46 > posY > 1:
+            self.quit.blit()
+
+    def draw(self):
+       # self.sur.blit(self.quit, (1152, 0))
+       # self.sur.blit(self.save, (1102, 0))
+       # self.sur.blit(self.music_off, (1052, 0))
+       # self.sur.blit(self.volume_off, (1002, 0))
+       # self.sur.blit(self.setup, (952, 0))
+       # self.sur.blit(self.mainmenu, (902, 0))
+        screen.blit(self.sur, (895, 0))
+
+    def update(self):
+        self.draw()
+        self.icons()
 
 
 class Main:
@@ -1506,6 +1555,7 @@ enemy_bullets = Enemy_Bullets(x, y)
 bullet = Bullets(x, y)
 
 # Variables
+toolbar = Toolbar()
 setupWin = setupWin()
 galaxy_data_win = Galaxy_data_Window()
 galaxy_win = GalaxyWin()
@@ -1555,7 +1605,7 @@ all_sprites.add(planet_larger, planet_yellow, asteroid, drone, grey_ship, red_sh
 start_group.add(start_up)
 grid_group.add(Main_Menu)
 map_group.add(world_map)
-
+Galaxy_group.add(toolbar)
 # 'for' statements
 voice1.play()
 # voice2.play()
