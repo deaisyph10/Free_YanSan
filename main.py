@@ -944,7 +944,6 @@ class Start_Up(pygame.sprite.Sprite):
                 sound_click.play()
         else:
             self.back.blit(setup, (22, 260))
-            self.icons()
 
         if 180 > posX > 10 and 640 > posY > 560:
             self.sur.blit(quiton, (36, 575))
@@ -1171,9 +1170,11 @@ class GalaxyWin(pygame.sprite.Sprite):
         super(GalaxyWin, self).__init__()
         self.sur = pygame.Surface((600, 250))
         self.stars = pygame.image.load("images/templates/frame_YanSan600X250.png")
+        self.frame = pygame.image.load("images/templates/BOX.galaxyWin2.png")
         self.image = self.stars
         self.rect = self.image.get_rect()
         self.sur.blit(self.stars, (0, 0))
+        self.stars.blit(self.frame, (-1, 0))
         self.moveX = 0
         self.moveY = 0
         self.rect.y = 50
@@ -1218,43 +1219,43 @@ class GalaxyWin(pygame.sprite.Sprite):
         self.explore_image = pygame.image.load("images/icons/buttons_explore_black.png")
         self.image.blit(self.explore_image, (15, 182))
         self.gal1 = pygame.image.load("images/planets/galaxy_1s.jpg")
-        self.image.blit(self.gal1, (10, 80))
+        self.image.blit(self.gal1, (2, 78))
         self.gal2 = pygame.image.load("images/planets/galaxy_2s.jpg")
-        self.image.blit(self.gal2, (160, 80))
+        self.image.blit(self.gal2, (146, 78))
         self.gal3 = pygame.image.load("images/planets/galaxy_3.png")
-        self.image.blit(self.gal3, (310, 80))
+        self.image.blit(self.gal3, (316, 78))
         self.gal4 = pygame.image.load("images/planets/galaxy_4s.jpg")
-        self.image.blit(self.gal4, (460, 80))
+        self.image.blit(self.gal4, (466, 78))
 
         if 220 > posX > 180 and 115 > posY > 70:
             if click[0] == 1:
                 self.kill()
                 sound_click.play()
         if 300 > posX > 180 and 200 > posY > 120:
-            self.image.blit(choice1, (10, 80))
-            self.image.blit(choice1_1, (10, 80))
+            self.image.blit(choice1, (2, 78))
+            self.image.blit(choice1_1, (2, 78))
             if click[0] == 1:
-                self.image.blit(choice1_2, (10, 80))
+                self.image.blit(choice1_2, (2, 78))
                 self.nav_box()
                 Galaxy_group.add(galaxy_data_win)
                 sound_click.play()
         if 420 > posX > 360 and 200 > posY > 120:
-            self.image.blit(choice2, (160, 80))
-            self.image.blit(choice2_1, (160, 80))
+            self.image.blit(choice2, (146, 78))
+            self.image.blit(choice2_1, (146, 78))
             if click[0] == 1:
-                self.image.blit(choice2_2, (160, 80))
+                self.image.blit(choice2_2, (146, 78))
                 sound_click.play()
         if 580 > posX > 500 and 200 > posY > 120:
-            self.image.blit(choice3, (310, 80))
-            self.image.blit(choice3_1, (310, 80))
+            self.image.blit(choice3, (316, 78))
+            self.image.blit(choice3_1, (316, 78))
             if click[0] == 1:
-                self.image.blit(choice3_2, (310, 80))
+                self.image.blit(choice3_2, (316, 78))
                 sound_click.play()
         if 720 > posX > 640 and 200 > posY > 120:
-            self.image.blit(choice4, (460, 80))
-            self.image.blit(choice4_1, (460, 80))
+            self.image.blit(choice4, (466, 78))
+            self.image.blit(choice4_1, (466, 78))
             if click[0] == 1:
-                self.image.blit(choice4_2, (460, 80))
+                self.image.blit(choice4_2, (466, 78))
                 sound_click.play()
 
     def headertext(self):
@@ -1314,6 +1315,7 @@ class Galaxy_data_Window(pygame.sprite.Sprite):
                 self.text_sur.blit(self.start, (20, 18))
 
     def data(self):
+        self.box_select = pygame.image.load("images/templates/Box_SELECT_white_1.1.png")
         self.start_box = pygame.Surface((280, 80))
         self.start_box.fill(GRAY4)
         self.start = pygame.image.load("images/icons/buttons_explore_black.png")
@@ -1344,6 +1346,7 @@ class Galaxy_data_Window(pygame.sprite.Sprite):
         self.image.blit(self.text_icon, (80, 360))
         self.image.blit(self.image_label_icon, (28, 362))
         self.image.blit(self.arrow, (0, 80))
+        self.image.blit(self.box_select, (10, 440))
         screen.blit(self.image, (850, 60))
 
     def update(self):
@@ -1403,6 +1406,8 @@ class Toolbar(pygame.sprite.Sprite):
         self.sur.fill(BLACK)
         self.image = self.sur
         self.rect = self.image.get_rect()
+        self.icons()
+        self.buttons()
 
     def icons(self):
         self.mainmenu = pygame.image.load("images/Sprites/shadedDark/shadedDark33.png")
@@ -1418,33 +1423,65 @@ class Toolbar(pygame.sprite.Sprite):
         self.pause = pygame.image.load("images/Sprites/shadedDark/shadedDark14.png")
         self.volume_on = pygame.image.load("images/Sprites/shadedDark/shadedDark13.png")
         self.volume_off = pygame.image.load("images/Sprites/shadedDark/shadedDark15.png")
+        self.quit_on = pygame.image.load("images/Sprites/shadedLight/shadedLight35.png")
+        self.mainmenu_on = pygame.image.load("images/Sprites/shadedLight/shadedLight33.png")
+        self.setup_on = pygame.image.load("images/Sprites/shadedLight/shadedLight31.png")
+        self.save_on = pygame.image.load("images/Sprites/shadedLight/shadedLight34.png")
 
     def buttons(self):
+        click = pygame.mouse.get_pressed()
+        pos = pygame.mouse.get_pos()
+        posX = pos[0]
+
+        posY = pos[1]
+
         if 950 > posX > 900 and 46 > posY > 1:
-            self.mainmenu.blit()
+            screen.blit(self.mainmenu_on, (902, 0))
+        else:
+            screen.blit(self.mainmenu, (902, 0))
         if 1000 > posX > 952 and 46 > posY > 1:
-            self.setup.blit()
+            screen.blit(self.setup_on, (952, 0))
+            if click[0] == 1:
+                setupWin.update()
+        else:
+            screen.blit(self.setup, (952, 0))
         if 1050 > posX > 1002 and 46 > posY > 1:
-            self.volume_off.blit()
+            screen.blit(self.volume_on, (1002, 0))
+        else:
+            screen.blit(self.volume_off, (1002, 0))
         if 1100 > posX > 1052 and 46 > posY > 1:
-            self.music_off.blit()
+            screen.blit(self.music_off, (1052, 0))
+            if click[0] == 1:
+                music.stop()
+                screen.blit(self.music_off, (1052, 0))
+        else:
+            screen.blit(self.music_on, (1052, 0))
         if 1150 > posX > 1102 and 46 > posY > 1:
-            self.save.blit()
+            screen.blit(self.save_on, (1102, 0))
+        else:
+            screen.blit(self.save, (1102, 0))
         if 1200 > posX > 1152 and 46 > posY > 1:
-            self.quit.blit()
+            screen.blit(self.quit_on, (1152, 0))
+            if click[0] == 1:
+                pygame.quit()
+                sys.exit()
+        else:
+            screen.blit(self.quit, (1152, 0))
 
     def draw(self):
-       # self.sur.blit(self.quit, (1152, 0))
-       # self.sur.blit(self.save, (1102, 0))
-       # self.sur.blit(self.music_off, (1052, 0))
-       # self.sur.blit(self.volume_off, (1002, 0))
-       # self.sur.blit(self.setup, (952, 0))
-       # self.sur.blit(self.mainmenu, (902, 0))
-        screen.blit(self.sur, (895, 0))
+        screen.blit(self.image, (900, 0))
+        screen.blit(self.save, (1102, 0))
+        screen.blit(self.music_on, (1052, 0))
+        screen.blit(self.volume_off, (1002, 0))
+        screen.blit(self.setup, (952, 0))
+        screen.blit(self.mainmenu, (902, 0))
+        screen.blit(self.quit, (1152, 0))
+        self.buttons()
 
     def update(self):
         self.draw()
         self.icons()
+
 
 
 class Main:
@@ -1469,11 +1506,12 @@ class Main:
         #menu_group.draw(screen)
         #menu_group.update()
         #bullet_group.update()
+
         map_group.draw(screen)
         map_group.update()
         start_group.draw(screen)
-        start_group.update()
         Galaxy_group.update()
+        start_group.update()
 
         if battle is True:
             screen.blit(battle_screen, (280, 280))
@@ -1609,7 +1647,7 @@ Galaxy_group.add(toolbar)
 # 'for' statements
 voice1.play()
 # voice2.play()
-
+music.play()
 for i in range(760):
     x = random.randrange(140, 1000)
     y = random.randrange(14, 36)
