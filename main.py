@@ -937,6 +937,7 @@ class Start_Up(pygame.sprite.Sprite):
             if click[0] == 1:
                 self.back.blit(setup2, (22, 260))
                 start_group.add(setupWin)
+                start_group.draw(screen)
                 sound_click.play()
         else:
             self.back.blit(setup, (22, 260))
@@ -1167,7 +1168,7 @@ class GalaxyWin(pygame.sprite.Sprite):
         super(GalaxyWin, self).__init__()
         self.sur = pygame.Surface((600, 250))
         self.sur.fill(GRAY6)
-        self.stars = pygame.image.load("images/templates/Stars.png")
+        self.stars = pygame.image.load("images/templates/frame_YanSan600X250.png")
         self.image = self.sur
         self.rect = self.sur.get_rect()
         self.sur.blit(self.stars, (0, 0))
@@ -1345,7 +1346,7 @@ class Galaxy_data_Window(pygame.sprite.Sprite):
         self.sur.blit(self.arrow, (0, 80))
 
 
-        screen.blit(self.sur, (800, 60))
+        screen.blit(self.sur, (850, 60))
 
     def update(self):
         self.button()
@@ -1357,14 +1358,29 @@ class Galaxy_data_Window(pygame.sprite.Sprite):
 class setupWin(pygame.sprite.Sprite):
     def __init__(self):
         super(setupWin,  self).__init__()
-        self.sur = pygame.Surface((580, 300))
-        self.sur.fill(GRAY6)
-        self.image = self.sur
-        self.rect = self.sur.get_rect()
+        self.sur = pygame.Surface((300, 220))
+        self.sur.fill(GRAY16)
+        self.image = pygame.image.load("images/templates/frame_YanSan600X250.png")
+        self.rect = self.image.get_rect()
         self.moveX = 0
-        self.moveY = 0
-        self.rect.y = 310
-        self.rect.x = 180
+        self.moveY = 350
+        self.rect.y = 350
+        self.rect.x = 0
+        self.arrow = pygame.image.load("images/icons/arrow.50x50.png")
+        self.image.blit(self.arrow, (0, 10))
+
+    def button(self):
+
+        click = pygame.mouse.get_pressed()
+        pos = pygame.mouse.get_pos()
+        posX = pos[0]
+        posY = pos[1]
+
+        if 220 > posX > 180 and 360 > posY > 310:
+            if click[0] == 1:
+
+                sound_click.play()
+                pygame.mouse.set_visible(True)
 
     def move(self, mx, my):
         self.moveX = mx
@@ -1373,10 +1389,13 @@ class setupWin(pygame.sprite.Sprite):
         self.rect.y = self.rect.y + self.moveY
 
     def draw(self):
-        screen.blit(self.sur, (0, 0))
+        screen.blit(self.image, (0, 310))
 
     def update(self):
-        self.move(0, 0)
+        self.button()
+        self.move(50, 0)
+        if self.rect.x >= 180:
+            self.rect.x = 180
 
 
 class Main:
