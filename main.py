@@ -962,205 +962,31 @@ class Start_Up(pygame.sprite.Sprite):
 class World_map(pygame.sprite.Sprite):
     def __init__(self):
         super(World_map, self).__init__()
-        self.sur = pygame.Surface((1200, 800))
-        self.image = self.sur
-        self.rect = self.sur.get_rect()
-        self.sur.fill(GRAY4)
+        self.image = pygame.image.load("images/templates/galaxy_fullscreen_gal1.png")
+        screen.blit(self.image, (0, 0))
+        self.rect = self.image.get_rect()
         self.movex = 0
         self.movey = 0
+        self.logo = pygame.image.load("images/templates/Dream_Logo.png")
+        # self.image.blit(planet_larger.image, (900, 40))
 
-    def icons(self):
-        quit = pygame.image.load("images/icons/icons_quit_white.png")
-        start = pygame.image.load("images/icons/icons_play_white.png")
-        setup = pygame.image.load("images/icons/icons_setup_white2.png")
-        insert = pygame.image.load("images/icons/icons_insert_white.png")
-        self.sur.blit(quit, (6, 540))
-
-    def text(self):
-        font = game_font.render("Level 1", True, BLACK)
-        surfaceR = font.get_rect()
-        surfaceR.center = (280, 270)
-        screen.blit(font, surfaceR)
-
-    def button(self):
+    def mission1(self):
+        self.mission1_image = pygame.image.load("images/templates/galaxy_fullscreen_gal1_LVL1.png")
+        self.T1 = pygame.image.load("images/Extras/tile-01.png")
+        self.ship = pygame.image.load("images/ships/Delux_ships1.2_1.png")
         click = pygame.mouse.get_pressed()
         pos = pygame.mouse.get_pos()
-        surfacefont = game_font.render("Level 1", True, ROYALBLUE2)
-        surfaceR = surfacefont.get_rect()
-        surfaceR.center = (280, 270)
         posX = pos[0]
         posY = pos[1]
-        quiton = pygame.image.load("images/Sprites/transparentLight/transparentLight45.png")
-        quitoff = pygame.image.load("images/Sprites/transparentDark/transparentDark45.png")
-
-        if 400 > posX > 180 and 400 > posY > 200:
-            screen.blit(surfacefont, surfaceR)
-            if click[0] == 1:
-                self.kill()
-                pygame.mouse.set_visible(False)
-        if 180 > posX > 10 and 630 > posY > 550:
-            self.sur.blit(quiton, (36, 565))
-            if click[0] == 1:
-                pygame.quit()
-                sys.exit()
-            else:
-                self.sur.blit(quitoff, (36, 565))
-
-    def threeDship(self, TDx, TDy):
-        thrDship = pygame.image.load("images/ships/Delux_ships1.2_1.png")
-        self.sur.blit(thrDship, (TDx, TDy))
-
-    def world_tiles(self):
-        T1 = pygame.image.load("images/Extras/tile-01.png")
-        T2 = pygame.image.load("images/Extras/tile-02.png")
-        T3 = pygame.image.load("images/Extras/tile-03.png")
-        T4 = pygame.image.load("images/Extras/tile-04.png")
-        T5 = pygame.image.load("images/Extras/tile-05.png")
-        T6 = pygame.image.load("images/Extras/tile-06.png")
-        T7 = pygame.image.load("images/Extras/tile-07.png")
-        self.sur.blit(T1, (4, 10))
-        self.sur.blit(T2, (28, 10))
-        self.sur.blit(T3, (52, 10))
-        self.sur.blit(T4, (76, 10))
-        self.sur.blit(T5, (100, 10))
-        self.sur.blit(T6, (124, 10))
-        self.sur.blit(T7, (148, 10))
-
-    def banner(self):
-        bufRect = pygame.Rect(212, 20, 960, 160)
-        bufSur = pygame.Surface((960, 160))
-        bufSur.fill(GRAY5)
-        lvl_1_text = pygame.image.load("images/Textures/trak_trim22.jpg")
-        self.sur.blit(bufSur, bufRect)
-        self.logo = pygame.image.load("images/templates/Dream_Logo.png")
-        bufSur.blit(lvl_1_text, (100, 10))
-        bufSur.blit(lvl_1_text, (300, 10))
-        bufSur.blit(lvl_1_text, (500, 10))
-        bufSur.blit(lvl_1_text, (700, 10))
-        self.sur.blit(planet_larger.image, (900, 40))
-        self.logoR = self.logo.get_rect()
-        bufSur.blit(self.logo, (20, 4))
-        bufSur.blit(game_title.title_surface, (80, 10))
-
-    def lvl_1(self):
-        lvl_1_box = pygame.Rect(200, 210, 190, 190)
-        lvl_1_sur = pygame.Surface((190, 190))
-        lvl_1 = str("Level 1")
-        lvl_1_text = game_font.render(lvl_1, True, WHITE)
-        text = pygame.image.load("images/Textures/trak_trim22.jpg")
-        planet = pygame.image.load("images/planets/planet4.png")
-        shipIcon = pygame.image.load("images/ships/Delux_ships1.2_1.png")
-        lvl_1_sur.blit(text, (5, 5))
-        lvl_1_sur.blit(planet, (10, 10))
-
-        lvl_1_sur.blit(shipIcon, (0, 60))
-        lvl_1_sur.blit(shipIcon, (-15, 15))
-        lvl_1_sur.blit(shipIcon, (-60, 80))
-        lvl_1_sur.blit(lvl_1_text, (10, 40))
-        self.sur.blit(lvl_1_sur, lvl_1_box)
-
-    def lvl_2(self):
-        text = pygame.image.load("images/Textures/trak_trimplain_warning_g.jpg")
-        planet = pygame.image.load("images/planets/planet17.png.")
-        lvl_2_sur = pygame.Surface((190, 190))
-        lvl_2 = str("Level 2")
-        lvl_2_text = game_font_18.render(lvl_2, True, GRAY6)
-        lvl_2_sur.blit(lvl_2_text, (5, 0))
-        lvl_2_sur.blit(text, (5, 5))
-        lvl_2_sur.blit(planet, (10, 10))
-        lvl_2_sur.blit(lvl_2_text, (15, 55))
-        lvl_2_box = pygame.Rect(400, 210, 190, 190)
-        self.sur.blit(lvl_2_sur, lvl_2_box)
-
-    def lvl_3(self):
-        text = pygame.image.load("images/Textures/trak_trimplain_warning_g.jpg")
-        planet = pygame.image.load("images/planets/planet6.png.")
-        lvl_3 = str("Level 3")
-        lvl_3_text = game_font_18.render(lvl_3, True, GRAY6)
-        lvl_3_sur = pygame.Surface((190, 190))
-        lvl_3_sur.blit(lvl_3_text, (5, 0))
-        lvl_3_sur.blit(text, (5, 5))
-        lvl_3_sur.blit(planet, (10, 10))
-        lvl_3_sur.blit(lvl_3_text, (15, 55))
-        lvl_3_box = pygame.Rect(600, 210, 190, 190)
-        self.sur.blit(lvl_3_sur, lvl_3_box)
-
-    def lvl_4(self):
-        text = pygame.image.load("images/Textures/trak_trimplain_warning_g.jpg")
-        planet = pygame.image.load("images/planets/planet2.png")
-        lvl_4 = str("Level 4")
-        lvl_4_text = game_font_18.render(lvl_4, True, GRAY6)
-        lvl_4_sur = pygame.Surface((190, 190))
-        lvl_4_sur.blit(lvl_4_text, (5, 0))
-        lvl_4_sur.blit(text, (5, 5))
-        lvl_4_sur.blit(planet, (10, 10))
-        lvl_4_sur.blit(lvl_4_text, (15, 55))
-        lvl_4_box = pygame.Rect(800, 210, 190, 190)
-        self.sur.blit(lvl_4_sur, lvl_4_box)
-
-    def lvl_5(self):
-        text = pygame.image.load("images/Textures/trak_trimplain_warning_g.jpg")
-        planet = pygame.image.load("images/planets/planet19.png")
-        lvl_5 = str("Level 5")
-        lvl_5_text = game_font_18.render(lvl_5, True, GRAY6)
-        lvl_5_sur = pygame.Surface((190, 190))
-        lvl_5_sur.blit(lvl_5_text, (5, 0))
-        lvl_5_sur.blit(text, (5, 5))
-        lvl_5_sur.blit(planet, (10, 10))
-        lvl_5_sur.blit(lvl_5_text, (15, 55))
-        lvl_5_box = pygame.Rect(1000, 210, 190, 190)
-        self.sur.blit(lvl_5_sur, lvl_5_box)
-        R1_10 = pygame.Rect(400, 410, 190, 190)
-        pygame.draw.rect(self.sur, BLACK, R1_10)
-
-    def bottom(self):
-        self.Sur = pygame.Surface((1200, 60))
-        self.Rect = pygame.Rect(0, 600, 1190, 60)
-        texture = pygame.image.load("images/Textures/trak_trimplain_warning_g.jpg")
-        world_map.sur.blit(self.Sur, self.Rect)
-        self.sur.blit(texture, (0, 600))
-        self.sur.blit(texture, (300, 600))
-        self.sur.blit(texture, (600, 600))
-        self.sur.blit(texture, (900, 600))
-        self.sur.blit(planet_yellow.image, (266, 600))
-        self.sur.blit(planet_yellow.image, (566, 600))
-        self.sur.blit(planet_yellow.image, (866, 600))
-        self.sur.blit(planet_yellow.image, (1166, 600))
-
-    def Grid(self):
-        RT = pygame.Rect(200, 10, 990, 190)
-        RL = pygame.Rect(0, 10, 190, 590)
-        R2_6 = pygame.Rect(600, 410, 190, 190)
-        R2_8 = pygame.Rect(800, 410, 190, 190)
-        R2_10 = pygame.Rect(1000, 410, 190, 190)
-
-        pygame.draw.rect(self.sur, BLACK, RT)
-        pygame.draw.rect(self.sur, BLACK, RL)
-        pygame.draw.rect(self.sur, BLACK, R2_6)
-        pygame.draw.rect(self.sur, BLACK, R2_8)
-        pygame.draw.rect(self.sur, BLACK, R2_10)
+#        if 400 > posX > 180 and 400 > posY > 200:
+#            if click[0] == 1:
 
     def draw(self):
-        screen.blit(self.sur, (0, 0))
-        self.sur.blit(self.image, (0, 0))
+        self.mission1()
+        screen.blit(self.image, (-10, -10))
 
     def update(self):
-        self.lvl_1()
-        self.lvl_2()
-        self.lvl_3()
-        self.lvl_4()
-        self.lvl_5()
-        self.Grid()
-        self.bottom()
-        self.banner()
-        self.world_tiles()
-        self.icons()
-        self.threeDship(400, 10)
-        self.threeDship(500, 10)
-        self.threeDship(600, 10)
-        self.threeDship(700, 10)
-        self.text()
-        self.button()
+        self.draw()
 
 
 class GalaxyWin(pygame.sprite.Sprite):
@@ -1306,10 +1132,12 @@ class Galaxy_data_Window(pygame.sprite.Sprite):
         if 1110 > posX > 880 and 590 > posY > 525:
             self.image.blit(self.start2_1, (30, 465))
             if click[0] == 1:
-                self.kill()
-                start_up.kill()
                 galaxy_win.kill()
                 setupWin.kill()
+                self.kill()
+                map_group.draw(screen)
+                map_group.add(world_map)
+
         else:
             self.image.blit(self.text_sur, (10, 460))
 
@@ -1521,12 +1349,9 @@ class Main:
         # menu_group.draw(screen)
         # menu_group.update()
         # bullet_group.update()
-
-        map_group.draw(screen)
-        map_group.update()
         start_group.draw(screen)
-        Galaxy_group.update()
         start_group.update()
+        map_group.update()
         Galaxy_group.update()
 
         if battle is True:
@@ -1658,7 +1483,6 @@ menu_group.add(playerInfobox, photon_charger_window, YanSan_window, LeftToolbar)
 all_sprites.add(planet_larger, planet_yellow, asteroid, drone, grey_ship, red_ship, purple_ship, yellow_ship, player)
 start_group.add(start_up)
 grid_group.add(Main_Menu)
-map_group.add(world_map)
 Galaxy_group.add(toolbar)
 # 'for' statements
 voice1.play()
