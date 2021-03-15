@@ -959,9 +959,9 @@ class Start_Up(pygame.sprite.Sprite):
         self.button()
 
 
-class World_map(pygame.sprite.Sprite):
+class SR_22_Window(pygame.sprite.Sprite):
     def __init__(self):
-        super(World_map, self).__init__()
+        super(SR_22_Window, self).__init__()
         self.image = pygame.image.load("images/templates/galaxy_fullscreen_gal1.png")
         screen.blit(self.image, (0, 0))
         self.rect = self.image.get_rect()
@@ -971,7 +971,7 @@ class World_map(pygame.sprite.Sprite):
         # self.image.blit(planet_larger.image, (900, 40))
 
     def mission1(self):
-        self.mission1_image = pygame.image.load("images/templates/galaxy_fullscreen_gal1_LVL1.png")
+        self.mission1_image = pygame.image.load("images/templates/galaxy_fullscreen_gal1_edit1.png")
         self.T1 = pygame.image.load("images/Extras/tile-01.png")
         self.ship = pygame.image.load("images/ships/Delux_ships1.2_1.png")
         click = pygame.mouse.get_pressed()
@@ -983,7 +983,7 @@ class World_map(pygame.sprite.Sprite):
 
     def draw(self):
         self.mission1()
-        screen.blit(self.image, (-10, -10))
+        screen.blit(self.mission1_image, (-10, -10))
 
     def update(self):
         self.draw()
@@ -1136,7 +1136,7 @@ class Galaxy_data_Window(pygame.sprite.Sprite):
                 setupWin.kill()
                 self.kill()
                 map_group.draw(screen)
-                map_group.add(world_map)
+                map_group.add(SR_22_Window)
 
         else:
             self.image.blit(self.text_sur, (10, 460))
@@ -1438,7 +1438,7 @@ toolbar = Toolbar()
 setupWin = setupWin()
 galaxy_data_win = Galaxy_data_Window()
 galaxy_win = GalaxyWin()
-world_map = World_map()
+SR_22_Window = SR_22_Window()
 drone = Drone()
 asteroid = Asteroid()
 purple_ship = Purple_ship()
