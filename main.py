@@ -3,7 +3,9 @@ import random
 import sys
 from Colors import *
 from PIL import Image
+
 # ................................................ 'Init' setup ..................................................
+
 pygame.init()
 pygame.font.init()
 cell_pxl_size = 70
@@ -18,17 +20,23 @@ clock = pygame.time.Clock()
 back_round_im = pygame.image.load("images/templates/Stars.png")
 back_round = pygame.Surface((800, 400))
 back_round.blit(back_round_im, (0, 0))
+
 # ............................................. Audio Variables .................................................
+
 music = pygame.mixer.Sound("Voicetracks/Uppermost.wav")
 laser = pygame.mixer.Sound("images/Sprites/sounds/laser_SE_hit.wav")
 shoot_laser = pygame.mixer.Sound("images/Sprites/sounds/laser_SE_shoot.wav")
 sound_click = pygame.mixer.Sound("images/Sprites/sounds/click.mp3")
+
 # .............................................. Game Fonts .....................................................
+
 game_font = pygame.font.Font("freesansbold.ttf", 42)
 game_font_10 = pygame.font.Font("freesansbold.ttf", 10)
 game_font_18 = pygame.font.Font("freesansbold.ttf", 18)
 mono_font = pygame.font.SysFont("monospace", 36)
+
 # .............................................. Rotate Images ..................................................
+
 im = Image.open("images/ships/10.png")
 angle = 45
 out = im.rotate(angle)
@@ -37,7 +45,9 @@ im = Image.open("images/ships/SpaceHero/red_ship_micro.png")
 angle = 180
 out = im.rotate(angle)
 out.save("images/ships/SpaceHero/red_ship_micro2.png")
+
 # ............................................ Add-ins ...........................................................
+
 blue_bolt = pygame.image.load("images/planets/blue_bolt.png")
 blue_bolt_rect = pygame.Rect(10, 10, 400, 301)
 new_icon = pygame.image.load("images/player/Dream_Logic_new_icon.png")
@@ -52,7 +62,9 @@ click = pygame.mouse.get_pressed()
 pos = pygame.mouse.get_pos()
 posX = pos[0]
 posY = pos[1]
+
 # ................................................Pop-up windows...................................................
+
 radar_screen = pygame.image.load("images/templates/opohgknlov.jpeg")
 radar_screen_rect = pygame.Rect(0, 0, 1051, 515)
 game_time = pygame.time.get_ticks()
@@ -72,7 +84,8 @@ voice1 = pygame.mixer.Sound("Voicetracks/WC-1.mp3")
 voice2 = pygame.mixer.Sound("Voicetracks/WC-17.mp3")
 
 
-# ............................................................ {SPRITES} ..........................................
+# ................................................. {SPRITES} ....................................................
+
 class Start_Up(pygame.sprite.Sprite):
     def __init__(self):
         super(Start_Up, self).__init__()
@@ -629,6 +642,7 @@ class Main:
 
 
 # ........................................... Functions and Variables .............................................
+
 x = 1010
 y = 520
 steps = 6
@@ -643,10 +657,14 @@ galaxy_data_win = Galaxy_data_Window()
 galaxy_win = GalaxyWin()
 SR_22_Window = SR_22_Window()
 start_up = Start_Up()
+
 # .................................................. Audio Functions ..............................................
+
 voice1.play()
 music.play()
+
 # .................................................. Sprite Groups ................................................
+
 grid_group = pygame.sprite.Group()
 battle_sprites = pygame.sprite.Group()
 menu_group = pygame.sprite.Group()
@@ -661,10 +679,14 @@ all_sprites = pygame.sprite.Group()
 map_group = pygame.sprite.Group()
 net_menu = pygame.sprite.Group()
 Galaxy_group = pygame.sprite.Group()
+
 # .............................................. Add Sprites to Groups ............................................
+
 start_group.add(start_up)
 Galaxy_group.add(toolbar)
+
 # ............................................... 'for' Statements ................................................
+
 for i in range(760):
     x = random.randrange(140, 1000)
     y = random.randrange(14, 36)
@@ -673,7 +695,9 @@ for a in range(140):
     Ax = random.randrange(100, 950)
     Ay = random.randrange(228, 340)
     asteroid_list.append([Ax, Ay])
+
 # ................................................. {Game Loop} ...................................................
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
