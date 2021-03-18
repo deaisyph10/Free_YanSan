@@ -3,8 +3,7 @@ import random
 import sys
 from Colors import *
 from PIL import Image
-
-# Init setup
+# ............................. 'Init' setup ..........................
 pygame.init()
 pygame.font.init()
 cell_pxl_size = 70
@@ -19,31 +18,26 @@ clock = pygame.time.Clock()
 back_round_im = pygame.image.load("images/templates/Stars.png")
 back_round = pygame.Surface((800, 400))
 back_round.blit(back_round_im, (0, 0))
-# Audio Variables
+# ......................... Audio Variables .............................
 music = pygame.mixer.Sound("Voicetracks/Uppermost.wav")
 laser = pygame.mixer.Sound("images/Sprites/sounds/laser_SE_hit.wav")
 shoot_laser = pygame.mixer.Sound("images/Sprites/sounds/laser_SE_shoot.wav")
 sound_click = pygame.mixer.Sound("images/Sprites/sounds/click.mp3")
-
-# Game Font
+# .......................... Game Fonts .................................
 game_font = pygame.font.Font("freesansbold.ttf", 42)
 game_font_10 = pygame.font.Font("freesansbold.ttf", 10)
 game_font_18 = pygame.font.Font("freesansbold.ttf", 18)
 mono_font = pygame.font.SysFont("monospace", 36)
-
-# rotate image
+# .......................... Rotate Images ..............................
 im = Image.open("images/ships/10.png")
 angle = 45
 out = im.rotate(angle)
 out.save("images/ships/10.1.png")
-
-# rotate image
 im = Image.open("images/ships/SpaceHero/red_ship_micro.png")
 angle = 180
 out = im.rotate(angle)
 out.save("images/ships/SpaceHero/red_ship_micro2.png")
-
-# other add-ins
+# ........................ Add-ins .......................................
 blue_bolt = pygame.image.load("images/planets/blue_bolt.png")
 blue_bolt_rect = pygame.Rect(10, 10, 400, 301)
 new_icon = pygame.image.load("images/player/Dream_Logic_new_icon.png")
@@ -58,7 +52,7 @@ click = pygame.mouse.get_pressed()
 pos = pygame.mouse.get_pos()
 posX = pos[0]
 posY = pos[1]
-# Pop-up windows
+# ............................Pop-up windows.......................................
 radar_screen = pygame.image.load("images/templates/opohgknlov.jpeg")
 radar_screen_rect = pygame.Rect(0, 0, 1051, 515)
 game_time = pygame.time.get_ticks()
@@ -78,6 +72,7 @@ voice1 = pygame.mixer.Sound("Voicetracks/WC-1.mp3")
 voice2 = pygame.mixer.Sound("Voicetracks/WC-17.mp3")
 
 
+# ........................................ {SPRITES} ....................................
 class Start_Up(pygame.sprite.Sprite):
     def __init__(self):
         super(Start_Up, self).__init__()
@@ -184,15 +179,24 @@ class SR_22_Window(pygame.sprite.Sprite):
         rogue_icon = pygame.image.load("images/icons/buttons_galaxy-toolbar_bolt_gray.png")
         screen.blit(self.toolbar_image, (880, 186))
 
-
     def mission1(self):
-        self.mission1_image = pygame.image.load("images/templates/galaxy_fullscreen_gal1_edit1.png")
-        self.T1 = pygame.image.load("images/Extras/tile-01.png")
-        self.ship = pygame.image.load("images/ships/Delux_ships1.2_1.png")
+        asteroid_field_BOX1 = pygame.image.load("images/buttons/level_image_galaxy1-level1-asteroid_field.01.1.png")
+        asteroid_field_BOX2 = pygame.image.load("images/buttons/level_image_galaxy1-level1-asteroid_field.02.png")
+        asteroid_field_BOX3 = pygame.image.load("images/buttons/level_image_galaxy1-level1-asteroid_field.03.png")
+        click = pygame.mouse.get_pressed()
+        pos = pygame.mouse.get_pos()
+        posX = pos[0]
+        posY = pos[1]
+        if 1080 > posX > 928 and 580 > posY > 367:
+            screen.blit(asteroid_field_BOX3, (928, 367))
+            if click[0] == 1:
+                screen.blit(asteroid_field_BOX2, (928, 367))
+        else:
+            screen.blit(asteroid_field_BOX1, (928, 367))
 
     def mission2(self):
         rebel_control_BOX1 = pygame.image.load("images/buttons/level_image_galaxy1-level2-solar-cycle_rebelcontrol.01.png")
-        rebel_control_BOX2 = pygame.image.load("images/buttons/level_image_galaxy1-level2-solar-cycle_rebelcontrol.02.png")
+        rebel_control_BOX2 = pygame.image.load("images/buttons/level_image_galaxy1-level2-solar-cycle_rebelcontrol.02.1.png")
         rebel_control_BOX3 = pygame.image.load("images/buttons/level_image_galaxy1-level2-solar-cycle_rebelcontrol.03.png")
         click = pygame.mouse.get_pressed()
         pos = pygame.mouse.get_pos()
@@ -624,28 +628,25 @@ class Main:
                 star_list[i][0] = x
 
 
-# Lists
-star_list = []
-asteroid_list = []
-
-# Variables
+# ....................... Functions and Variables ..............................
+x = 1010
+y = 520
 steps = 6
 motionX = 2
 motionY = 1
 points = 12
-
-x = 1010
-y = 520
-
-# Variables
+star_list = []
+asteroid_list = []
 toolbar = Toolbar()
 setupWin = setupWin()
 galaxy_data_win = Galaxy_data_Window()
 galaxy_win = GalaxyWin()
 SR_22_Window = SR_22_Window()
-# Variables
 start_up = Start_Up()
-# Sprite Groups
+# .............................. Audio Functions .............................
+voice1.play()
+music.play()
+# .............................. Sprite Groups ...............................
 grid_group = pygame.sprite.Group()
 battle_sprites = pygame.sprite.Group()
 menu_group = pygame.sprite.Group()
@@ -660,13 +661,10 @@ all_sprites = pygame.sprite.Group()
 map_group = pygame.sprite.Group()
 net_menu = pygame.sprite.Group()
 Galaxy_group = pygame.sprite.Group()
-# Fill the groups with their Sprites
+# .......................... Add Sprites to Groups ...............................
 start_group.add(start_up)
 Galaxy_group.add(toolbar)
-# 'for' statements
-voice1.play()
-# voice2.play()
-music.play()
+# ........................... 'for' Statements ...................................
 for i in range(760):
     x = random.randrange(140, 1000)
     y = random.randrange(14, 36)
@@ -675,6 +673,7 @@ for a in range(140):
     Ax = random.randrange(100, 950)
     Ay = random.randrange(228, 340)
     asteroid_list.append([Ax, Ay])
+# ............................. {Game Loop} ......................................
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
