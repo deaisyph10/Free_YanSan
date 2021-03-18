@@ -30,10 +30,10 @@ sound_click = pygame.mixer.Sound("images/Sprites/sounds/click.mp3")
 
 # .............................................. Game Fonts .....................................................
 
-game_font = pygame.font.Font("freesansbold.ttf", 42)
-game_font_10 = pygame.font.Font("freesansbold.ttf", 10)
-game_font_18 = pygame.font.Font("freesansbold.ttf", 18)
-mono_font = pygame.font.SysFont("monospace", 36)
+game_font_freesansbold_10 = pygame.font.Font("freesansbold.ttf", 10)
+game_font_freesansbold_18 = pygame.font.Font("freesansbold.ttf", 18)
+game_font_freesansbold_42 = pygame.font.Font("freesansbold.ttf", 42)
+game_font_monospace_36 = pygame.font.SysFont("monospace", 36)
 
 # .............................................. Rotate Images ..................................................
 
@@ -49,19 +49,12 @@ out.save("images/ships/SpaceHero/red_ship_micro2.png")
 # ............................................ Add-ins ...........................................................
 
 blue_bolt = pygame.image.load("images/planets/blue_bolt.png")
-blue_bolt_rect = pygame.Rect(10, 10, 400, 301)
 new_icon = pygame.image.load("images/player/Dream_Logic_new_icon.png")
 new_icon_rect = pygame.Rect(230, 450, 60, 60)
 dream_logo = pygame.image.load("images/templates/Dream_Logo.png")
 dream_logo_2 = pygame.transform.scale(dream_logo, (40, 40))
 LLC_icon = pygame.image.load("images/templates/Dream_green_title.png")
 LLC_icon_micro = pygame.transform.scale(LLC_icon, (200, 40))
-score: int = 0
-curmov = 200
-click = pygame.mouse.get_pressed()
-pos = pygame.mouse.get_pos()
-posX = pos[0]
-posY = pos[1]
 
 # ................................................Pop-up windows...................................................
 
@@ -100,11 +93,10 @@ class Start_Up(pygame.sprite.Sprite):
         self.back.blit(self.menu_screen, (160, 0))
 
     def text(self):
-        font = mono_font
-        text = font.render("FREE YanSan", True, WHITE)
-        surfaceR = text.get_rect()
-        surfaceR.center = (120, 20)
-        self.sur.blit(text, surfaceR)
+        text = game_font_monospace_36.render("FREE YanSan", True, WHITE)
+        text_rect = text.get_rect()
+        text_rect.center = (120, 20)
+        self.sur.blit(text, text_rect)
 
     def icons(self):
         quit = pygame.image.load("images/icons/icons_quit_white.png")
@@ -271,7 +263,7 @@ class GalaxyWin(pygame.sprite.Sprite):
     def nav_box(self):
         navstring = str("Send coordinate-cache data block via ::// SHIP_navigation.SYSTEMS")
         ship_image = pygame.image.load("images/ships/Ship_ICON.png")
-        self.navtext = game_font_10.render(navstring, True, GRAY95)
+        self.navtext = game_font_freesansbold_10.render(navstring, True, GRAY95)
         self.navimage = pygame.Surface((360, 60))
         self.navimage.fill(GRAY9)
         self.navimage.blit(self.navtext, (5, 10))
@@ -345,7 +337,7 @@ class GalaxyWin(pygame.sprite.Sprite):
 
     def headertext(self):
         select = str("Select a Galaxy to Explore")
-        headertxt = game_font.render(select, True, WHITE)
+        headertxt = game_font_freesansbold_42.render(select, True, WHITE)
         self.image.blit(headertxt, (40, 10))
 
     def draw(self):
@@ -373,7 +365,7 @@ class Galaxy_data_Window(pygame.sprite.Sprite):
         self.image1 = pygame.image.load("images/icons/icon_galaxy_1data.jpg")
         self.image_rect = self.image1.get_rect()
         self.image_label_str = str("'SR22-87.23'")
-        self.image_label = game_font.render(self.image_label_str, True, GRAY95)
+        self.image_label = game_font_freesansbold_42.render(self.image_label_str, True, GRAY95)
         self.image_label_rect = self.image_label.get_rect()
         self.image_label_icon = pygame.image.load("images/icons/saturn_icon.png")
 
@@ -414,7 +406,7 @@ class Galaxy_data_Window(pygame.sprite.Sprite):
         self.text_sur.fill(GRAY14)
         self.text_sur_rect = self.text_sur.get_rect()
         self.text_str = str("Galaxy 1")
-        self.text = game_font_18.render(self.text_str, True, GRAY95)
+        self.text = game_font_freesansbold_18.render(self.text_str, True, GRAY95)
         self.text_rect = self.text.get_rect()
         self.text_icon = pygame.image.load("images/icons/galaxy_description.png")
 
@@ -598,20 +590,6 @@ class Main:
     def update(self):
         screen.fill(BLACK)
         screen.blit(back_round, (0, 0))
-        # grid_group.draw(screen)
-        # grid_group.update()
-        # self.statments()
-        # all_sprites.draw(screen)
-        # all_sprites.update()
-        # self.belt()
-        # asteroid_group.draw(screen)
-        # asteroid_group.update()
-        # bullet_group.draw(screen)
-        # planet_group.draw(screen)
-        # planet_group.update()
-        # menu_group.draw(screen)
-        # menu_group.update()
-        # bullet_group.update()
         start_group.draw(screen)
         start_group.update()
         map_group.update()
