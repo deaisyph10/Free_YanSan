@@ -3,7 +3,7 @@ import random
 import sys
 from Colors import *
 from PIL import Image
-# ............................. 'Init' setup ..........................
+# .................................................. 'Init' setup .....................................................
 pygame.init()
 pygame.font.init()
 cell_pxl_size = 70
