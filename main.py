@@ -4,25 +4,25 @@ import sys
 from Colors import *
 from PIL import Image
 
-# ................................................ 'Init' setup ..................................................
+# .............................................. 'Init' add-in mods ..................................................
 
 pygame.init()
 pygame.font.init()
 
-# ................................................... 'Display' setup .............................................
+# ............................................. 'Display' setup ................................................
 
 screen = pygame.display.set_mode((1200, 700))
 pygame.display.set_caption("FREE_YanSan")
 back_round_im = pygame.image.load("images/templates/Stars.png")
 back_round = pygame.Surface((800, 400))
 back_round.blit(back_round_im, (0, 0))
+pygame.mouse.set_visible(True)
 
-# ................................................ 'Game Clock' setup .............................................
+# ............................................ 'Game Clock' setup ..............................................
 
 clock = pygame.time.Clock()
 FPS = 120
 game_time = pygame.time.get_ticks()
-pygame.mouse.set_visible(True)
 
 # ............................................. Audio Variables .................................................
 
@@ -51,7 +51,7 @@ angle = 180
 out = im.rotate(angle)
 out.save("images/ships/SpaceHero/red_ship_micro2.png")
 
-# .................................................. Add-ins .....................................................
+# .................................................. MISC .....................................................
 
 blue_bolt = pygame.image.load("images/planets/blue_bolt.png")
 new_icon = pygame.image.load("images/player/Dream_Logic_new_icon.png")
