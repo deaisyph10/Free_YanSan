@@ -8,27 +8,32 @@ from PIL import Image
 
 pygame.init()
 pygame.font.init()
-cell_pxl_size = 70
-cell_count = 10
-screen_width = 1200
-screen_height = 700
-FPS = 120
-moveX, moveY = 0, 0
-screen = pygame.display.set_mode((screen_width, screen_height))
+
+# ................................................... 'Display' setup .............................................
+
+screen = pygame.display.set_mode((1200, 700))
 pygame.display.set_caption("FREE_YanSan")
-clock = pygame.time.Clock()
 back_round_im = pygame.image.load("images/templates/Stars.png")
 back_round = pygame.Surface((800, 400))
 back_round.blit(back_round_im, (0, 0))
 
+# ................................................ 'Game Clock' setup .............................................
+
+clock = pygame.time.Clock()
+FPS = 120
+game_time = pygame.time.get_ticks()
+pygame.mouse.set_visible(True)
+
 # ............................................. Audio Variables .................................................
 
+voice1 = pygame.mixer.Sound("Voicetracks/WC-1.mp3")
+voice2 = pygame.mixer.Sound("Voicetracks/WC-17.mp3")
 music = pygame.mixer.Sound("Voicetracks/Uppermost.wav")
 laser = pygame.mixer.Sound("images/Sprites/sounds/laser_SE_hit.wav")
 shoot_laser = pygame.mixer.Sound("images/Sprites/sounds/laser_SE_shoot.wav")
 sound_click = pygame.mixer.Sound("images/Sprites/sounds/click.mp3")
 
-# .............................................. Game Fonts .....................................................
+# ................................................ Game Fonts ....................................................
 
 game_font_freesansbold_10 = pygame.font.Font("freesansbold.ttf", 10)
 game_font_freesansbold_18 = pygame.font.Font("freesansbold.ttf", 18)
@@ -46,7 +51,7 @@ angle = 180
 out = im.rotate(angle)
 out.save("images/ships/SpaceHero/red_ship_micro2.png")
 
-# ............................................ Add-ins ...........................................................
+# .................................................. Add-ins .....................................................
 
 blue_bolt = pygame.image.load("images/planets/blue_bolt.png")
 new_icon = pygame.image.load("images/player/Dream_Logic_new_icon.png")
@@ -55,27 +60,6 @@ dream_logo = pygame.image.load("images/templates/Dream_Logo.png")
 dream_logo_2 = pygame.transform.scale(dream_logo, (40, 40))
 LLC_icon = pygame.image.load("images/templates/Dream_green_title.png")
 LLC_icon_micro = pygame.transform.scale(LLC_icon, (200, 40))
-
-# ................................................Pop-up windows...................................................
-
-radar_screen = pygame.image.load("images/templates/opohgknlov.jpeg")
-radar_screen_rect = pygame.Rect(0, 0, 1051, 515)
-game_time = pygame.time.get_ticks()
-interior_layout = pygame.image.load("images/templates/interior_edit_600x450.jpg").convert()
-interior_layout_sur = pygame.Surface((600, 450))
-int_window_rect = pygame.Rect(250, 120, 610, 460)
-int_window = pygame.Surface((610, 460))
-battle_screen_width = 495
-battle_screen_height = 170
-battle_screen = pygame.Surface((battle_screen_width, battle_screen_height))
-battle = False
-net_menu_window = False
-interior_window = False
-radar_screen_value = False
-pygame.mouse.set_visible(True)
-voice1 = pygame.mixer.Sound("Voicetracks/WC-1.mp3")
-voice2 = pygame.mixer.Sound("Voicetracks/WC-17.mp3")
-
 
 # ................................................. {SPRITES} ....................................................
 
@@ -621,6 +605,11 @@ class Main:
 
 # ........................................... Functions and Variables .............................................
 
+cell_pxl_size = 70
+cell_count = 10
+screen_width = 1200
+screen_height = 700
+moveX, moveY = 0, 0
 x = 1010
 y = 520
 steps = 6
@@ -636,12 +625,12 @@ galaxy_win = GalaxyWin()
 SR_22_Window = SR_22_Window()
 start_up = Start_Up()
 
-# .................................................. Audio Functions ..............................................
+# ............................................... Audio Functions ................................................
 
 voice1.play()
 music.play()
 
-# .................................................. Sprite Groups ................................................
+# ............................................... Sprite Groups ..................................................
 
 grid_group = pygame.sprite.Group()
 battle_sprites = pygame.sprite.Group()

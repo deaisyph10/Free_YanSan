@@ -2,7 +2,8 @@ FREE YanSan
 DreamLogic Productions
 2021- 2022
 
-    Welcome to the YanSan Network!  The galactic FREE energy source for all lifeforms to untilize.
+Welcome to the YanSan Network! 
+    The galactic FREE energy source for all lifeforms to untilize.
 The YanSan Network comprised of millenia of hard work and dedication from all walks of life throughout the system,
 this artifcial intelligence has the ability to mold reality at will.  With such emence power, the network is
 a grand tool which is highly desired no matter who you are, or what you want to achieve.  All lifeforms,
