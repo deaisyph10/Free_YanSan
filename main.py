@@ -13,6 +13,8 @@ pygame.font.init()
 
 screen = pygame.display.set_mode((1200, 700))
 pygame.display.set_caption("FREE_YanSan")
+icon = pygame.image.load("images/icons/Dream_Logo.ico")
+pygame.display.set_icon(icon)
 back_round_im = pygame.image.load("images/templates/Stars.png")
 back_round = pygame.Surface((800, 400))
 back_round.blit(back_round_im, (0, 0))
@@ -143,6 +145,21 @@ class Start_Up(pygame.sprite.Sprite):
         self.button()
 
 
+class briefing_Win(pygame.sprite.Sprite):
+    def __init__(self):
+        super(briefing_Win, self).__init__()
+        self.image = pygame.image.load("images/templates/templates_mission_briefing.png")
+        self.rect = self.image.get_rect()
+        self.movex = 0
+        self.movey = 0
+
+    def draw(self):
+        screen.blit(self.image, (480, 40))
+
+    def update(self):
+        self.draw()
+
+
 class SR_22_Window(pygame.sprite.Sprite):
     def __init__(self):
         super(SR_22_Window, self).__init__()
@@ -152,8 +169,6 @@ class SR_22_Window(pygame.sprite.Sprite):
         self.movex = 0
         self.movey = 0
         self.logo = pygame.image.load("images/templates/Dream_Logo.png")
-
-        # self.image.blit(planet_larger.image, (900, 40))
 
     def Gal_Toolbar(self):
         self.toolbar_image = pygame.image.load("images/icons/galaxy_fullscreen_toolbar.png")
@@ -177,14 +192,17 @@ class SR_22_Window(pygame.sprite.Sprite):
         posX = pos[0]
         posY = pos[1]
         if 1080 > posX > 928 and 580 > posY > 367:
-            screen.blit(asteroid_field_BOX3, (928, 367))
+            screen.blit(asteroid_field_BOX2, (928, 367))
+            text_group.add(briefing_Win)
             if click[0] == 1:
                 screen.blit(asteroid_field_BOX2, (928, 367))
+                text_group.add(briefing_Win)
         else:
             screen.blit(asteroid_field_BOX1, (928, 367))
+            text_group.remove(briefing_Win)
 
     def mission2(self):
-        rebel_control_BOX1 = pygame.image.load("images/buttons/level_image_galaxy1-level2-solar-cycle_rebelcontrol.01.png")
+        rebel_control_BOX1 = pygame.image.load("images/buttons/level_image_galaxy1-level2-solar-cycle_rebelcontrol.02.2.png")
         rebel_control_BOX2 = pygame.image.load("images/buttons/level_image_galaxy1-level2-solar-cycle_rebelcontrol.02.1.png")
         rebel_control_BOX3 = pygame.image.load("images/buttons/level_image_galaxy1-level2-solar-cycle_rebelcontrol.03.png")
         click = pygame.mouse.get_pressed()
@@ -193,10 +211,13 @@ class SR_22_Window(pygame.sprite.Sprite):
         posY = pos[1]
         if 820 > posX > 685 and 480 > posY > 340:
             screen.blit(rebel_control_BOX1, (690, 346))
+            text_group.add(briefing_Win)
             if click[0] == 1:
                 screen.blit(rebel_control_BOX3, (690, 346))
+                text_group.add(briefing_Win)
         else:
             screen.blit(rebel_control_BOX2, (690, 346))
+            text_group.remove(briefing_Win)
 
     def mission3(self):
         war_alarm_BOX1 = pygame.image.load("images/buttons/level_image_galaxy1-level3-planet_nine_WAR.01.png")
@@ -208,24 +229,24 @@ class SR_22_Window(pygame.sprite.Sprite):
         posY = pos[1]
         if 560 > posX > 514 and 520 > posY > 468:
             screen.blit(war_alarm_BOX2, (514, 468))
+            text_group.add(briefing_Win)
             if click[0] == 1:
                 screen.blit(war_alarm_BOX3, (514, 468))
+                text_group.add(briefing_Win)
         else:
             screen.blit(war_alarm_BOX1, (514, 468))
+            text_group.remove(briefing_Win)
 
     def draw(self):
-        self.mission1()
-        self.mission2()
-        self.mission3()
         screen.blit(self.image, (160, 50))
         screen.blit(self.white_grid, (400, 185))
 
     def update(self):
         self.draw()
         self.Gal_Toolbar()
-        self.mission1()
-        self.mission2()
         self.mission3()
+        self.mission2()
+        self.mission1()
 
 
 class GalaxyWin(pygame.sprite.Sprite):
@@ -578,7 +599,7 @@ class Main:
         start_group.update()
         map_group.update()
         Galaxy_group.update()
-
+        text_group.update()
 
     def belt(self):
         for a in range(len(asteroid_list)):
@@ -618,6 +639,7 @@ motionY = 1
 points = 12
 star_list = []
 asteroid_list = []
+briefing_Win = briefing_Win()
 toolbar = Toolbar()
 setupWin = setupWin()
 galaxy_data_win = Galaxy_data_Window()
@@ -646,6 +668,7 @@ all_sprites = pygame.sprite.Group()
 map_group = pygame.sprite.Group()
 net_menu = pygame.sprite.Group()
 Galaxy_group = pygame.sprite.Group()
+text_group = pygame.sprite.Group()
 
 # .............................................. Add Sprites to Groups ............................................
 
