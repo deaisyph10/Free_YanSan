@@ -170,6 +170,9 @@ class SR_22_Window(pygame.sprite.Sprite):
         self.movex = 0
         self.movey = 0
         self.logo = pygame.image.load("images/templates/Dream_Logo.png")
+        self.start_BOX = pygame.image.load("images/buttons/buttons_wide_button-gray.png")
+        self.start_button_w = pygame.image.load("images/buttons/buttons_start_white_320x70.png")
+        self.start_button_b = pygame.image.load("images/buttons/buttons_start_blue_320x70.png")
 
     def Gal_Toolbar(self):
         self.toolbar_image = pygame.image.load("images/icons/galaxy_fullscreen_toolbar.png")
@@ -198,6 +201,7 @@ class SR_22_Window(pygame.sprite.Sprite):
             if click[0] == 1:
                 screen.blit(asteroid_field_BOX2, (928, 367))
                 text_group.add(briefing_Win)
+                screen.blit(self.start_button_b, (600, 600))
         else:
             screen.blit(asteroid_field_BOX1, (928, 367))
             text_group.remove(briefing_Win)
@@ -241,6 +245,8 @@ class SR_22_Window(pygame.sprite.Sprite):
     def draw(self):
         screen.blit(self.image, (160, 50))
         screen.blit(self.white_grid, (400, 185))
+        screen.blit(self.start_BOX, (550, 580))
+        screen.blit(self.start_button_w, (600, 600))
 
     def update(self):
         self.draw()
@@ -385,6 +391,7 @@ class Galaxy_data_Window(pygame.sprite.Sprite):
         posX = pos[0]
         posY = pos[1]
 
+
         if 900 > posX > 850 and 190 > posY > 140:
             if click[0] == 1:
                 sound_click.play()
@@ -456,7 +463,6 @@ class setupWin(pygame.sprite.Sprite):
         self.image.blit(self.arrow, (0, 10))
 
     def button(self):
-
         click = pygame.mouse.get_pressed()
         pos = pygame.mouse.get_pos()
         posX = pos[0]
