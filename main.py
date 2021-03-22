@@ -160,6 +160,37 @@ class briefing_Win(pygame.sprite.Sprite):
         self.draw()
 
 
+class main_menu(pygame.sprite.Sprite):
+    def __init__(self):
+        super(main_menu, self).__init__()
+        self.image = pygame.image.load("images/templates/templates_main_menu_dropdown.png")
+        self.image2 = pygame.image.load("images/templates/templates_main_menu_dropdown_white_light.png")
+        self.rect = self.image.get_rect()
+
+    def slots(self):
+        self.slot1 = pygame.image.load("images/txt_Images/txt_Images -- txt_galaxy menu_white.png")
+        self.slot2 = pygame.image.load("images/txt_Images/txt_Images -- txt_YanSan Network Map_white.png")
+        self.slot3 = pygame.image.load("images/txt_Images/txt_Images -- txt_player controls_white.png")
+        #self.slot4 = pygame.image.load()
+        #self.slot5 = pygame.image.load()
+        #self.slot6 = pygame.image.load()
+        self.divider_line = pygame.image.load("images/templates/templates_white-divide_500px.png")
+
+    def draw(self):
+        screen.blit(self.image, (910, 50))
+        self.slots()
+        self.image.blit(self.divider_line, (30, 20))
+        self.image.blit(self.divider_line, (30, 60))
+        self.image.blit(self.divider_line, (30, 100))
+        self.image.blit(self.divider_line, (30, 140))
+        self.image.blit(self.slot1, (40, 24))
+        self.image.blit(self.slot2, (40, 68))
+        self.image.blit(self.slot3, (40, 104))
+
+    def update(self):
+        self.draw()
+
+
 class SR_22_Window(pygame.sprite.Sprite):
     def __init__(self):
         super(SR_22_Window, self).__init__()
@@ -389,7 +420,6 @@ class Galaxy_data_Window(pygame.sprite.Sprite):
         self.image_label_rect = self.image_label.get_rect()
         self.image_label_icon = pygame.image.load("images/icons/saturn_icon.png")
 
-
     def button(self):
         self.data()
         self.text_sur = pygame.Surface((300, 70))
@@ -546,12 +576,12 @@ class Toolbar(pygame.sprite.Sprite):
         posX = pos[0]
         posY = pos[1]
         if 950 > posX > 900 and 46 > posY > 1:
+            menu_group.add(main_menu)
             screen.blit(self.mainmenu_on, (902, 0))
-            screen.blit(self.back, (722, 60))
             if click[0] == 1:
-                screen.blit(self.back, (722, 60))
-        else:
-            screen.blit(self.mainmenu, (902, 0))
+                sound_click.play()
+                menu_group.add(main_menu)
+                screen.blit(self.mainmenu, (902, 0))
         if 1000 > posX > 952 and 46 > posY > 1:
             screen.blit(self.setup_on, (952, 0))
             if click[0] == 1:
@@ -613,6 +643,7 @@ class Main:
         text_group.update()
         setup_group.draw(screen)
         setup_group.update()
+        menu_group.update()
 
     def belt(self):
         for a in range(len(asteroid_list)):
@@ -636,35 +667,6 @@ class Main:
                 x = random.randrange(68, 1030)
                 star_list[i][0] = x
 
-
-# ........................................... Functions and Variables .............................................
-
-cell_pxl_size = 70
-cell_count = 10
-screen_width = 1200
-screen_height = 700
-moveX, moveY = 0, 0
-x = 1010
-y = 520
-steps = 6
-motionX = 2
-motionY = 1
-points = 12
-star_list = []
-asteroid_list = []
-briefing_Win = briefing_Win()
-toolbar = Toolbar()
-setupWin = setupWin()
-galaxy_data_win = Galaxy_data_Window()
-galaxy_win = GalaxyWin()
-SR_22_Window = SR_22_Window()
-start_up = Start_Up()
-
-# ............................................... Audio Functions ................................................
-
-voice1.play()
-music.play()
-
 # ............................................... Sprite Groups ..................................................
 
 setup_group = pygame.sprite.Group()
@@ -683,6 +685,36 @@ map_group = pygame.sprite.Group()
 net_menu = pygame.sprite.Group()
 Galaxy_group = pygame.sprite.Group()
 text_group = pygame.sprite.Group()
+
+# ........................................... Functions and Variables .............................................
+
+cell_pxl_size = 70
+cell_count = 10
+screen_width = 1200
+screen_height = 700
+moveX, moveY = 0, 0
+x = 1010
+y = 520
+steps = 6
+motionX = 2
+motionY = 1
+points = 12
+star_list = []
+asteroid_list = []
+main_menu = main_menu()
+briefing_Win = briefing_Win()
+toolbar = Toolbar()
+setupWin = setupWin()
+galaxy_data_win = Galaxy_data_Window()
+galaxy_win = GalaxyWin()
+SR_22_Window = SR_22_Window()
+start_up = Start_Up()
+
+# ............................................... Audio Functions ................................................
+
+voice1.play()
+music.play()
+
 
 # .............................................. Add Sprites to Groups ............................................
 
