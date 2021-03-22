@@ -124,9 +124,8 @@ class Start_Up(pygame.sprite.Sprite):
             self.back.blit(setup, (22, 260))
             if click[0] == 1:
                 self.back.blit(setup2, (22, 260))
-                start_group.add(setupWin)
-                start_group.draw(screen)
                 sound_click.play()
+                setup_group.add(setupWin)
         else:
             self.back.blit(setup, (22, 260))
 
@@ -187,6 +186,11 @@ class SR_22_Window(pygame.sprite.Sprite):
         rogue_icon = pygame.image.load("images/icons/buttons_galaxy-toolbar_bolt_gray.png")
         screen.blit(self.toolbar_image, (880, 186))
 
+    def YanSan_Beacon(self):
+        Beacon_image_sm = pygame.image.load("images/ships/YanSan_BEACON_Eastern_Ridge_GAL1.sm.png")
+        Beacon_image_thm = pygame.image.load("images/ships/YanSan_BEACON_Eastern_Ridge_GAL1.thm.png")
+        screen.blit(Beacon_image_sm, (980, 430))
+
     def mission1(self):
         asteroid_field_BOX1 = pygame.image.load("images/buttons/level_image_galaxy1-level1-asteroid_field.01.1.png")
         asteroid_field_BOX2 = pygame.image.load("images/buttons/level_image_galaxy1-level1-asteroid_field.02.png")
@@ -199,6 +203,7 @@ class SR_22_Window(pygame.sprite.Sprite):
             screen.blit(asteroid_field_BOX2, (928, 367))
             text_group.add(briefing_Win)
             if click[0] == 1:
+                sound_click.play()
                 screen.blit(asteroid_field_BOX2, (928, 367))
                 text_group.add(briefing_Win)
                 screen.blit(self.start_button_b, (600, 600))
@@ -218,6 +223,7 @@ class SR_22_Window(pygame.sprite.Sprite):
             screen.blit(rebel_control_BOX1, (690, 346))
             text_group.add(briefing_Win)
             if click[0] == 1:
+                sound_click.play()
                 screen.blit(rebel_control_BOX3, (690, 346))
                 text_group.add(briefing_Win)
         else:
@@ -236,6 +242,7 @@ class SR_22_Window(pygame.sprite.Sprite):
             screen.blit(war_alarm_BOX2, (514, 468))
             text_group.add(briefing_Win)
             if click[0] == 1:
+                sound_click.play()
                 screen.blit(war_alarm_BOX3, (514, 468))
                 text_group.add(briefing_Win)
         else:
@@ -254,6 +261,7 @@ class SR_22_Window(pygame.sprite.Sprite):
         self.mission3()
         self.mission2()
         self.mission1()
+        self.YanSan_Beacon()
 
 
 class GalaxyWin(pygame.sprite.Sprite):
@@ -391,7 +399,6 @@ class Galaxy_data_Window(pygame.sprite.Sprite):
         posX = pos[0]
         posY = pos[1]
 
-
         if 900 > posX > 850 and 190 > posY > 140:
             if click[0] == 1:
                 sound_click.play()
@@ -451,8 +458,6 @@ class Galaxy_data_Window(pygame.sprite.Sprite):
 class setupWin(pygame.sprite.Sprite):
     def __init__(self):
         super(setupWin, self).__init__()
-        self.sur = pygame.Surface((300, 220))
-        self.sur.fill(GRAY16)
         self.image = pygame.image.load("images/templates/frame_YanSan600X250.png")
         self.rect = self.image.get_rect()
         self.moveX = 0
@@ -467,17 +472,18 @@ class setupWin(pygame.sprite.Sprite):
         pos = pygame.mouse.get_pos()
         posX = pos[0]
         posY = pos[1]
-
-        if 220 > posX > 180 and 360 > posY > 310:
+        if 225 > posX > 185 and 405 > posY > 370:
             if click[0] == 1:
                 sound_click.play()
-                pygame.mouse.set_visible(True)
+                self.kill()
 
     def move(self, mx, my):
         self.moveX = mx
         self.moveY = my
         self.rect.x = self.rect.x + self.moveX
         self.rect.y = self.rect.y + self.moveY
+        if self.rect.x >= 180:
+            self.rect.x = 180
 
     def draw(self):
         screen.blit(self.image, (0, 310))
@@ -485,8 +491,6 @@ class setupWin(pygame.sprite.Sprite):
     def update(self):
         self.button()
         self.move(50, 0)
-        if self.rect.x >= 180:
-            self.rect.x = 180
 
 
 class Toolbar(pygame.sprite.Sprite):
@@ -540,9 +544,7 @@ class Toolbar(pygame.sprite.Sprite):
         click = pygame.mouse.get_pressed()
         pos = pygame.mouse.get_pos()
         posX = pos[0]
-
         posY = pos[1]
-
         if 950 > posX > 900 and 46 > posY > 1:
             screen.blit(self.mainmenu_on, (902, 0))
             screen.blit(self.back, (722, 60))
@@ -553,7 +555,8 @@ class Toolbar(pygame.sprite.Sprite):
         if 1000 > posX > 952 and 46 > posY > 1:
             screen.blit(self.setup_on, (952, 0))
             if click[0] == 1:
-                setupWin.update()
+                sound_click.play()
+                setup_group.add(setupWin)
         else:
             screen.blit(self.setup, (952, 0))
         if 1050 > posX > 1002 and 46 > posY > 1:
@@ -564,6 +567,7 @@ class Toolbar(pygame.sprite.Sprite):
             screen.blit(self.music_off, (1052, 0))
             if click[0] == 1:
                 music.stop()
+                sound_click.play()
                 screen.blit(self.music_off, (1052, 0))
         else:
             screen.blit(self.music_on, (1052, 0))
@@ -607,6 +611,8 @@ class Main:
         map_group.update()
         Galaxy_group.update()
         text_group.update()
+        setup_group.draw(screen)
+        setup_group.update()
 
     def belt(self):
         for a in range(len(asteroid_list)):
@@ -661,6 +667,7 @@ music.play()
 
 # ............................................... Sprite Groups ..................................................
 
+setup_group = pygame.sprite.Group()
 grid_group = pygame.sprite.Group()
 battle_sprites = pygame.sprite.Group()
 menu_group = pygame.sprite.Group()
