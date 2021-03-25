@@ -248,10 +248,10 @@ grey_ship = Grey_ship()
 red_ship = Red_ship()
 bullets = Bullet(x, y)
 enemy_bullets = Enemy_Bullets(x, y)
-All_sprites = pygame.sprite.Group()
+All_sprites = pygame.sprite
 All_sprites.add(red_ship, yellow_ship, purple_ship)
-Draw_group = pygame.sprite.Group()
-bullets_group = pygame.sprite.Group()
+Draw_group = pygame.sprite
+bullets_group = pygame.sprite
 bullets_group.add(bullets, enemy_bullets)
 cl1_rect = grey_ship
 while True:
