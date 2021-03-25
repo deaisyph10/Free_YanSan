@@ -71,10 +71,8 @@ class Start_Up(pygame.sprite.Sprite):
         super(Start_Up, self).__init__()
         self.back = pygame.image.load("images/templates/matrix_slate_1200x800.jpg")
         self.menu_screen = pygame.image.load("images/templates/cockpit.blue.jpg")
-        self.DLdisp = pygame.image.load("images/templates/DL-Display004.png")
         self.sur = pygame.Surface((1200, 800))
         self.image = self.sur
-        self.menu_screen.blit(self.DLdisp, (400, 250))
         self.rect = self.sur.get_rect()
         self.image.blit(self.back, (-400, 0))
         self.back.blit(self.menu_screen, (160, 0))
@@ -90,10 +88,18 @@ class Start_Up(pygame.sprite.Sprite):
         start = pygame.image.load("images/icons/icons_play_white.png")
         setup = pygame.image.load("images/icons/icons_setup_white2.png")
         insert = pygame.image.load("images/icons/icons_insert_white.png")
-        self.sur.blit(quit, (36, 575))
+        quit_txt_image = pygame.image.load("images/txt_Images/txt_Images -- txt_quit_darkgray_tilt.png")
+        upload_txt_image = pygame.image.load("images/txt_Images/txt_Images -- txt_upload_darkgray_tilt.png")
+        settings_txt_image = pygame.image.load("images/txt_Images/txt_Images -- txt_settings_darkgray_tilt.png")
+        play_txt_image = pygame.image.load("images/txt_Images/txt_Images -- txt_play_darkgray_tilt.png")
+        self.sur.blit(quit_txt_image, (10, 575))
+        self.sur.blit(upload_txt_image, (10, 420))
+        self.sur.blit(settings_txt_image, (6, 260))
+        self.sur.blit(play_txt_image, (15, 60))
         self.sur.blit(start, (20, 60))
         self.sur.blit(setup, (22, 260))
         self.sur.blit(insert, (20, 400))
+        self.sur.blit(quit, (36, 575))
 
     def button(self):
         click = pygame.mouse.get_pressed()
@@ -178,7 +184,7 @@ class main_menu(pygame.sprite.Sprite):
         self.menu_icon_1 = pygame.image.load("images/icons/icons_darkgray_V.png")
 
     def draw(self):
-        screen.blit(self.image, (610, 50))
+        screen.blit(self.image, (710, 50))
         self.slots()
         self.image.blit(self.divider_line, (40, 20))
         self.image.blit(self.divider_line, (40, 60))
@@ -189,12 +195,12 @@ class main_menu(pygame.sprite.Sprite):
         self.image.blit(self.divider_line, (40, 260))
         self.image.blit(self.divider_line, (40, 300))
         self.image.blit(self.slot1, (93, 40))
-        self.image.blit(self.slot2, (92, 88))
+        self.image.blit(self.slot2, (96, 88))
         self.image.blit(self.slot3, (96, 124))
         self.image.blit(self.slot4, (96, 164))
         self.image.blit(self.menu_icon_1, (44, 48))
         self.image.blit(self.menu_icon_1, (44, 88))
-        self.image.blit(self.menu_icon_1, (44, 124))
+        self.image.blit(self.menu_icon_1, (44, 128))
         self.image.blit(self.menu_icon_1, (44, 168))
         self.image.blit(self.menu_icon_1, (44, 208))
         self.image.blit(self.menu_icon_1, (44, 248))
@@ -233,7 +239,6 @@ class SR_22_Window(pygame.sprite.Sprite):
     def YanSan_Beacon(self):
         Beacon_image_sm = pygame.image.load("images/ships/YanSan_BEACON_Eastern_Ridge_GAL1.sm.png")
         Beacon_image_thm = pygame.image.load("images/ships/YanSan_BEACON_Eastern_Ridge_GAL1.thm.png")
-        screen.blit(Beacon_image_sm, (980, 430))
 
     def mission1(self):
         asteroid_field_BOX1 = pygame.image.load("images/buttons/level_image_galaxy1-level1-asteroid_field.01.1.png")
@@ -328,8 +333,7 @@ class GalaxyWin(pygame.sprite.Sprite):
         navstring = str("Send coordinate-cache data block via ::// SHIP_navigation.SYSTEMS")
         ship_image = pygame.image.load("images/ships/Ship_ICON.png")
         self.navtext = game_font_freesansbold_10.render(navstring, True, GRAY95)
-        self.navimage = pygame.Surface((360, 60))
-        self.navimage.fill(GRAY9)
+        self.navimage = pygame.image.load("images/buttons/button_black_blue_none-none.png")
         self.navimage.blit(self.navtext, (5, 10))
         self.navimage.blit(ship_image, (260, 0))
         self.image.blit(self.navimage, (220, 178))
@@ -375,9 +379,9 @@ class GalaxyWin(pygame.sprite.Sprite):
         if 300 > posX > 180 and 200 > posY > 120:
             self.image.blit(choice1, (2, 78))
             self.image.blit(choice1_1, (2, 78))
+            self.nav_box()
             if click[0] == 1:
                 self.image.blit(choice1_2, (2, 78))
-                self.nav_box()
                 Galaxy_group.add(galaxy_data_win)
                 sound_click.play()
         if 420 > posX > 360 and 200 > posY > 120:
@@ -418,8 +422,8 @@ class GalaxyWin(pygame.sprite.Sprite):
 class Galaxy_data_Window(pygame.sprite.Sprite):
     def __init__(self):
         super(Galaxy_data_Window, self).__init__()
-        self.frame = pygame.image.load("images/templates/frame_YanSan300x600.png")
-        self.image = pygame.Surface((300, 600))
+        self.frame = pygame.image.load("images/templates/frame_YanSan400X167.png")
+        self.image = self.frame
         self.rect = self.image.get_rect()
         self.moveX = 0
         self.moveY = 0
@@ -429,49 +433,12 @@ class Galaxy_data_Window(pygame.sprite.Sprite):
         self.image1 = pygame.image.load("images/icons/icon_galaxy_1data.jpg")
         self.image_rect = self.image1.get_rect()
         self.image_label_str = str("'SR22-87.23'")
-        self.image_label = game_font_freesansbold_42.render(self.image_label_str, True, GRAY95)
+        self.image_label = game_font_freesansbold_18.render(self.image_label_str, True, GRAY95)
         self.image_label_rect = self.image_label.get_rect()
         self.image_label_icon = pygame.image.load("images/icons/saturn_icon.png")
 
     def button(self):
-        self.data()
-        self.text_sur = pygame.Surface((300, 70))
-        self.text_sur.fill(BLACK)
-        click = pygame.mouse.get_pressed()
-        pos = pygame.mouse.get_pos()
-        posX = pos[0]
-        posY = pos[1]
-
-        if 900 > posX > 850 and 190 > posY > 140:
-            if click[0] == 1:
-                sound_click.play()
-                self.kill()
-
-        if 1110 > posX > 880 and 590 > posY > 525:
-            self.image.blit(self.start2, (55, 470))
-            if click[0] == 1:
-                galaxy_win.kill()
-                setupWin.kill()
-                self.kill()
-                map_group.draw(screen)
-                map_group.add(SR_22_Window)
-
-        else:
-            self.image.blit(self.start, (55, 470))
-
-    def data(self):
-        self.box_select = pygame.image.load("images/templates/Box_SELECT_white_1.1.png")
-        self.start_box = pygame.Surface((280, 80))
-        self.start_box.fill(GRAY4)
-        self.start = pygame.image.load("images/buttons/buttons_select_white.png")
-        self.start2 = pygame.image.load("images/buttons/buttons_select_blue.png")
-        self.text_sur = pygame.Surface((300, 60))
-        self.text_sur.fill(GRAY14)
-        self.text_sur_rect = self.text_sur.get_rect()
-        self.text_str = str("Galaxy 1")
-        self.text = game_font_freesansbold_18.render(self.text_str, True, GRAY95)
-        self.text_rect = self.text.get_rect()
-        self.text_icon = pygame.image.load("images/icons/galaxy_description.png")
+        self.button_image = pygame.image.load("images/buttons/button_black_blue_none-none.png")
 
     def move(self, mx, my):
         self.moveX = mx
@@ -480,22 +447,13 @@ class Galaxy_data_Window(pygame.sprite.Sprite):
         self.rect.y = self.rect.y + self.moveY
 
     def draw(self):
-        self.galaxy_image()
-        self.image.blit(self.image1, (0, 0))
-        self.image.blit(self.image_label, (30, 55))
-        self.image.blit(self.text, (35, 410))
-        self.image.blit(self.frame, (0, 0))
-        self.image.blit(self.text_icon, (80, 360))
-        self.image.blit(self.image_label_icon, (28, 362))
-        self.image.blit(self.arrow, (0, 80))
-        self.image.blit(self.box_select, (10, 440))
-        screen.blit(self.image, (850, 60))
+        self.button()
+        self.image.blit(self.button_image, (10, 100))
+        self.image.blit(self.arrow, (0, 20))
+        screen.blit(self.image, (790, 58))
 
     def update(self):
-        self.button()
-        self.data()
         self.draw()
-        self.galaxy_image()
 
 
 class setupWin(pygame.sprite.Sprite):
@@ -595,6 +553,8 @@ class Toolbar(pygame.sprite.Sprite):
                 sound_click.play()
                 menu_group.add(main_menu)
                 screen.blit(self.mainmenu, (902, 0))
+        else:
+            menu_group.remove(main_menu)
         if 1000 > posX > 952 and 46 > posY > 1:
             screen.blit(self.setup_on, (952, 0))
             if click[0] == 1:
@@ -602,6 +562,7 @@ class Toolbar(pygame.sprite.Sprite):
                 setup_group.add(setupWin)
         else:
             screen.blit(self.setup, (952, 0))
+
         if 1050 > posX > 1002 and 46 > posY > 1:
             screen.blit(self.volume_on, (1002, 0))
         else:
@@ -682,16 +643,15 @@ class Main:
 
 # ............................................... Sprite Groups ..................................................
 
+
 setup_group = pygame.sprite.Group()
 grid_group = pygame.sprite.Group()
-battle_sprites = pygame.sprite.Group()
 menu_group = pygame.sprite.Group()
 start_group = pygame.sprite.Group()
 draw_group = pygame.sprite.Group()
 bullets_group = pygame.sprite.Group()
 bullet_group = pygame.sprite.Group()
 planet_group = pygame.sprite.Group()
-character_group = pygame.sprite.Group()
 asteroid_group = pygame.sprite.Group()
 all_sprites = pygame.sprite.Group()
 map_group = pygame.sprite.Group()
