@@ -119,8 +119,7 @@ class Start_Up(pygame.sprite.Sprite):
         if 150 > posX > 10 and 230 > posY > 120:
             self.sur.blit(starton, (16, 61))
             if click[0] == 1:
-                start_group.add(galaxy_win)
-                start_group.draw(screen)
+                movement_group.add(galaxy_win)
                 sound_click.play()
         else:
             self.back.blit(startoff, (20, 160))
@@ -131,7 +130,7 @@ class Start_Up(pygame.sprite.Sprite):
             if click[0] == 1:
                 self.back.blit(setup2, (22, 260))
                 sound_click.play()
-                setup_group.add(setupWin)
+                movement_group.add(setupWin)
         else:
             self.back.blit(setup, (22, 260))
 
@@ -316,18 +315,15 @@ class SR_22_Window(pygame.sprite.Sprite):
 class GalaxyWin(pygame.sprite.Sprite):
     def __init__(self):
         super(GalaxyWin, self).__init__()
-        self.sur = pygame.Surface((600, 250))
-        self.stars = pygame.image.load("images/templates/frame_YanSan600X250.png")
+        self.image = pygame.image.load("images/templates/frame_YanSan600X250.png")
         self.frame = pygame.image.load("images/templates/BOX.galaxyWin2.png")
-        self.image = self.stars
         self.rect = self.image.get_rect()
-        self.sur.blit(self.stars, (0, 0))
-        self.stars.blit(self.frame, (-1, 0))
+        self.image.blit(self.frame, (-1, 0))
+        self.arrow = pygame.image.load("images/icons/arrow.50x50.png")
+        self.image.blit(self.arrow, (-10, 30))
         self.moveX = 0
         self.moveY = 0
         self.rect.y = 50
-        self.arrow = pygame.image.load("images/icons/arrow.50x50.png")
-        self.image.blit(self.arrow, (-10, 30))
 
     def nav_box(self):
         navstring = str("Send coordinate-cache data block via ::// SHIP_navigation.SYSTEMS")
@@ -409,7 +405,7 @@ class GalaxyWin(pygame.sprite.Sprite):
         self.image.blit(headertxt, (40, 10))
 
     def draw(self):
-        screen.blit(self.image, (200, 400))
+        screen.blit(self.image, (0, 60))
 
     def update(self):
         self.headertext()
@@ -439,6 +435,20 @@ class Galaxy_data_Window(pygame.sprite.Sprite):
 
     def button(self):
         self.button_image = pygame.image.load("images/buttons/button_black_blue_none-none.png")
+        click = pygame.mouse.get_pressed()
+        pos = pygame.mouse.get_pos()
+        posX = pos[0]
+        posY = pos[1]
+        if 1070 > posX > 800 and 260 > posY > 200:
+            if click[0] == 1:
+                map_group.add(SR_22_Window)
+                movement_group.remove(galaxy_win)
+                movement_group.remove(setupWin)
+                self.kill()
+        if 850 > posX > 794 and 170 > posY > 108:
+            if click[0] == 1:
+                self.kill()
+                sound_click.play()
 
     def move(self, mx, my):
         self.moveX = mx
@@ -450,7 +460,7 @@ class Galaxy_data_Window(pygame.sprite.Sprite):
         self.button()
         self.image.blit(self.button_image, (10, 100))
         self.image.blit(self.arrow, (0, 20))
-        screen.blit(self.image, (790, 58))
+        screen.blit(self.image, (790, 108))
 
     def update(self):
         self.draw()
@@ -559,7 +569,7 @@ class Toolbar(pygame.sprite.Sprite):
             screen.blit(self.setup_on, (952, 0))
             if click[0] == 1:
                 sound_click.play()
-                setup_group.add(setupWin)
+                movement_group.add(setupWin)
         else:
             screen.blit(self.setup, (952, 0))
 
@@ -610,13 +620,16 @@ class Main:
     def update(self):
         screen.fill(BLACK)
         screen.blit(back_round, (0, 0))
-        start_group.draw(screen)
-        start_group.update()
-        map_group.update()
-        Galaxy_group.update()
-        text_group.update()
+
         setup_group.draw(screen)
+        start_group.draw(screen)
         setup_group.update()
+        map_group.update()
+        start_group.update()
+        Galaxy_group.update()
+        movement_group.draw(screen)
+        movement_group.update()
+        text_group.update()
         menu_group.update()
 
     def belt(self):
@@ -644,6 +657,7 @@ class Main:
 # ............................................... Sprite Groups ..................................................
 
 
+movement_group = pygame.sprite.Group()
 setup_group = pygame.sprite.Group()
 grid_group = pygame.sprite.Group()
 menu_group = pygame.sprite.Group()
@@ -666,8 +680,8 @@ cell_count = 10
 screen_width = 1200
 screen_height = 700
 moveX, moveY = 0, 0
-x = 1010
-y = 520
+x = 0
+y = 0
 steps = 6
 motionX = 2
 motionY = 1
