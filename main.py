@@ -1,15 +1,17 @@
-import pygame
-import random
 import sys
+import pygame
 from Colors import *
+from YanSan_Network import yan_san_beacon
 
 # .............................................. 'Init' add-in mods ..................................................
-
 pygame.init()
 pygame.font.init()
 
+# ............................................ 'Game Clock' setup ..............................................
+clock = pygame.time.Clock()
+FPS = 120
+game_time = pygame.time.get_ticks()
 # ............................................. 'Display' setup ................................................
-
 screen = pygame.display.set_mode((1200, 700))
 pygame.display.set_caption("FREE_YanSan")
 icon = pygame.image.load("images/icons/Dream_Logo.ico")
@@ -18,31 +20,19 @@ back_round_im = pygame.image.load("images/templates/Stars.png")
 back_round = pygame.Surface((800, 400))
 back_round.blit(back_round_im, (0, 0))
 pygame.mouse.set_visible(True)
-
-# ............................................ 'Game Clock' setup ..............................................
-
-clock = pygame.time.Clock()
-FPS = 120
-game_time = pygame.time.get_ticks()
-
 # ............................................. Audio Variables .................................................
-
 voice1 = pygame.mixer.Sound("Voicetracks/WC-1.mp3")
 voice2 = pygame.mixer.Sound("Voicetracks/WC-17.mp3")
 music = pygame.mixer.Sound("Voicetracks/Uppermost.wav")
 laser = pygame.mixer.Sound("images/Sprites/sounds/laser_SE_hit.wav")
 shoot_laser = pygame.mixer.Sound("images/Sprites/sounds/laser_SE_shoot.wav")
 sound_click = pygame.mixer.Sound("images/Sprites/sounds/click.mp3")
-
 # ................................................ Game Fonts ....................................................
-
 game_font_freesansbold_10 = pygame.font.Font("freesansbold.ttf", 10)
 game_font_freesansbold_18 = pygame.font.Font("freesansbold.ttf", 18)
 game_font_freesansbold_42 = pygame.font.Font("freesansbold.ttf", 42)
 game_font_monospace_36 = pygame.font.SysFont("monospace", 36)
-
 # .................................................. MISC .....................................................
-
 blue_bolt = pygame.image.load("images/planets/blue_bolt.png")
 new_icon = pygame.image.load("images/player/Dream_Logic_new_icon.png")
 new_icon_rect = pygame.Rect(230, 450, 60, 60)
@@ -50,21 +40,59 @@ dream_logo = pygame.image.load("images/templates/Dream_Logo.png")
 dream_logo_2 = pygame.transform.scale(dream_logo, (40, 40))
 LLC_icon = pygame.image.load("images/templates/Dream_green_title.png")
 LLC_icon_micro = pygame.transform.scale(LLC_icon, (200, 40))
+# ............................................... Audio Functions ................................................
+voice1.play()
+music.play()
 
 
-# ................................................. {SPRITES} ....................................................
-
-
-class level_1(pygame.sprite.Sprite):
+class Level1(pygame.sprite.Sprite):
     def __init__(self):
-        super(level_1, self).__init__()
+        super(Level1, self).__init__()
+        self.YSimage_Down02 = pygame.image.load("images/templates/Yan_San_viewer_BOX_downloading_file2.png")
+        self.YSimage_Down01 = pygame.image.load("images/templates/Yan_San_viewer_BOX_downloading_file1.png")
+        self.YSimage_Down00 = pygame.image.load("images/templates/Yan_San_viewer_BOX_downloading.png")
+        self.YSimage_load = pygame.image.load("images/templates/Yan_San_viewer_BOX_loading.png")
+        self.YSimage_blank = pygame.image.load("images/templates/Yan_San_viewer_BOX_blank.png")
+        self.YSrect_Y = 544
+        self.YSrect_X = 1030
+        self.YSN_asset00 = pygame.image.load("images/templates/templates_message_BOX_2x1_beacon-info.png")
+        # self.YSN_icon = icon
+        self.YSN_Y = 510
+        self.YSN_X = 200
         self.image = pygame.image.load("images/templates/templates_gameplay_sceen.png")
         self.rect = self.image.get_rect()
-        self.stars = pygame.image.load("images/templates/back_round_stars.jpg")
+
+    def yan_san_network(self):
+        #        self.YSN_sound =
+        #        self.YSN_Temp =
+        #        self.YSN_title =
+        pass
+
+    #        self.YSN_asset01 =
+    #        self.YSN_asset02 =
+
+    def yan_san_viewer(self):
+        pass
 
     def draw(self):
-        screen.blit(self.stars, (0, 0))
-        self.stars.blit(self.image, (0, 0))
+        self.yan_san_viewer()
+        self.yan_san_network()
+        self.image.blit(self.YSimage_Down00, (self.YSrect_X, self.YSrect_Y))
+        self.image.blit(self.YSN_asset00, (self.YSN_X, self.YSN_Y))
+        screen.blit(self.image, (0, 0))
+
+    def update(self):
+        self.draw()
+
+
+class Player(pygame.sprite.Sprite):
+    def __init__(self):
+        super(Player, self).__init__()
+        self.image = pygame.image.load("images/ships/Yan_San FIGHTER_DRONE_dark.png")
+        self.rect = self.image.get_rect()
+
+    def draw(self):
+        screen.blit(self.image, (240, 160))
 
     def update(self):
         self.draw()
@@ -154,21 +182,6 @@ class Start_Up(pygame.sprite.Sprite):
         self.button()
 
 
-class briefing_Win(pygame.sprite.Sprite):
-    def __init__(self):
-        super(briefing_Win, self).__init__()
-        self.image = pygame.image.load("images/templates/templates_mission_briefing.png")
-        self.rect = self.image.get_rect()
-        self.movex = 0
-        self.movey = 0
-
-    def draw(self):
-        screen.blit(self.image, (480, 40))
-
-    def update(self):
-        self.draw()
-
-
 class main_menu(pygame.sprite.Sprite):
     def __init__(self):
         super(main_menu, self).__init__()
@@ -212,218 +225,6 @@ class main_menu(pygame.sprite.Sprite):
 
     def update(self):
         self.draw()
-
-
-def yan_san_beacon():
-    pygame.image.load("images/ships/YanSan_BEACON_Eastern_Ridge_GAL1.sm.png")
-    pygame.image.load("images/ships/YanSan_BEACON_Eastern_Ridge_GAL1.thm.png")
-
-
-def mission2():
-    rebel_control_BOX1 = pygame.image.load(
-        "images/buttons/level_image_galaxy1-level2-solar-cycle_rebelcontrol.02.2.png")
-    rebel_control_BOX2 = pygame.image.load(
-        "images/buttons/level_image_galaxy1-level2-solar-cycle_rebelcontrol.02.1.png")
-    rebel_control_BOX3 = pygame.image.load("images/buttons/level_image_galaxy1-level2-solar-cycle_rebelcontrol.03.png")
-    click = pygame.mouse.get_pressed()
-    pos = pygame.mouse.get_pos()
-    posX = pos[0]
-    posY = pos[1]
-    if 820 > posX > 685 and 480 > posY > 340:
-        screen.blit(rebel_control_BOX1, (690, 346))
-        text_group.add(briefing_Win)
-        if click[0] == 1:
-            sound_click.play()
-            screen.blit(rebel_control_BOX3, (690, 346))
-            text_group.add(briefing_Win)
-    else:
-        screen.blit(rebel_control_BOX2, (690, 346))
-        text_group.remove(briefing_Win)
-
-
-def mission3():
-    war_alarm_BOX1 = pygame.image.load("images/buttons/level_image_galaxy1-level3-planet_nine_WAR.01.png")
-    war_alarm_BOX2 = pygame.image.load("images/buttons/level_image_galaxy1-level3-planet_nine_WAR.02.png")
-    war_alarm_BOX3 = pygame.image.load("images/buttons/level_image_galaxy1-level3-planet_nine_WAR.03.png")
-    click = pygame.mouse.get_pressed()
-    pos = pygame.mouse.get_pos()
-    posX = pos[0]
-    posY = pos[1]
-    if 560 > posX > 514 and 520 > posY > 468:
-        screen.blit(war_alarm_BOX2, (514, 468))
-        text_group.add(briefing_Win)
-        if click[0] == 1:
-            sound_click.play()
-            screen.blit(war_alarm_BOX3, (514, 468))
-            text_group.add(briefing_Win)
-    else:
-        screen.blit(war_alarm_BOX1, (514, 468))
-        text_group.remove(briefing_Win)
-
-
-class SR_22_Window(pygame.sprite.Sprite):
-    def __init__(self):
-        super(SR_22_Window, self).__init__()
-        self.toolbar_image = pygame.image.load("images/icons/galaxy_fullscreen_toolbar.png")
-        self.image = pygame.image.load("images/templates/level_image_galaxy1-lvls-blank.png")
-        self.white_grid = pygame.image.load("images/templates/level_image_galaxy1-lvls_white-grid.png")
-        self.rect = self.image.get_rect()
-        self.movex = 0
-        self.movey = 0
-        self.logo = pygame.image.load("images/templates/Dream_Logo.png")
-        self.start_BOX = pygame.image.load("images/buttons/buttons_wide_button-gray.png")
-        self.start_button_w = pygame.image.load("images/buttons/buttons_start_white_320x70.png")
-        self.start_button_b = pygame.image.load("images/buttons/buttons_start_blue_320x70.png")
-
-    def gal_toolbar(self):
-        pygame.image.load("images/icons/buttons_galaxy-toolbar_map-grid_black.png")
-        pygame.image.load("images/icons/buttons_galaxy-toolbar_map-grid_white.png")
-        pygame.image.load("images/icons/buttons_galaxy-toolbar_YanSan-beacon.png")
-        pygame.image.load("images/icons/buttons_galaxy-toolbar_YanSan-ships.png.")
-        pygame.image.load("images/icons/buttons_galaxy-toolbar_rebel-structures_red.png")
-        pygame.image.load("images/icons/buttons_galaxy-toolbar_rebel-icon_red.png")
-        pygame.image.load("images/icons/buttons_galaxy-toolbar_solar_gray.png")
-        pygame.image.load("images/icons/buttons_galaxy-toolbar_planet_gray.png")
-        pygame.image.load("images/icons/buttons_galaxy-toolbar_bolt_gray.png")
-        screen.blit(self.toolbar_image, (880, 186))
-
-    def mission1(self):
-        asteroid_field_BOX1 = pygame.image.load("images/buttons/level_image_galaxy1-level1-asteroid_field.01.1.png")
-        asteroid_field_BOX2 = pygame.image.load("images/buttons/level_image_galaxy1-level1-asteroid_field.02.png")
-        lvl_1_start_label = pygame.image.load("images/txt_Images/txt_Images -- level_1.1-start.label.png")
-        click = pygame.mouse.get_pressed()
-        pos = pygame.mouse.get_pos()
-        posX = pos[0]
-        posY = pos[1]
-        if 1080 > posX > 928 and 580 > posY > 367:
-            screen.blit(asteroid_field_BOX2, (928, 367))
-            text_group.add(briefing_Win)
-            if click[0] == 1:
-                sound_click.play()
-                screen.blit(asteroid_field_BOX2, (928, 367))
-                text_group.add(briefing_Win)
-                screen.blit(lvl_1_start_label, (450, 600))
-                screen.blit(self.start_button_b, (600, 600))
-        else:
-            screen.blit(asteroid_field_BOX1, (928, 367))
-            text_group.remove(briefing_Win)
-
-    def draw(self):
-        screen.blit(self.image, (160, 50))
-        screen.blit(self.white_grid, (400, 185))
-        screen.blit(self.start_BOX, (550, 580))
-        screen.blit(self.start_button_w, (600, 600))
-
-    def update(self):
-        self.draw()
-        self.gal_toolbar()
-        mission3()
-        mission2()
-        self.mission1()
-        yan_san_beacon()
-
-
-class GalaxyWin(pygame.sprite.Sprite):
-    def __init__(self):
-        super(GalaxyWin, self).__init__()
-        self.str = str("Send coordinate-cache data block via ::// SHIP_navigation.SYSTEMS")
-        self.navtext = game_font_freesansbold_10.render(self.str, True, GRAY95)
-        self.gal4 = pygame.image.load("images/planets/galaxy_4s.jpg")
-        self.gal3 = pygame.image.load("images/planets/galaxy_3.png")
-        self.gal2 = pygame.image.load("images/planets/galaxy_2s.jpg")
-        self.gal1 = pygame.image.load("images/planets/galaxy_1s.jpg")
-        self.navimage = pygame.image.load("images/buttons/button_black_blue_none-none.png")
-        self.image = pygame.image.load("images/templates/frame_YanSan600X250.png")
-        self.frame = pygame.image.load("images/templates/BOX.galaxyWin2.png")
-        self.rect = self.image.get_rect()
-        self.image.blit(self.frame, (-1, 0))
-        self.arrow = pygame.image.load("images/icons/arrow.50x50.png")
-        self.image.blit(self.arrow, (-10, 30))
-        self.moveX = 0
-        self.moveY = 0
-        self.rect.y = 50
-
-    def nav_box(self):
-        ship_image = pygame.image.load("images/ships/Ship_ICON.png")
-        self.navimage.blit(self.navtext, (5, 10))
-        self.navimage.blit(ship_image, (260, 0))
-        self.image.blit(self.navimage, (220, 178))
-
-    def move(self, mx, my):
-        self.moveX += mx
-        self.moveY += my
-        self.rect.x = self.moveX + self.rect.x
-        self.rect.y = self.moveY + self.rect.y
-
-    def buttons(self):
-        choice1 = pygame.image.load("images/templates/BOX.4star.png")
-        choice2 = pygame.image.load("images/templates/BOX.4star.png")
-        choice3 = pygame.image.load("images/templates/BOX.4star.png")
-        choice4 = pygame.image.load("images/templates/BOX.4star.png")
-        choice1_1 = pygame.image.load("images/icons/BOX.4star.innerblack.png")
-        choice2_1 = pygame.image.load("images/icons/BOX.4star.innerblack.png")
-        choice3_1 = pygame.image.load("images/icons/BOX.4star.innerblack.png")
-        choice4_1 = pygame.image.load("images/icons/BOX.4star.innerblack.png")
-        choice1_2 = pygame.image.load("images/icons/BOX.4star.outerblack.png")
-        choice2_2 = pygame.image.load("images/icons/BOX.4star.outerblack.png")
-        choice3_2 = pygame.image.load("images/icons/BOX.4star.outerblack.png")
-        choice4_2 = pygame.image.load("images/icons/BOX.4star.outerblack.png")
-
-        click = pygame.mouse.get_pressed()
-        pos = pygame.mouse.get_pos()
-        posX = pos[0]
-        posY = pos[1]
-
-        self.image.blit(self.gal1, (2, 78))
-        self.image.blit(self.gal2, (146, 78))
-        self.image.blit(self.gal3, (316, 78))
-        self.image.blit(self.gal4, (466, 78))
-
-        if 220 > posX > 180 and 115 > posY > 70:
-            if click[0] == 1:
-                self.kill()
-                sound_click.play()
-        if 300 > posX > 180 and 200 > posY > 120:
-            self.image.blit(choice1, (2, 78))
-            self.image.blit(choice1_1, (2, 78))
-            self.nav_box()
-            if click[0] == 1:
-                self.image.blit(choice1_2, (2, 78))
-                Galaxy_group.add(galaxy_data_win)
-                sound_click.play()
-        if 420 > posX > 360 and 200 > posY > 120:
-            self.image.blit(choice2, (146, 78))
-            self.image.blit(choice2_1, (146, 78))
-            if click[0] == 1:
-                self.image.blit(choice2_2, (146, 78))
-                sound_click.play()
-        if 580 > posX > 500 and 200 > posY > 120:
-            self.image.blit(choice3, (316, 78))
-            self.image.blit(choice3_1, (316, 78))
-            if click[0] == 1:
-                self.image.blit(choice3_2, (316, 78))
-                sound_click.play()
-        if 720 > posX > 640 and 200 > posY > 120:
-            self.image.blit(choice4, (466, 78))
-            self.image.blit(choice4_1, (466, 78))
-            if click[0] == 1:
-                self.image.blit(choice4_2, (466, 78))
-                sound_click.play()
-
-    def headertext(self):
-        select = str("Select a Galaxy to Explore")
-        headertxt = game_font_freesansbold_42.render(select, True, WHITE)
-        self.image.blit(headertxt, (40, 10))
-
-    def draw(self):
-        screen.blit(self.image, (0, 60))
-
-    def update(self):
-        self.headertext()
-        self.buttons()
-        self.move(10, 0)
-        if self.rect.x >= 180:
-            self.rect.x = 180
 
 
 class Galaxy_data_Window(pygame.sprite.Sprite):
@@ -570,12 +371,12 @@ class Toolbar(pygame.sprite.Sprite):
         if 950 > posX > 900 and 46 > posY > 1:
             menu_group.add(main_menu)
             screen.blit(self.mainmenu_on, (902, 0))
-            if click[0] == 1:
+            if click[0] != 1:
+                menu_group.remove(main_menu)
+            else:
                 sound_click.play()
                 menu_group.add(main_menu)
                 screen.blit(self.mainmenu, (902, 0))
-        else:
-            menu_group.remove(main_menu)
         if 1000 > posX > 952 and 46 > posY > 1:
             screen.blit(self.setup_on, (952, 0))
             if click[0] == 1:
@@ -623,75 +424,249 @@ class Toolbar(pygame.sprite.Sprite):
         self.icons()
 
 
-def update():
-    screen.fill(BLACK)
-    screen.blit(back_round, (0, 0))
+class briefing_Win(pygame.sprite.Sprite):
+    def __init__(self):
+        super(briefing_Win, self).__init__()
+        self.image = pygame.image.load("images/templates/templates_mission_briefing.png")
+        self.rect = self.image.get_rect()
+        self.movex = 0
+        self.movey = 0
 
-    setup_group.draw(screen)
-    start_group.draw(screen)
-    setup_group.update()
-    map_group.update()
-    start_group.update()
-    Galaxy_group.update()
-    movement_group.draw(screen)
-    movement_group.update()
-    text_group.update()
-    menu_group.update()
+    def draw(self):
+        screen.blit(self.image, (480, 40))
 
-
-def belt():
-    for A in range(len(asteroid_list)):
-        pygame.draw.circle(screen, GRAY78, asteroid_list[A], 1)
-        asteroid_list[A][1] += motionY
-        asteroid_list[A][0] += motionX
-        if asteroid_list[A][0] >= 950:
-            ay = random.randrange(28, 240)
-            asteroid_list[A][1] = ay
-            ax = random.randrange(40, 50)
-            asteroid_list[A][0] = ax
+    def update(self):
+        self.draw()
 
 
-def statments():
-    for I in range(len(star_list)):
-        pygame.draw.circle(screen, GRAY3, star_list[I], 1)
-        star_list[I][1] -= 0
-        star_list[I][0] += 0
-        if star_list[I][0] > 10:
-            y1 = random.randrange(68, 510)
-            star_list[I][1] = y1
-            x1 = random.randrange(68, 1030)
-            star_list[I][0] = x1
+class GalaxyWin(pygame.sprite.Sprite):
+    def __init__(self):
+        super(GalaxyWin, self).__init__()
+        self.str = str("Send coordinate-cache data block via ::// SHIP_navigation.SYSTEMS")
+        self.navtext = game_font_freesansbold_10.render(self.str, True, GRAY95)
+        self.gal4 = pygame.image.load("images/planets/galaxy_4s.jpg")
+        self.gal3 = pygame.image.load("images/planets/galaxy_3.png")
+        self.gal2 = pygame.image.load("images/planets/galaxy_2s.jpg")
+        self.gal1 = pygame.image.load("images/planets/galaxy_1s.jpg")
+        self.navimage = pygame.image.load("images/buttons/button_black_blue_none-none.png")
+        self.image = pygame.image.load("images/templates/frame_YanSan600X250.png")
+        self.frame = pygame.image.load("images/templates/BOX.galaxyWin2.png")
+        self.rect = self.image.get_rect()
+        self.image.blit(self.frame, (-1, 0))
+        self.arrow = pygame.image.load("images/icons/arrow.50x50.png")
+        self.image.blit(self.arrow, (-10, 30))
+        self.moveX = 0
+        self.moveY = 0
+        self.rect.y = 50
+
+    def nav_box(self):
+        ship_image = pygame.image.load("images/ships/Ship_ICON.png")
+        self.navimage.blit(self.navtext, (5, 10))
+        self.navimage.blit(ship_image, (260, 0))
+        self.image.blit(self.navimage, (220, 178))
+
+    def move(self, mx, my):
+        self.moveX += mx
+        self.moveY += my
+        self.rect.x = self.moveX + self.rect.x
+        self.rect.y = self.moveY + self.rect.y
+
+    def buttons(self):
+        choice1 = pygame.image.load("images/templates/BOX.4star.png")
+        choice2 = pygame.image.load("images/templates/BOX.4star.png")
+        choice3 = pygame.image.load("images/templates/BOX.4star.png")
+        choice4 = pygame.image.load("images/templates/BOX.4star.png")
+        choice1_1 = pygame.image.load("images/icons/BOX.4star.innerblack.png")
+        choice2_1 = pygame.image.load("images/icons/BOX.4star.innerblack.png")
+        choice3_1 = pygame.image.load("images/icons/BOX.4star.innerblack.png")
+        choice4_1 = pygame.image.load("images/icons/BOX.4star.innerblack.png")
+        choice1_2 = pygame.image.load("images/icons/BOX.4star.outerblack.png")
+        choice2_2 = pygame.image.load("images/icons/BOX.4star.outerblack.png")
+        choice3_2 = pygame.image.load("images/icons/BOX.4star.outerblack.png")
+        choice4_2 = pygame.image.load("images/icons/BOX.4star.outerblack.png")
+
+        click = pygame.mouse.get_pressed()
+        pos = pygame.mouse.get_pos()
+        posX = pos[0]
+        posY = pos[1]
+
+        self.image.blit(self.gal1, (2, 78))
+        self.image.blit(self.gal2, (146, 78))
+        self.image.blit(self.gal3, (316, 78))
+        self.image.blit(self.gal4, (466, 78))
+
+        if 220 > posX > 180 and 115 > posY > 70:
+            if click[0] == 1:
+                self.kill()
+                sound_click.play()
+        if 300 > posX > 180 and 200 > posY > 120:
+            self.image.blit(choice1, (2, 78))
+            self.image.blit(choice1_1, (2, 78))
+            self.nav_box()
+            if click[0] == 1:
+                self.image.blit(choice1_2, (2, 78))
+                Galaxy_group.add(galaxy_data_win)
+                sound_click.play()
+        if 420 > posX > 360 and 200 > posY > 120:
+            self.image.blit(choice2, (146, 78))
+            self.image.blit(choice2_1, (146, 78))
+            if click[0] == 1:
+                self.image.blit(choice2_2, (146, 78))
+                sound_click.play()
+        if 580 > posX > 500 and 200 > posY > 120:
+            self.image.blit(choice3, (316, 78))
+            self.image.blit(choice3_1, (316, 78))
+            if click[0] == 1:
+                self.image.blit(choice3_2, (316, 78))
+                sound_click.play()
+        if 720 > posX > 640 and 200 > posY > 120:
+            self.image.blit(choice4, (466, 78))
+            self.image.blit(choice4_1, (466, 78))
+            if click[0] == 1:
+                self.image.blit(choice4_2, (466, 78))
+                sound_click.play()
+
+    def headertext(self):
+        select = str("Select a Galaxy to Explore")
+        headertxt = game_font_freesansbold_42.render(select, True, WHITE)
+        self.image.blit(headertxt, (40, 10))
+
+    def draw(self):
+        screen.blit(self.image, (0, 60))
+
+    def update(self):
+        self.headertext()
+        self.buttons()
+        self.move(10, 0)
+        if self.rect.x >= 180:
+            self.rect.x = 180
+
+
+class SR_22_Window(pygame.sprite.Sprite):
+    def __init__(self):
+        super(SR_22_Window, self).__init__()
+        self.toolbar_image = pygame.image.load("images/icons/galaxy_fullscreen_toolbar.png")
+        self.image = pygame.image.load("images/templates/level_image_galaxy1-lvls-blank.png")
+        self.white_grid = pygame.image.load("images/templates/level_image_galaxy1-lvls_white-grid.png")
+        self.rect = self.image.get_rect()
+        self.movex = 0
+        self.movey = 0
+        self.logo = pygame.image.load("images/templates/Dream_Logo.png")
+        self.start_BOX = pygame.image.load("images/buttons/buttons_wide_button-gray.png")
+        self.start_button_w = pygame.image.load("images/buttons/buttons_start_white_320x70.png")
+        self.start_button_b = pygame.image.load("images/buttons/buttons_start_blue_320x70.png")
+
+    def gal_toolbar(self):
+        pygame.image.load("images/icons/buttons_galaxy-toolbar_map-grid_black.png")
+        pygame.image.load("images/icons/buttons_galaxy-toolbar_map-grid_white.png")
+        pygame.image.load("images/icons/buttons_galaxy-toolbar_YanSan-beacon.png")
+        pygame.image.load("images/icons/buttons_galaxy-toolbar_YanSan-ships.png.")
+        pygame.image.load("images/icons/buttons_galaxy-toolbar_rebel-structures_red.png")
+        pygame.image.load("images/icons/buttons_galaxy-toolbar_rebel-icon_red.png")
+        pygame.image.load("images/icons/buttons_galaxy-toolbar_solar_gray.png")
+        pygame.image.load("images/icons/buttons_galaxy-toolbar_planet_gray.png")
+        pygame.image.load("images/icons/buttons_galaxy-toolbar_bolt_gray.png")
+        screen.blit(self.toolbar_image, (880, 186))
+
+    def mission1(self):
+        asteroid_field_BOX1 = pygame.image.load("images/buttons/level_image_galaxy1-level1-asteroid_field.01.1.png")
+        asteroid_field_BOX2 = pygame.image.load("images/buttons/level_image_galaxy1-level1-asteroid_field.02.png")
+        lvl_1_start_label = pygame.image.load("images/txt_Images/txt_Images -- level_1.1-start.label.png")
+        click = pygame.mouse.get_pressed()
+        pos = pygame.mouse.get_pos()
+        posX = pos[0]
+        posY = pos[1]
+        if 1080 > posX > 928 and 580 > posY > 367:
+            screen.blit(asteroid_field_BOX2, (928, 367))
+            text_group.add(briefing_Win)
+            if click[0] == 1:
+                sound_click.play()
+                screen.blit(asteroid_field_BOX2, (928, 367))
+                text_group.add(briefing_Win)
+                screen.blit(lvl_1_start_label, (450, 600))
+                screen.blit(self.start_button_b, (600, 600))
+        else:
+            screen.blit(asteroid_field_BOX1, (928, 367))
+            text_group.remove(briefing_Win)
+
+    def draw(self):
+        screen.blit(self.image, (160, 50))
+        screen.blit(self.white_grid, (400, 185))
+        screen.blit(self.start_BOX, (550, 580))
+        screen.blit(self.start_button_w, (600, 600))
+
+    def update(self):
+        self.draw()
+        self.gal_toolbar()
+        mission3()
+        mission2()
+        self.mission1()
+        yan_san_beacon()
+
+
+def mission2():
+    rebel_control_BOX1 = pygame.image.load(
+        "images/buttons/level_image_galaxy1-level2-solar-cycle_rebelcontrol.02.2.png")
+    rebel_control_BOX2 = pygame.image.load(
+        "images/buttons/level_image_galaxy1-level2-solar-cycle_rebelcontrol.02.1.png")
+    rebel_control_BOX3 = pygame.image.load("images/buttons/level_image_galaxy1-level2-solar-cycle_rebelcontrol.03.png")
+    click = pygame.mouse.get_pressed()
+    pos = pygame.mouse.get_pos()
+    posX = pos[0]
+    posY = pos[1]
+    if 820 > posX > 685 and 480 > posY > 340:
+        screen.blit(rebel_control_BOX1, (690, 346))
+        text_group.add(briefing_Win)
+        if click[0] == 1:
+            sound_click.play()
+            screen.blit(rebel_control_BOX3, (690, 346))
+            text_group.add(briefing_Win)
+    else:
+        screen.blit(rebel_control_BOX2, (690, 346))
+        text_group.remove(briefing_Win)
+
+
+def mission3():
+    war_alarm_BOX1 = pygame.image.load("images/buttons/level_image_galaxy1-level3-planet_nine_WAR.01.png")
+    war_alarm_BOX2 = pygame.image.load("images/buttons/level_image_galaxy1-level3-planet_nine_WAR.02.png")
+    war_alarm_BOX3 = pygame.image.load("images/buttons/level_image_galaxy1-level3-planet_nine_WAR.03.png")
+    click = pygame.mouse.get_pressed()
+    pos = pygame.mouse.get_pos()
+    posX = pos[0]
+    posY = pos[1]
+    if 560 > posX > 514 and 520 > posY > 468:
+        screen.blit(war_alarm_BOX2, (514, 468))
+        text_group.add(briefing_Win)
+        if click[0] == 1:
+            sound_click.play()
+            screen.blit(war_alarm_BOX3, (514, 468))
+            text_group.add(briefing_Win)
+    else:
+        screen.blit(war_alarm_BOX1, (514, 468))
+        text_group.remove(briefing_Win)
 
 
 class Main:
     def __init__(self):
-        update()
+        self.update()
         clock.tick(FPS)
 
+    def update(self):
+        screen.fill(BLACK)
+        screen.blit(back_round, (0, 0))
+        setup_group.draw(screen)
+        start_group.draw(screen)
+        setup_group.update()
+        map_group.update()
+        start_group.update()
+        Galaxy_group.update()
+        movement_group.draw(screen)
+        movement_group.update()
+        text_group.update()
+        menu_group.update()
 
-# ............................................... Sprite Groups ..................................................
-
-
-level_group = pygame.sprite.Group()
-movement_group = pygame.sprite.Group()
-setup_group = pygame.sprite.Group()
-grid_group = pygame.sprite.Group()
-menu_group = pygame.sprite.Group()
-start_group = pygame.sprite.Group()
-draw_group = pygame.sprite.Group()
-bullets_group = pygame.sprite.Group()
-bullet_group = pygame.sprite.Group()
-planet_group = pygame.sprite.Group()
-asteroid_group = pygame.sprite.Group()
-all_sprites = pygame.sprite.Group()
-map_group = pygame.sprite.Group()
-net_menu = pygame.sprite.Group()
-Galaxy_group = pygame.sprite.Group()
-text_group = pygame.sprite.Group()
-level_1 = level_1()
 
 # ........................................... Functions and Variables .............................................
-
 cell_pxl_size = 70
 cell_count = 10
 screen_width = 1200
@@ -714,26 +689,23 @@ galaxy_win = GalaxyWin()
 SR_22_Window = SR_22_Window()
 start_up = Start_Up()
 
-# ............................................... Audio Functions ................................................
-
-voice1.play()
-music.play()
-
-# .............................................. Add Sprites to Groups ............................................
-
-start_group.add(start_up)
-Galaxy_group.add(toolbar)
-
-# ............................................... 'for' Statements ................................................
-
-for i in range(760):
-    x = random.randrange(140, 1000)
-    y = random.randrange(14, 36)
-    star_list.append([x, y])
-for a in range(140):
-    Ax = random.randrange(100, 950)
-    Ay = random.randrange(228, 340)
-    asteroid_list.append([Ax, Ay])
+# ............................................... Sprite Groups ..................................................
+level_group = pygame.sprite.Group()
+movement_group = pygame.sprite.Group()
+setup_group = pygame.sprite.Group()
+grid_group = pygame.sprite.Group()
+menu_group = pygame.sprite.Group()
+start_group = pygame.sprite.Group()
+draw_group = pygame.sprite.Group()
+bullets_group = pygame.sprite.Group()
+bullet_group = pygame.sprite.Group()
+planet_group = pygame.sprite.Group()
+asteroid_group = pygame.sprite.Group()
+all_sprites = pygame.sprite.Group()
+map_group = pygame.sprite.Group()
+net_menu = pygame.sprite.Group()
+Galaxy_group = pygame.sprite.Group()
+text_group = pygame.sprite.Group()
 
 # ................................................. {Game Loop} ...................................................
 
@@ -742,5 +714,6 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+
     Main()
     pygame.display.update()
