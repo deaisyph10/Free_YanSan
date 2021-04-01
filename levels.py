@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 class Level1(pygame.sprite.Sprite):
     def __init__(self):
         super(Level1, self).__init__()
@@ -10,7 +13,11 @@ class Level1(pygame.sprite.Sprite):
         self.YSrect_Y = 544
         self.YSrect_X = 1030
         self.YSN_asset00 = pygame.image.load("images/templates/templates_message_BOX_2x1_beacon-info.png")
+<<<<<<< HEAD
         # self.YSN_icon = icon
+=======
+        #self.YSN_icon = icon
+>>>>>>> origin/main
         self.YSN_Y = 510
         self.YSN_X = 200
         self.image = pygame.image.load("images/templates/templates_gameplay_sceen.png")
