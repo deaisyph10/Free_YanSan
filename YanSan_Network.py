@@ -148,9 +148,6 @@ class YanSan(pygame.sprite.Sprite):
         self.s = 0
         self.S = 0
 
-    def beacon(self):
-        # eastern_ridge =
-
 
 def yan_san_beacon():
             pygame.image.load("images/ships/YanSan_BEACON_Eastern_Ridge_GAL1.sm.png")

@@ -371,12 +371,12 @@ class Toolbar(pygame.sprite.Sprite):
         if 950 > posX > 900 and 46 > posY > 1:
             menu_group.add(main_menu)
             screen.blit(self.mainmenu_on, (902, 0))
-            if click[0] != 1:
-                menu_group.remove(main_menu)
-            else:
-                sound_click.play()
+            if click[0] == 1:
                 menu_group.add(main_menu)
+                sound_click.play()
                 screen.blit(self.mainmenu, (902, 0))
+        else:
+            main_menu.kill()
         if 1000 > posX > 952 and 46 > posY > 1:
             screen.blit(self.setup_on, (952, 0))
             if click[0] == 1:
@@ -707,6 +707,9 @@ net_menu = pygame.sprite.Group()
 Galaxy_group = pygame.sprite.Group()
 text_group = pygame.sprite.Group()
 
+
+start_group.add(start_up)
+setup_group.add(toolbar)
 # ................................................. {Game Loop} ...................................................
 
 while True:
