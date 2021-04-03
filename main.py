@@ -603,7 +603,6 @@ class SR_22_Window(pygame.sprite.Sprite):
         self.mission1()
         yan_san_beacon()
 
-
 def mission2():
     rebel_control_BOX1 = pygame.image.load(
         "images/buttons/level_image_galaxy1-level2-solar-cycle_rebelcontrol.02.2.png")
@@ -644,7 +643,6 @@ def mission3():
     else:
         screen.blit(war_alarm_BOX1, (514, 468))
         text_group.remove(briefing_Win)
-
 
 class Main:
     def __init__(self):

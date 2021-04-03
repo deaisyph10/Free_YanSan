@@ -1,3 +1,5 @@
+import pygame
+
 def mission2():
     rebel_control_BOX1 = pygame.image.load(
         "images/buttons/level_image_galaxy1-level2-solar-cycle_rebelcontrol.02.2.png")
